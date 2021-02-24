@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+      ----------------------------------------------------------------------------
+      "THE BEER-WARE LICENSE" (Revision 42):
+      Yannick wrote this file.  As long as you retain this notice you
+      can do whatever you want with this stuff. If we meet some day, and you think
+      this stuff is worth it, you can buy me a beer in return.   Poul-Henning Kamp
+      ----------------------------------------------------------------------------
+    -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/png" href="images/DesertIsland.svg" />
+    <link rel="stylesheet" href="styles/style.css">
+    <title>Le nain brasseur</title>
+
+    <script src="incrementum-ludus/json3.min.js"></script>
+    <script src="./model/Ingredient.ts"></script>
+    <script src="./model/ICookingAction.ts"></script>
+    <script src="./model/AddIngredient.ts"></script>
+    <script src="./model/Heat.ts"></script>
+    <script src="./model/Cool.ts"></script>
+    <script src="./model/Filter.ts"></script>
+    <script src="./model/Brew.ts"></script>
+    <script src="./model/Recipe.ts"></script>
+    <script src="./model/RecipeComparator.ts"></script>
+    <script
+    function toggle() {
+        event.srcElement
+        if (event.srcElement.className == "toggleShow") {
+            event.srcElement.className = "toggleHide";
+        } else {
+            event.srcElement.className = "toggleShow";
+        }
+    }
+    </script>
+</head>
+<body id="body" class="origin-theme">
+    <h1>
+        <img src="images/DesertIsland.svg" title="Desert island" alt="Desert island" class="titleIcon"/>
+        Le nain brasseur
+    </h1>
+    <div id="level">lvl</div>
+        <button onclick="gui.restart();">Restart</button>
+        <input type="checkbox" id="simple" style="vertical-align: middle;"/><label for="simple">Simplified interface (for mobile)</label>
+    <div>
+        <div class="toggleBlock">
+            <div class="toggleShow" onclick="toggle()">Introduction</div>
+            <div id="game">
+                I am a dwarf, i'm digging a hole.
+            </div>
+        </div>
+        <div class="toggleBlock">
+            <div class="toggleShow" onclick="toggle()">Goals</div>
+            <div id="tree"></div>
+        </div>
+        <div class="toggleBlock">
+            <div class="toggleShow" onclick="toggle()">Resources</div>
+            <div id="storageGlobal"></div>
+        </div>
+        <div class="toggleBlock">
+            <div class="toggleShow" onclick="toggle()">Production</div>
+            <div id="producers"></div>
+        </div>
+        <div class="toggleBlock">
+            <div class="toggleShow" onclick="toggle()">Crafter</div>
+            <div id="crafters"></div>
+        </div>
+        <div class="toggleBlock">
+            <div class="toggleHide" onclick="toggle()">Relase notes</div>
+            <div id="releaseNotes">
+                <p>
+                    <ul>
+                        <li>
+                            Version 2.5 : get GUI improvements from the other game incrementFal
+                        </li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+        <div class="toggleBlock">
+            <div class="toggleHide" onclick="toggle()">License</div>
+            <div id="license">
+                <p>
+                    <pre>
+    ----------------------------------------------------------------------------
+    "THE BEER-WARE LICENSE" (Revision 42):
+    Yannick wrote this file.  As long as you retain this notice you
+    can do whatever you want with this stuff. If we meet some day, and you think
+    this stuff is worth it, you can buy me a beer in return.   Poul-Henning Kamp
+    ----------------------------------------------------------------------------
+                    </pre>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay">
+        <div id="overlayTitle">You windie!</div>
+        <div id="raison"></div>
+        <div>
+            <button onclick="gui.restart();">Try again</button>
+        </div>
+    </div>
+    <script>
+        var gui = new Gui(engine);
+        gui.start(200);
+        engine.run(100, saveEngine);
+    </script>
+    <div onclick="document.getElementById('debugMode').style.display='block';"><script>document.write(VERSION);</script></div>
+    <div id="debugMode" style="display: none;">
+        <div onclick="gui.stop()">stop</div>
+        <div onclick="Gui.eraseStorage()">clear</div>
+        <!--<div onclick="gui.fastMode()">fast mode</div>-->
+        PS: you just <a href="http://www.perdu.com">lost</a> The <a href="https://en.wikipedia.org/wiki/The_Game_(mind_game)">Game</a>.
+    </div>
+</body>
+</html>
