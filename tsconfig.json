@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "strict": true,
+  },
+  "lib": ["dom","es6"],
+  "files": [
+    "./model/Ingredient.ts",
+    "./model/ICookingAction.ts",
+    "./model/AddIngredient.ts",
+    "./model/Heat.ts",
+    "./model/Cool.ts",
+    "./model/Filter.ts",
+    "./model/Brew.ts",
+    "./model/Recipe.ts",
+    "./model/RecipeComparator.ts"
+  ]
+}

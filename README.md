@@ -1,2 +1,3 @@
-# le-nain-brasseur
-jeu sur un nain qui brasse de la bière
+# Le nain brasseur
+Un jeu sur un nain qui brasse de la bière.
+
