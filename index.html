@@ -15,17 +15,18 @@
     <link rel="stylesheet" href="styles/style.css">
     <title>Le nain brasseur</title>
 
-    <script src="incrementum-ludus/json3.min.js"></script>
-    <script src="./model/Ingredient.ts"></script>
-    <script src="./model/ICookingAction.ts"></script>
-    <script src="./model/AddIngredient.ts"></script>
-    <script src="./model/Heat.ts"></script>
-    <script src="./model/Cool.ts"></script>
-    <script src="./model/Filter.ts"></script>
-    <script src="./model/Brew.ts"></script>
-    <script src="./model/Recipe.ts"></script>
-    <script src="./model/RecipeComparator.ts"></script>
-    <script
+    <script src="json3.min.js"></script>
+    <script src="./model/Ingredient.js"></script>
+    <script src="./model/ICookingAction.js"></script>
+    <script src="./model/CookingAction.js"></script>
+    <script src="./model/AddIngredient.js"></script>
+    <script src="./model/Heat.js"></script>
+    <script src="./model/Cool.js"></script>
+    <script src="./model/Filter.js"></script>
+    <script src="./model/Brew.js"></script>
+    <script src="./model/Recipe.js"></script>
+    <script src="./model/RecipeComparator.js"></script>
+    <script>
     function toggle() {
         event.srcElement
         if (event.srcElement.className == "toggleShow") {
@@ -38,7 +39,7 @@
 </head>
 <body id="body" class="origin-theme">
     <h1>
-        <img src="images/DesertIsland.svg" title="Desert island" alt="Desert island" class="titleIcon"/>
+        <img src="images/dwarf-face.svg" title="Desert island" alt="Desert island" class="titleIcon"/>
         Le nain brasseur
     </h1>
     <div id="level">lvl</div>
@@ -70,28 +71,24 @@
         <div class="toggleBlock">
             <div class="toggleHide" onclick="toggle()">Relase notes</div>
             <div id="releaseNotes">
-                <p>
-                    <ul>
-                        <li>
-                            Version 2.5 : get GUI improvements from the other game incrementFal
-                        </li>
-                    </ul>
-                </p>
+                <ul>
+                    <li>
+                        Version 2.5 : get GUI improvements from the other game incrementFal
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="toggleBlock">
             <div class="toggleHide" onclick="toggle()">License</div>
             <div id="license">
-                <p>
-                    <pre>
+                <pre>
     ----------------------------------------------------------------------------
     "THE BEER-WARE LICENSE" (Revision 42):
     Yannick wrote this file.  As long as you retain this notice you
     can do whatever you want with this stuff. If we meet some day, and you think
     this stuff is worth it, you can buy me a beer in return.   Poul-Henning Kamp
     ----------------------------------------------------------------------------
-                    </pre>
-                </p>
+                </pre>
             </div>
         </div>
     </div>
