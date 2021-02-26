@@ -11,7 +11,7 @@
     -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/png" href="images/DesertIsland.svg" />
+    <link rel="shortcut icon" type="image/png" href="images/dwarf-face.svg" />
     <link rel="stylesheet" href="styles/style.css">
     <title>Le nain brasseur</title>
 
@@ -32,7 +32,7 @@
     <script src="./model/Heat.js"></script>
     <script src="./model/Cool.js"></script>
     <script src="./model/Filter.js"></script>
-    <script src="./model/Brew.js"></script>
+    <script src="./model/Brewing.js"></script>
     <script src="./model/Recipe.js"></script>
     <script src="./model/RecipeComparator.js"></script>
     <script src="./model/BrewerDwarf.js"></script>
@@ -60,14 +60,14 @@
         </div>
         <div class="toggleBlock">
             <div class="toggleShow" onclick="toggle()">Brassage</div>
-            <div id="tree"></div>
+            <div id="brewing"></div>
         </div>
         <div class="toggleBlock">
             <div class="toggleShow" onclick="toggle()">Resources</div>
             <div id="storageGlobal"></div>
         </div>
         <div class="toggleBlock">
-            <div class="toggleShow" onclick="toggle()">Recettes</div>
+            <div class="toggleHide" onclick="toggle()">Mes recettes</div>
             <div id="recipes"></div>
         </div>
         <div class="toggleBlock">

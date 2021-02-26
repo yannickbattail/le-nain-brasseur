@@ -27,6 +27,22 @@ class BrewerDwarf {
         newObj.fastMode = data.fastMode;
         return newObj;
     }
+    
+    brew(recipeName : string) {
+        let recipe = this.getRecipeNameByName(recipeName);
+        
+    }
+
+    public getRecipeNameByName(recipeName : string) : Recipe | null {
+        let recipes : Recipe[] =  this.recipes.filter(
+            src => src.getName() == recipeName
+        );
+        if (recipes.length == 0) {
+            return null;
+        }
+        return recipes[0];
+    }  
+    
     run(tickInterval : number, saveCallback: (engine: BrewerDwarf) => void) {
         this.tickInterval = tickInterval;
         this.saveCallback = saveCallback;

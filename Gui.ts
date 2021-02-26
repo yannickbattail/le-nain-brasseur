@@ -15,7 +15,7 @@
 /// <reference path="./model/Heat.ts" />
 /// <reference path="./model/Cool.ts" />
 /// <reference path="./model/Filter.ts" />
-/// <reference path="./model/Brew.ts" />
+/// <reference path="./model/Brewing.ts" />
 /// <reference path="./model/Recipe.ts" />
 /// <reference path="./model/RecipeComparator.ts" />
 /// <reference path="./model/BrewerDwarf.ts" />
@@ -51,15 +51,41 @@ class Gui {
         }
         return "";
     }
-
-    private displayRecipes(): string {
-        return this.engine.player.getRecipes()
+    
+    private listRecipes(): string {
+        return this.engine.recipes
             .map(
-                res => this.displayRecipe(res)
+                res => this.listRecipe(res)
             ).join("");
     }
 
-    private displayRecipe(recipe : Recipe) : string {
+    private listRecipe(recipe : Recipe): string {
+        let h = '<div>';
+        h += recipe.getName()
+        h += '<button onclick="engine.brew(\''+recipe.getName()+'\')">Brasser</button>';
+        h += "</div>";
+        return h;
+    }
+
+    private displayPlayerRecipes(): string {
+        return this.engine.player.getRecipes()
+            .map(
+                res => this.displayPlayerRecipe(res)
+            ).join("");
+    }
+    
+    private displayPlayerRecipe(recipe : Recipe) : string {
+        let h = '<div style="display: inline-block;"><table border="1">';
+        h += '<tr><th colspan="3">'+recipe.getName()+'</th></tr>';
+
+        recipe.getActions().forEach(
+            res => h += this.displayCookingAction(res)
+        );
+        h += "</table></div>";
+        return h;
+    }
+
+    private editRecipe(recipe : Recipe) : string {
         let h = '<div style="display: inline-block;"><table border="1">';
         h += '<tr><th colspan="3">'+recipe.getName()+'</th></tr>';
 
@@ -92,17 +118,18 @@ class Gui {
     private editCookingAction(index : number, action : ICookingAction) : string {
         let h = '<tr id="'+index+'">';
         h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
+        h += '<td><input type="hidden" id="'+index+'_type" value="'+action.$type+'" />min</td>';
         if ('duration' in action) {
-            h += '<td><input type="number" name="duration" min="1" value="'+(action['duration']/60000)+'" />min</td>';
+            h += '<td><input type="number" id="'+index+'_duration" min="1" value="'+(action['duration']/60000)+'" />min</td>';
         }
         if ('degrees' in action) {
-            h += '<td><input type="number" name="degrees" min="1" value="'+action['degrees']+'" />°C</td>';
+            h += '<td><input type="number" id="'+index+'_degrees" min="1" value="'+action['degrees']+'" />°C</td>';
         }
         if ('temperature' in action) {
-            h += '<td><input type="number" name="temperature" min="1" value="'+action['temperature']+'" />°C</td>';
+            h += '<td><input type="number" id="'+index+'_temperature" min="1" value="'+action['temperature']+'" />°C</td>';
         }
         if ('quantity' in action) {
-            h += '<td><input type="number" name="quantity" min="1" value="'+action['quantity']+'" />°C</td>';
+            h += '<td><input type="number" id="'+index+'_quantity" min="1" value="'+action['quantity']+'" />°C</td>';
         }
         h += "</tr>";
         return h;
@@ -132,7 +159,6 @@ class Gui {
             ).join("");
     }
     
-
     private displayQuantities(quantities : Array<IQuantity>) : string {
         console.log("displayQuantities");
         return quantities.map(
@@ -326,8 +352,9 @@ class Gui {
 
     private updateGui() {
         NodeUpdate.updateDiv('level', this.displayLevel());
+        NodeUpdate.updateDiv('brewing', this.listRecipes());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
-        NodeUpdate.updateDiv('recipes', this.displayRecipes());
+        NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }

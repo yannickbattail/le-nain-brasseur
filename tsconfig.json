@@ -25,7 +25,7 @@
     "./model/Heat.ts",
     "./model/Cool.ts",
     "./model/Filter.ts",
-    "./model/Brew.ts",
+    "./model/Brewing.ts",
     "./model/Recipe.ts",
     "./model/RecipeComparator.ts",
     "./model/BrewerDwarf.ts",

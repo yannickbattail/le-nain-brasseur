@@ -1,13 +1,13 @@
 /// <reference path="CookingAction.ts" />
 
-class Brew extends CookingAction {
+class Brewing extends CookingAction {
     $type : string = 'Heat';
     constructor(public duration: number = 0) {
         super();
     }
     
-    public static load(data : any) : Brew {
-        let newObj : Brew = new Brew();
+    public static load(data : any) : Brewing {
+        let newObj : Brewing = new Brewing();
         newObj.duration = data.duration;
         return newObj;
     }
@@ -22,10 +22,10 @@ class Brew extends CookingAction {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;
         }
-        let addIngredient = action as Brew;
+        let addIngredient = action as Brewing;
         return this.compareHeat(addIngredient);
     }
-    public compareHeat(action : Brew) : string {
+    public compareHeat(action : Brewing) : string {
         if (this.duration > action.duration) {
             return "La fermentation est trop courte";
         }
@@ -36,14 +36,14 @@ class Brew extends CookingAction {
     }
 
     analyse(action: ICookingAction): number | null {
-        if (action instanceof Brew) {
-            this.analyseBrew(action);
+        if (action instanceof Brewing) {
+            this.analyseBrewing(action);
         }
         return null;
 
     }
 
-    analyseBrew(action: Brew): number | null {
+    analyseBrewing(action: Brewing): number | null {
         return this.notation(this.duration, action.duration);
     }
 }

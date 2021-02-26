@@ -11,6 +11,7 @@ class Resource implements IResource {
         let r : Resource = new Resource(data.name);
         return r;
     }
+    
     public equals(obj: IResource) : boolean {
         return this.getName() == obj.getName();
     }
