@@ -13,6 +13,7 @@ class BrewerDwarf {
     
     status : BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
     player : IPlayer = new Player("");
+    recipes: Array<Recipe> = new Array<Recipe>();
     
     private intervalId : number = 0;
 

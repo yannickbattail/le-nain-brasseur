@@ -88,9 +88,28 @@ class Gui {
         h += "</tr>";
         return h;
     }
-    
+
+    private editCookingAction(index : number, action : ICookingAction) : string {
+        let h = '<tr id="'+index+'">';
+        h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
+        if ('duration' in action) {
+            h += '<td><input type="number" name="duration" min="1" value="'+(action['duration']/60000)+'" />min</td>';
+        }
+        if ('degrees' in action) {
+            h += '<td><input type="number" name="degrees" min="1" value="'+action['degrees']+'" />°C</td>';
+        }
+        if ('temperature' in action) {
+            h += '<td><input type="number" name="temperature" min="1" value="'+action['temperature']+'" />°C</td>';
+        }
+        if ('quantity' in action) {
+            h += '<td><input type="number" name="quantity" min="1" value="'+action['quantity']+'" />°C</td>';
+        }
+        h += "</tr>";
+        return h;
+    }
+
     private displayStorageBox(title : string, content : string): string {
-        var h = '<table border="1">';
+        let h = '<table border="1">';
         h += "<tr><th>"+title+"</th></tr>";
         h += "<tr><td>";
         h += content;

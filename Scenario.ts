@@ -36,7 +36,7 @@ class Scenario {
         let engine = new BrewerDwarf();
         engine.player = new Player("Gurdil");
         engine.player.setPreventNegativeStorage(true);
-        engine.player.setRecipes([
+        engine.recipes = [
             new Recipe("Bière de base", [
                 new AddIngredient(Q(10000, WATER)),
                 new AddIngredient(Q(2000, MALT)),
@@ -55,7 +55,7 @@ class Scenario {
                 new Cool(30),
                 new Brew(30*24*60*60*1000)
             ])
-        ])
+        ];
         // initial storage
         engine.player.increaseStorage(Q(1, LEVEL));
         engine.player.increaseStorage(Q(1000, WATER));
