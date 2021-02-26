@@ -6,8 +6,11 @@ class Recipe {
                 protected actions: Array<ICookingAction>) {
         
     }
-    
+
     getActions() : Array<ICookingAction> {
         return this.actions;
+    }
+    getName() : string {
+        return this.name;
     }
 }

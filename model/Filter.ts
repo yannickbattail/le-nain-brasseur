@@ -5,7 +5,13 @@ class Filter extends CookingAction {
     constructor() {
         super();
     }
-    
+
+    getName() : string {
+        return "Filtrer";
+    }
+    getImage() : string {
+        return "strainer.svg";
+    }
     public compare(action : ICookingAction) : string {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;

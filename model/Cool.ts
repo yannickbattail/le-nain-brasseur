@@ -2,10 +2,16 @@
 
 class Cool extends CookingAction {
     $type : string = 'Heat';
-    constructor(protected degrees: number = 0) {
+    constructor(public degrees: number = 0) {
         super();
     }
     
+    getName() : string {
+        return "Refroidir";
+    }
+    getImage() : string {
+        return "cool.svg";
+    }
     public compare(action : ICookingAction) : string {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;

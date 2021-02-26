@@ -15,8 +15,17 @@
     <link rel="stylesheet" href="styles/style.css">
     <title>Le nain brasseur</title>
 
-    <script src="json3.min.js"></script>
-    <script src="./model/Ingredient.js"></script>
+    <script src="./model/IResource.js"></script>
+    <script src="./model/Resource.js"></script>
+    <script src="./model/ICategorized.js"></script>
+    <script src="./model/CategorizedItem.js"></script>
+    <script src="./model/CategorizedMaterial.js"></script>
+    <script src="./model/NamedStepResource.js"></script>
+    <script src="./model/Level.js"></script>
+    <script src="./model/IQuantity.js"></script>
+    <script src="./model/Quantity.js"></script>
+    <script src="./model/IPlayer.js"></script>
+    <script src="./model/Player.js"></script>
     <script src="./model/ICookingAction.js"></script>
     <script src="./model/CookingAction.js"></script>
     <script src="./model/AddIngredient.js"></script>
@@ -26,16 +35,13 @@
     <script src="./model/Brew.js"></script>
     <script src="./model/Recipe.js"></script>
     <script src="./model/RecipeComparator.js"></script>
-    <script>
-    function toggle() {
-        event.srcElement
-        if (event.srcElement.className == "toggleShow") {
-            event.srcElement.className = "toggleHide";
-        } else {
-            event.srcElement.className = "toggleShow";
-        }
-    }
-    </script>
+    <script src="./model/BrewerDwarf.js"></script>
+    <script src="./model/BrewerDwarfStatus.js"></script>
+    <script src="./Scenario.js"></script>
+    <script src="./App.js"></script>
+    <script src="./KonamiCode.js"></script>
+    <script src="./NodeUpdate.js"></script>
+    <script src="./Gui.js"></script>
 </head>
 <body id="body" class="origin-theme">
     <h1>
@@ -44,7 +50,7 @@
     </h1>
     <div id="level">lvl</div>
         <button onclick="gui.restart();">Restart</button>
-        <input type="checkbox" id="simple" style="vertical-align: middle;"/><label for="simple">Simplified interface (for mobile)</label>
+        <input type="checkbox" id="simple" /><label for="simple">Simplified interface (for mobile)</label>
     <div>
         <div class="toggleBlock">
             <div class="toggleShow" onclick="toggle()">Introduction</div>
@@ -53,7 +59,7 @@
             </div>
         </div>
         <div class="toggleBlock">
-            <div class="toggleShow" onclick="toggle()">Goals</div>
+            <div class="toggleShow" onclick="toggle()">Brassage</div>
             <div id="tree"></div>
         </div>
         <div class="toggleBlock">
@@ -61,19 +67,19 @@
             <div id="storageGlobal"></div>
         </div>
         <div class="toggleBlock">
-            <div class="toggleShow" onclick="toggle()">Production</div>
-            <div id="producers"></div>
+            <div class="toggleShow" onclick="toggle()">Recettes</div>
+            <div id="recipes"></div>
         </div>
         <div class="toggleBlock">
-            <div class="toggleShow" onclick="toggle()">Crafter</div>
-            <div id="crafters"></div>
+            <div class="toggleHide" onclick="toggle()">Légende</div>
+            <div id="doc"></div>
         </div>
         <div class="toggleBlock">
             <div class="toggleHide" onclick="toggle()">Relase notes</div>
             <div id="releaseNotes">
                 <ul>
                     <li>
-                        Version 2.5 : get GUI improvements from the other game incrementFal
+                        Version 0.1 : truc bidule
                     </li>
                 </ul>
             </div>
@@ -100,11 +106,6 @@
             <button onclick="gui.restart();">Try again</button>
         </div>
     </div>
-    <script>
-        var gui = new Gui(engine);
-        gui.start(200);
-        engine.run(100, saveEngine);
-    </script>
     <div onclick="document.getElementById('debugMode').style.display='block';"><script>document.write(VERSION);</script></div>
     <div id="debugMode" style="display: none;">
         <div onclick="gui.stop()">stop</div>
@@ -113,4 +114,19 @@
         PS: you just <a href="http://www.perdu.com">lost</a> The <a href="https://en.wikipedia.org/wiki/The_Game_(mind_game)">Game</a>.
     </div>
 </body>
+<script>
+
+    function toggle() {
+        event.srcElement
+        if (event.srcElement.className == "toggleShow") {
+            event.srcElement.className = "toggleHide";
+        } else {
+            event.srcElement.className = "toggleShow";
+        }
+    }
+
+    var gui = new Gui(engine);
+    gui.start(500);
+    engine.run(10000, saveEngine);
+</script>
 </html>

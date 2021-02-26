@@ -2,10 +2,16 @@
 
 class Brew extends CookingAction {
     $type : string = 'Heat';
-    constructor(protected duration: number = 0) {
+    constructor(public duration: number = 0) {
         super();
     }
-    
+
+    getName() : string {
+        return "Fermenter";
+    }
+    getImage() : string {
+        return "boiling-bubbles.svg";
+    }
     public compare(action : ICookingAction) : string {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;

@@ -8,7 +8,17 @@
   },
   "lib": ["dom","es6"],
   "files": [
-    "./model/Ingredient.ts",
+    "./model/IResource.ts",
+    "./model/Resource.ts",
+    "./model/ICategorized.ts",
+    "./model/CategorizedItem.ts",
+    "./model/CategorizedMaterial.ts",
+    "./model/NamedStepResource.ts",
+    "./model/Level.ts",
+    "./model/IQuantity.ts",
+    "./model/Quantity.ts",
+    "./model/IPlayer.ts",
+    "./model/Player.ts",
     "./model/ICookingAction.ts",
     "./model/CookingAction.ts",
     "./model/AddIngredient.ts",
@@ -17,6 +27,13 @@
     "./model/Filter.ts",
     "./model/Brew.ts",
     "./model/Recipe.ts",
-    "./model/RecipeComparator.ts"
+    "./model/RecipeComparator.ts",
+    "./model/BrewerDwarf.ts",
+    "./model/BrewerDwarfStatus.ts",
+    "./Scenario.ts",
+    "./App.ts",
+    "./KonamiCode.ts",
+    "./NodeUpdate.ts",
+    "./Gui.ts"
   ]
 }

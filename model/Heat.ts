@@ -2,11 +2,17 @@
 
 class Heat extends CookingAction {
     $type : string = 'Heat';
-    constructor(protected duration: number = 0,
-                protected degrees: number = 0) {
+    constructor(public duration: number = 0,
+                public degrees: number = 0) {
         super();
     }
     
+    getName() : string {
+        return "Chauffer";
+    }
+    getImage() : string {
+        return "camp-cooking-pot.svg";
+    }
     public compare(action : ICookingAction) : string {
         if (action !instanceof Heat) {
             return "L'étape devrait être "+this.$type;
