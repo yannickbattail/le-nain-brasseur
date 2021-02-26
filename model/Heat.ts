@@ -6,7 +6,14 @@ class Heat extends CookingAction {
                 public degrees: number = 0) {
         super();
     }
-    
+
+    public static load(data : any) : Heat {
+        let newObj : Heat = new Heat();
+        newObj.duration = data.duration;
+        newObj.degrees = data.degrees;
+        return newObj;
+    }
+
     getName() : string {
         return "Chauffer";
     }

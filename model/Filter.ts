@@ -6,6 +6,11 @@ class Filter extends CookingAction {
         super();
     }
 
+    public static load(data : any) : Filter {
+        let newObj : Filter = new Filter();
+        return newObj;
+    }
+
     getName() : string {
         return "Filtrer";
     }

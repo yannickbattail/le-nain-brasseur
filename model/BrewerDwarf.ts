@@ -23,6 +23,7 @@ class BrewerDwarf {
         newObj.tickInterval = data.tickInterval;
         newObj.status = data.status;
         newObj.player = curContext[data.player.$type].load(data.player);
+        newObj.recipes = (data.recipes as Array<any>).map(p => curContext[p.$type].load(p));
         newObj.fastMode = data.fastMode;
         return newObj;
     }

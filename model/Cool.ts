@@ -5,7 +5,13 @@ class Cool extends CookingAction {
     constructor(public degrees: number = 0) {
         super();
     }
-    
+
+    public static load(data : any) : Cool {
+        let newObj : Cool = new Cool();
+        newObj.degrees = data.degrees;
+        return newObj;
+    }
+
     getName() : string {
         return "Refroidir";
     }

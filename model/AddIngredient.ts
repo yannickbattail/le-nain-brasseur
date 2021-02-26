@@ -7,11 +7,18 @@
 
 class AddIngredient extends CookingAction {
     $type : string = 'AddIngredient';
-    constructor(public quantity: IQuantity) {
+    constructor(public quantity: IQuantity = EMPTY_QUANTITY) {
         super();
         
     }
-
+    
+    public static load(data : any) : AddIngredient {
+        let curContext : any = window;
+        let newObj : AddIngredient = new AddIngredient();
+        newObj.quantity = curContext[data.quantity.$type].load(data.player);
+        return newObj;
+    }
+    
     getName() : string {
         return "Ajout un ingrédient";
     }
@@ -43,7 +50,6 @@ class AddIngredient extends CookingAction {
             this.analyseAddIngredient(action);
         }
         return null;
-
     }
 
     analyseAddIngredient(action: AddIngredient): number | null {

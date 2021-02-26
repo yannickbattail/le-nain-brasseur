@@ -2,11 +2,21 @@
 
 class Recipe {
     $type : string = 'Recipe';
-    constructor(protected name: string,
-                protected actions: Array<ICookingAction>) {
+    constructor(public name: string = "",
+                public actions: Array<ICookingAction> = [] 
+    
+    ) {
         
     }
-
+    
+    public static load(data : any) : Recipe {
+        let curContext : any = window;
+        let newObj : Recipe = new Recipe();
+        newObj.name = data.name;
+        newObj.actions = (data.actions as Array<any>).map(p => curContext[p.$type].load(p));
+        return newObj;
+    }
+    
     getActions() : Array<ICookingAction> {
         return this.actions;
     }

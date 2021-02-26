@@ -5,7 +5,13 @@ class Brew extends CookingAction {
     constructor(public duration: number = 0) {
         super();
     }
-
+    
+    public static load(data : any) : Brew {
+        let newObj : Brew = new Brew();
+        newObj.duration = data.duration;
+        return newObj;
+    }
+    
     getName() : string {
         return "Fermenter";
     }
