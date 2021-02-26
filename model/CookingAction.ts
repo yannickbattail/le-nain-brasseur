@@ -8,11 +8,12 @@ abstract class CookingAction  implements ICookingAction {
     abstract compare(action: ICookingAction) : string;
     abstract analyse(action: ICookingAction) : number|null;
     
-    notation(val1: number, val2: number): number {
-        const degreeDiff = Math.abs(val1 - val2);
-        if (degreeDiff > val1 / 2) {
+    notation(expected: number, actual: number): number {
+        const halfExpected = expected / 2;
+        const diff = Math.abs(expected - actual);
+        if (diff > halfExpected) {
             return 0;
         }
-        return (val1 / 2 - degreeDiff) / degreeDiff;
+        return 1 - (diff / halfExpected);
     }
 }
