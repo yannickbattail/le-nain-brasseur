@@ -37,7 +37,16 @@ class Scenario {
         engine.player = new Player("Gurdil");
         engine.player.setPreventNegativeStorage(true);
         engine.player.setRecipes([
-            new Recipe("Base", [
+            new Recipe("Bière de base", [
+                new AddIngredient(Q(10000, WATER)),
+                new AddIngredient(Q(2000, MALT)),
+                new AddIngredient(Q(50, HOUBLON)),
+                new Heat(20*60*1000, 100),
+                new Filter(),
+                new Cool(30),
+                new Brew(30*24*60*60*1000)
+            ]),
+            new Recipe("Bière de base2", [
                 new AddIngredient(Q(10000, WATER)),
                 new AddIngredient(Q(2000, MALT)),
                 new AddIngredient(Q(50, HOUBLON)),

@@ -51,16 +51,8 @@ class Gui {
         }
         return "";
     }
-    
-    private displayRecipes(title : string): string {
-        let content = this.displayRecipesContent();
-        if (content != "") {
-            return this.displayStorageBox(title, content);
-        }
-        return "";
-    }
 
-    private displayRecipesContent(): string {
+    private displayRecipes(): string {
         return this.engine.player.getRecipes()
             .map(
                 res => this.displayRecipe(res)
@@ -68,18 +60,18 @@ class Gui {
     }
 
     private displayRecipe(recipe : Recipe) : string {
-        let h = '<table border="1">';
-        h += "<tr><th></th><th>"+recipe.getName()+"</th></tr>";
+        let h = '<div style="display: inline-block;"><table border="1">';
+        h += '<tr><th colspan="3">'+recipe.getName()+'</th></tr>';
 
         recipe.getActions().forEach(
             res => h += this.displayCookingAction(res)
         );
-        h += "</table>";
+        h += "</table></div>";
         return h;
     }
 
     private displayCookingAction(action : ICookingAction) : string {
-        let h = '<table border="1"><tr>';
+        let h = '<tr>';
         h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
         if ('duration' in action) {
             h += '<td>'+this.displayTime(action['duration'])+'</td>';
@@ -93,7 +85,7 @@ class Gui {
         if ('quantity' in action) {
             h += '<td>' + this.displayQuantity(action['quantity']) + '</td>';
         }
-        h += "</tr></table>";
+        h += "</tr>";
         return h;
     }
     
@@ -316,7 +308,7 @@ class Gui {
     private updateGui() {
         NodeUpdate.updateDiv('level', this.displayLevel());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
-        NodeUpdate.updateDiv('recipes', this.displayRecipes("Recettes"));
+        NodeUpdate.updateDiv('recipes', this.displayRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }
