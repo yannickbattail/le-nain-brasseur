@@ -34,6 +34,28 @@ const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
 class Scenario {
     public static initEngine() : BrewerDwarf {
         let engine = new BrewerDwarf();
+        engine.recipes = [
+            new RecipeReference("La Einegloïn", [
+                new AddIngredient(Q(10000, WATER)),
+                new AddIngredient(Q(2000, MALT)),
+                new AddIngredient(Q(50, HOUBLON)),
+                new Heat(20*60*1000, 100),
+                new Filter(),
+                new Cool(30),
+                new AddIngredient(Q(10, LEVURE)),
+                new Brewing(30*24*60*60*1000)
+            ]),
+            new RecipeReference("La kronadil", [
+                new AddIngredient(Q(10000, WATER)),
+                new AddIngredient(Q(2000, MALT)),
+                new AddIngredient(Q(50, HOUBLON)),
+                new Heat(20*60*1000, 100),
+                new Filter(),
+                new Cool(30),
+                new AddIngredient(Q(10, LEVURE)),
+                new Brewing(30*24*60*60*1000)
+            ])
+        ];
         engine.player = new Player("Gurdil");
         engine.player.setPreventNegativeStorage(true);
         engine.player.setRecipes([
@@ -46,30 +68,9 @@ class Scenario {
                 new Cool(0),
                 new AddIngredient(Q(0, LEVURE)),
                 new Brewing(0)
-            ])
+            ],
+            engine.recipes[0])
         ]);
-        engine.recipes = [
-            new Recipe("La Einegloïn", [
-                new AddIngredient(Q(10000, WATER)),
-                new AddIngredient(Q(2000, MALT)),
-                new AddIngredient(Q(50, HOUBLON)),
-                new Heat(20*60*1000, 100),
-                new Filter(),
-                new Cool(30),
-                new AddIngredient(Q(10, LEVURE)),
-                new Brewing(30*24*60*60*1000)
-            ]),
-            new Recipe("La kroandil", [
-                new AddIngredient(Q(10000, WATER)),
-                new AddIngredient(Q(2000, MALT)),
-                new AddIngredient(Q(50, HOUBLON)),
-                new Heat(20*60*1000, 100),
-                new Filter(),
-                new Cool(30),
-                new AddIngredient(Q(10, LEVURE)),
-                new Brewing(30*24*60*60*1000)
-            ])
-        ];
         // initial storage
         engine.player.increaseStorage(Q(1, LEVEL));
         engine.player.increaseStorage(Q(1000, WATER));

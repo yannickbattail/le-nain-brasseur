@@ -1,7 +1,7 @@
 /// <reference path="CookingStep.ts" />
 
 class Brewing extends CookingStep {
-    $type : string = 'Heat';
+    $type : string = 'Brewing';
     constructor(public duration: number = 0) {
         super();
     }
@@ -44,6 +44,6 @@ class Brewing extends CookingStep {
     }
 
     analyseBrewing(action: Brewing): number | null {
-        return RecipeComparator.scoring(this.duration, action.duration);
+        return RecipeAnalysis.scoring(this.duration, action.duration);
     }
 }

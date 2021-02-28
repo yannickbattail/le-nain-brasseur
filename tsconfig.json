@@ -28,7 +28,7 @@
     "./model/Brewing.ts",
     "./model/RecipeReference.ts",
     "./model/Recipe.ts",
-    "./model/RecipeComparator.ts",
+    "./model/RecipeAnalysis.ts",
     "./model/BrewerDwarf.ts",
     "./model/BrewerDwarfStatus.ts",
     "./Scenario.ts",

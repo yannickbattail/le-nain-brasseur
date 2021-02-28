@@ -17,7 +17,7 @@
 /// <reference path="./model/Filter.ts" />
 /// <reference path="./model/Brewing.ts" />
 /// <reference path="./model/Recipe.ts" />
-/// <reference path="./model/RecipeComparator.ts" />
+/// <reference path="./model/RecipeAnalysis.ts" />
 /// <reference path="./model/BrewerDwarf.ts" />
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 /// <reference path="./Scenario.ts" />
@@ -52,14 +52,14 @@ class Gui {
         return "";
     }
     
-    private listRecipes(): string {
+    private listRecipeReferences(): string {
         return this.engine.recipes
             .map(
-                res => this.listRecipe(res)
+                res => this.listRecipeReference(res)
             ).join("");
     }
 
-    private listRecipe(recipe : Recipe): string {
+    private listRecipeReference(recipe : RecipeReference): string {
         let h = '<div>';
         h += recipe.getName()
         h += '<button onclick="engine.brew(\''+recipe.getName()+'\')">Brasser</button>';
@@ -76,18 +76,7 @@ class Gui {
     
     private displayPlayerRecipe(recipe : Recipe) : string {
         let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th colspan="3">'+recipe.getName()+'</th></tr>';
-
-        recipe.getActions().forEach(
-            res => h += this.displayCookingAction(res)
-        );
-        h += "</table></div>";
-        return h;
-    }
-
-    private editRecipe(recipe : Recipe) : string {
-        let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th colspan="3">'+recipe.getName()+'</th></tr>';
+        h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef.getName()+'</th></tr>';
 
         recipe.getActions().forEach(
             res => h += this.displayCookingAction(res)
@@ -112,6 +101,17 @@ class Gui {
             h += '<td>' + this.displayQuantity(action['quantity']) + '</td>';
         }
         h += "</tr>";
+        return h;
+    }
+
+    private editRecipe(recipe : Recipe) : string {
+        let h = '<div style="display: inline-block;"><table border="1">';
+        h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef.getName()+'</th></tr>';
+
+        recipe.getActions().forEach(
+            res => h += this.displayCookingAction(res)
+        );
+        h += "</table></div>";
         return h;
     }
 
@@ -352,7 +352,7 @@ class Gui {
 
     private updateGui() {
         NodeUpdate.updateDiv('level', this.displayLevel());
-        NodeUpdate.updateDiv('brewing', this.listRecipes());
+        NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());

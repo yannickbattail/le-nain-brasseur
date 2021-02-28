@@ -1,7 +1,7 @@
 /// <reference path="CookingStep.ts" />
 
 class Cool extends CookingStep {
-    $type : string = 'Heat';
+    $type : string = 'Cool';
     constructor(public degrees: number = 0) {
         super();
     }
@@ -44,6 +44,6 @@ class Cool extends CookingStep {
     }
 
     analyseCool(action: Cool): number | null {
-        return RecipeComparator.scoring(this.degrees, action.degrees);
+        return RecipeAnalysis.scoring(this.degrees, action.degrees);
     }
 }

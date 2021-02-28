@@ -56,8 +56,8 @@ class Heat extends CookingStep {
     }
 
     analyseHeat(action: Heat): number | null {
-        const degreeNote = RecipeComparator.scoring(this.degrees, action.degrees);
-        const durationNote = RecipeComparator.scoring(this.duration, action.duration);
+        const degreeNote = RecipeAnalysis.scoring(this.degrees, action.degrees);
+        const durationNote = RecipeAnalysis.scoring(this.duration, action.duration);
         return Math.min(degreeNote, durationNote) ;
     }
 }

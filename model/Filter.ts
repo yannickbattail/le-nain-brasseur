@@ -1,7 +1,7 @@
 /// <reference path="CookingStep.ts" />
 
 class Filter extends CookingStep {
-    $type : string = 'Heat';
+    $type : string = 'Filter';
     constructor() {
         super();
     }

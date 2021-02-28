@@ -15,7 +15,7 @@ class AddIngredient extends CookingStep {
     public static load(data : any) : AddIngredient {
         let curContext : any = window;
         let newObj : AddIngredient = new AddIngredient();
-        newObj.quantity = curContext[data.quantity.$type].load(data.player);
+        newObj.quantity = curContext[data.quantity.$type].load(data.quantity);
         return newObj;
     }
     
@@ -56,6 +56,6 @@ class AddIngredient extends CookingStep {
         if (this.quantity.getResource().getName() != action.quantity.getResource().getName()) {
             return 0;
         }
-        return RecipeComparator.scoring(this.quantity.getQuantity(), action.quantity.getQuantity());
+        return RecipeAnalysis.scoring(this.quantity.getQuantity(), action.quantity.getQuantity());
     }
 }

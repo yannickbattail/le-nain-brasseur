@@ -1,15 +1,14 @@
 /// <reference path="ICookingStep.ts" />
 /// <reference path="Recipe.ts" />
 
-class RecipeComparator {
+class RecipeAnalysis {
     
-    constructor(protected recipeReference: RecipeReference,
-                protected recipe: Recipe) {
+    constructor(protected recipe: Recipe) {
         
     }
     
     public compare() : string {
-        let actions1 = this.recipeReference.getActions();
+        let actions1 = this.recipe.recipeRef.getActions();
         let actions2 = this.recipe.getActions();
         let index : number = 0;
         while (index < actions1.length && index < actions2.length) {
@@ -33,7 +32,7 @@ class RecipeComparator {
     }
 
     public analyse() : number|null {
-        let actionsRef = this.recipeReference.getActions();
+        let actionsRef = this.recipe.recipeRef.getActions();
         let actions = this.recipe.getActions();
         let index : number = 0;
         let notes : Array<number> = [];
