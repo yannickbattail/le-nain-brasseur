@@ -1,11 +1,11 @@
-/// <reference path="ICookingStep.ts" />
+/// <reference path="RecipeReference.ts" />
 
-class Recipe {
+class Recipe extends RecipeReference {
     $type : string = 'Recipe';
     constructor(public name: string = "",
                 public actions: Array<ICookingStep> = [],
-                public recipeRef : Recipe | null = null) {
-        
+                public recipeRef : RecipeReference | null = null) {
+        super(name, actions);
     }
     
     public static load(data : any) : Recipe {

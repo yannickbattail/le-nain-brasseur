@@ -44,6 +44,6 @@ class Brewing extends CookingStep {
     }
 
     analyseBrewing(action: Brewing): number | null {
-        return this.scoring(this.duration, action.duration);
+        return RecipeComparator.scoring(this.duration, action.duration);
     }
 }

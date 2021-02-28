@@ -3,14 +3,14 @@
 
 class RecipeComparator {
     
-    constructor(protected recipe1: Recipe,
-                protected recipe2: Recipe) {
+    constructor(protected recipeReference: RecipeReference,
+                protected recipe: Recipe) {
         
     }
     
     public compare() : string {
-        let actions1 = this.recipe1.getActions();
-        let actions2 = this.recipe2.getActions();
+        let actions1 = this.recipeReference.getActions();
+        let actions2 = this.recipe.getActions();
         let index : number = 0;
         while (index < actions1.length && index < actions2.length) {
             if (actions1[index].$type != actions2[index].$type) {
@@ -33,15 +33,15 @@ class RecipeComparator {
     }
 
     public analyse() : number|null {
-        let actions1 = this.recipe1.getActions();
-        let actions2 = this.recipe2.getActions();
+        let actionsRef = this.recipeReference.getActions();
+        let actions = this.recipe.getActions();
         let index : number = 0;
         let notes : Array<number> = [];
-        while (index < actions1.length && index < actions2.length) {
-            if (actions1[index].$type != actions2[index].$type) {
+        while (index < actionsRef.length && index < actions.length) {
+            if (actionsRef[index].$type != actions[index].$type) {
                 return null;
             }
-            let note = actions1[index].analyse(actions2[index]);
+            let note = actionsRef[index].analyse(actions[index]);
             if (note === null) {
                 return null;
             }
@@ -51,5 +51,15 @@ class RecipeComparator {
         const sum = notes.reduce((a, b) => a + b, 0);
         const avg = (sum / notes.length) || 0;
         return avg;
+    }
+
+
+    public static scoring(expected: number, actual: number): number {
+        const halfExpected = expected / 2;
+        const diff = Math.abs(expected - actual);
+        if (diff > halfExpected) {
+            return 0;
+        }
+        return 1 - (diff / halfExpected);
     }
 }

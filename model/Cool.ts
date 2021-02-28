@@ -44,6 +44,6 @@ class Cool extends CookingStep {
     }
 
     analyseCool(action: Cool): number | null {
-        return this.scoring(this.degrees, action.degrees);
+        return RecipeComparator.scoring(this.degrees, action.degrees);
     }
 }

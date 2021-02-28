@@ -56,6 +56,6 @@ class AddIngredient extends CookingStep {
         if (this.quantity.getResource().getName() != action.quantity.getResource().getName()) {
             return 0;
         }
-        return this.scoring(this.quantity.getQuantity(), action.quantity.getQuantity());
+        return RecipeComparator.scoring(this.quantity.getQuantity(), action.quantity.getQuantity());
     }
 }

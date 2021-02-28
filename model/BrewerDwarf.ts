@@ -13,7 +13,7 @@ class BrewerDwarf {
     
     status : BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
     player : IPlayer = new Player("");
-    recipes: Array<Recipe> = new Array<Recipe>();
+    recipes: Array<RecipeReference> = new Array<RecipeReference>();
     
     private intervalId : number = 0;
 
@@ -33,8 +33,8 @@ class BrewerDwarf {
         
     }
 
-    public getRecipeNameByName(recipeName : string) : Recipe | null {
-        let recipes : Recipe[] =  this.recipes.filter(
+    public getRecipeNameByName(recipeName : string) : RecipeReference | null {
+        let recipes : RecipeReference[] =  this.recipes.filter(
             src => src.getName() == recipeName
         );
         if (recipes.length == 0) {
