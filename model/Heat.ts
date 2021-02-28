@@ -1,6 +1,6 @@
-/// <reference path="CookingAction.ts" />
+/// <reference path="CookingStep.ts" />
 
-class Heat extends CookingAction {
+class Heat extends CookingStep {
     $type : string = 'Heat';
     constructor(public duration: number = 0,
                 public degrees: number = 0) {
@@ -20,7 +20,7 @@ class Heat extends CookingAction {
     getImage() : string {
         return "camp-cooking-pot.svg";
     }
-    public compare(action : ICookingAction) : string {
+    public compare(action : ICookingStep) : string {
         if (action !instanceof Heat) {
             return "L'étape devrait être "+this.$type;
         }
@@ -47,7 +47,7 @@ class Heat extends CookingAction {
         return "";
     }
 
-    analyse(action: ICookingAction): number | null {
+    analyse(action: ICookingStep): number | null {
         if (action instanceof Heat) {
             this.analyseHeat(action);
         }
@@ -56,8 +56,8 @@ class Heat extends CookingAction {
     }
 
     analyseHeat(action: Heat): number | null {
-        const degreeNote = this.notation(this.degrees, action.degrees);
-        const durationNote = this.notation(this.duration, action.duration);
+        const degreeNote = this.scoring(this.degrees, action.degrees);
+        const durationNote = this.scoring(this.duration, action.duration);
         return Math.min(degreeNote, durationNote) ;
     }
 }

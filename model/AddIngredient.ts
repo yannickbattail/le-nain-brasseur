@@ -2,10 +2,10 @@
 /// <reference path="./Resource.ts" />
 /// <reference path="./IQuantity.ts" />
 /// <reference path="./Quantity.ts" />
-/// <reference path="./ICookingAction.ts" />
-/// <reference path="./CookingAction.ts" />
+/// <reference path="./ICookingStep.ts" />
+/// <reference path="./CookingStep.ts" />
 
-class AddIngredient extends CookingAction {
+class AddIngredient extends CookingStep {
     $type : string = 'AddIngredient';
     constructor(public quantity: IQuantity = EMPTY_QUANTITY) {
         super();
@@ -25,7 +25,7 @@ class AddIngredient extends CookingAction {
     getImage() : string {
         return "AddIngredient.svg";
     }
-    public compare(action : ICookingAction) : string {
+    public compare(action : ICookingStep) : string {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;
         }
@@ -45,7 +45,7 @@ class AddIngredient extends CookingAction {
         return "";
     }
 
-    public analyse(action: ICookingAction): number | null {
+    public analyse(action: ICookingStep): number | null {
         if (action instanceof AddIngredient) {
             this.analyseAddIngredient(action);
         }
@@ -56,6 +56,6 @@ class AddIngredient extends CookingAction {
         if (this.quantity.getResource().getName() != action.quantity.getResource().getName()) {
             return 0;
         }
-        return this.notation(this.quantity.getQuantity(), action.quantity.getQuantity());
+        return this.scoring(this.quantity.getQuantity(), action.quantity.getQuantity());
     }
 }

@@ -9,8 +9,8 @@
 /// <reference path="./model/Quantity.ts" />
 /// <reference path="./model/IPlayer.ts" />
 /// <reference path="./model/Player.ts" />
-/// <reference path="./model/ICookingAction.ts" />
-/// <reference path="./model/CookingAction.ts" />
+/// <reference path="./model/ICookingStep.ts" />
+/// <reference path="./model/CookingStep.ts" />
 /// <reference path="./model/AddIngredient.ts" />
 /// <reference path="./model/Heat.ts" />
 /// <reference path="./model/Cool.ts" />
@@ -96,7 +96,7 @@ class Gui {
         return h;
     }
 
-    private displayCookingAction(action : ICookingAction) : string {
+    private displayCookingAction(action : ICookingStep) : string {
         let h = '<tr>';
         h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
         if ('duration' in action) {
@@ -115,7 +115,7 @@ class Gui {
         return h;
     }
 
-    private editCookingAction(index : number, action : ICookingAction) : string {
+    private editCookingAction(index : number, action : ICookingStep) : string {
         let h = '<tr id="'+index+'">';
         h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
         h += '<td><input type="hidden" id="'+index+'_type" value="'+action.$type+'" />min</td>';

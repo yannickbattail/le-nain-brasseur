@@ -1,6 +1,6 @@
-/// <reference path="CookingAction.ts" />
+/// <reference path="CookingStep.ts" />
 
-class Filter extends CookingAction {
+class Filter extends CookingStep {
     $type : string = 'Heat';
     constructor() {
         super();
@@ -17,7 +17,7 @@ class Filter extends CookingAction {
     getImage() : string {
         return "strainer.svg";
     }
-    public compare(action : ICookingAction) : string {
+    public compare(action : ICookingStep) : string {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;
         }
@@ -27,7 +27,7 @@ class Filter extends CookingAction {
         return "";
     }
     
-    analyse(action: ICookingAction): number | null {
+    analyse(action: ICookingStep): number | null {
         if (action instanceof Filter) {
             this.analyseFilter(action);
         }

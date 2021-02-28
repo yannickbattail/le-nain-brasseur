@@ -1,6 +1,6 @@
-/// <reference path="CookingAction.ts" />
+/// <reference path="CookingStep.ts" />
 
-class Cool extends CookingAction {
+class Cool extends CookingStep {
     $type : string = 'Heat';
     constructor(public degrees: number = 0) {
         super();
@@ -18,7 +18,7 @@ class Cool extends CookingAction {
     getImage() : string {
         return "cool.svg";
     }
-    public compare(action : ICookingAction) : string {
+    public compare(action : ICookingStep) : string {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.$type;
         }
@@ -35,7 +35,7 @@ class Cool extends CookingAction {
         return "";
     }
     
-    analyse(action: ICookingAction): number | null {
+    analyse(action: ICookingStep): number | null {
         if (action instanceof Cool) {
             this.analyseCool(action);
         }
@@ -44,6 +44,6 @@ class Cool extends CookingAction {
     }
 
     analyseCool(action: Cool): number | null {
-        return this.notation(this.degrees, action.degrees);
+        return this.scoring(this.degrees, action.degrees);
     }
 }

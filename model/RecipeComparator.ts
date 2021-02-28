@@ -1,4 +1,4 @@
-/// <reference path="ICookingAction.ts" />
+/// <reference path="ICookingStep.ts" />
 /// <reference path="Recipe.ts" />
 
 class RecipeComparator {
