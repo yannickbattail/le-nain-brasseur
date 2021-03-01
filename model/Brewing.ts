@@ -7,11 +7,11 @@ class Brewing extends CookingStep {
         super(stepParameters);
         this.validate();
     }
-    
-    public static load(data : any) : Brewing {
+
+    public static load(data : any) : AddIngredient {
         let curContext : any = window;
-        let newObj : Brewing = new Brewing();
-        newObj.stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        let newObj : AddIngredient = new AddIngredient(stepParameters);
         return newObj;
     }
 

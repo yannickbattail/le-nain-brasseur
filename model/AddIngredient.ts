@@ -15,8 +15,8 @@ class AddIngredient extends CookingStep {
     
     public static load(data : any) : AddIngredient {
         let curContext : any = window;
-        let newObj : AddIngredient = new AddIngredient();
-        newObj.stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        let newObj : AddIngredient = new AddIngredient(stepParameters);
         return newObj;
     }
     
