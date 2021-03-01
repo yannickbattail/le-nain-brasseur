@@ -5,18 +5,18 @@
 /// <reference path="./ICookingStep.ts" />
 /// <reference path="./CookingStep.ts" />
 
-class AddIngredient extends CookingStep {
-    $type : string = 'AddIngredient';
+class AddingIngredient extends CookingStep {
+    $type : string = 'AddingIngredient';
     
     constructor(stepParameters: Array<StepParameter> = []) {
         super(stepParameters);
         this.validate();
     }
     
-    public static load(data : any) : AddIngredient {
+    public static load(data : any) : AddingIngredient {
         let curContext : any = window;
         let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : AddIngredient = new AddIngredient(stepParameters);
+        let newObj : AddingIngredient = new AddingIngredient(stepParameters);
         return newObj;
     }
     
@@ -58,10 +58,10 @@ class AddIngredient extends CookingStep {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as AddIngredient;
+        let addIngredient = action as AddingIngredient;
         return this.compareAddIngredient(addIngredient);
     }
-    compareAddIngredient(action : AddIngredient) : string {
+    compareAddIngredient(action : AddingIngredient) : string {
         if (this.getStepParameter(0).resource?.getName() != action.getStepParameter(0).resource?.getName()) {
             return "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
         }
@@ -75,13 +75,13 @@ class AddIngredient extends CookingStep {
     }
 
     public analyse(action: ICookingStep): number | null {
-        if (action instanceof AddIngredient) {
+        if (action instanceof AddingIngredient) {
             this.analyseAddIngredient(action);
         }
         return null;
     }
 
-    analyseAddIngredient(action: AddIngredient): number | null {
+    analyseAddIngredient(action: AddingIngredient): number | null {
         if (this.getStepParameter(0).resource?.getName() != action.getStepParameter(0).resource?.getName()) {
             return 0;
         }

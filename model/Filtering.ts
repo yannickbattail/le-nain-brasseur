@@ -1,17 +1,17 @@
 /// <reference path="CookingStep.ts" />
 
-class Filter extends CookingStep {
-    $type : string = 'Filter';
+class Filtering extends CookingStep {
+    $type : string = 'Filtering';
     
     constructor(stepParameters: Array<StepParameter> = []) {
         super(stepParameters);
         this.validate();
     }
 
-    public static load(data : any) : AddIngredient {
+    public static load(data : any) : Filtering {
         let curContext : any = window;
         let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : AddIngredient = new AddIngredient(stepParameters);
+        let newObj : Filtering = new Filtering(stepParameters);
         return newObj;
     }
     
@@ -45,13 +45,13 @@ class Filter extends CookingStep {
     }
     
     analyse(action: ICookingStep): number | null {
-        if (action instanceof Filter) {
+        if (action instanceof Filtering) {
             this.analyseFilter(action);
         }
         return null;
     }
 
-    analyseFilter(action: Filter): number | null {
+    analyseFilter(action: Filtering): number | null {
         return 1;
     }
 }

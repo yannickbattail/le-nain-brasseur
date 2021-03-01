@@ -1,17 +1,17 @@
 /// <reference path="CookingStep.ts" />
 
-class Heat extends CookingStep {
-    $type : string = 'Heat';
+class Heating extends CookingStep {
+    $type : string = 'Heating';
     
     constructor(stepParameters: Array<StepParameter> = []) {
         super(stepParameters);
         this.validate();
     }
 
-    public static load(data : any) : AddIngredient {
+    public static load(data : any) : Heating {
         let curContext : any = window;
         let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : AddIngredient = new AddIngredient(stepParameters);
+        let newObj : Heating = new Heating(stepParameters);
         return newObj;
     }
 
@@ -43,16 +43,16 @@ class Heat extends CookingStep {
     }
 
     public compare(action : ICookingStep) : string {
-        if (action !instanceof Heat) {
+        if (action !instanceof Heating) {
             return "L'étape devrait être "+this.getName();
         }
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as Heat;
+        let addIngredient = action as Heating;
         return this.compareHeat(addIngredient);
     }
-    public compareHeat(action : Heat) : string {
+    public compareHeat(action : Heating) : string {
         if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
             return "La cuisson n'est pas assez chaude";
         }
@@ -70,14 +70,14 @@ class Heat extends CookingStep {
     }
 
     analyse(action: ICookingStep): number | null {
-        if (action instanceof Heat) {
+        if (action instanceof Heating) {
             this.analyseHeat(action);
         }
         return null;
 
     }
 
-    analyseHeat(action: Heat): number | null {
+    analyseHeat(action: Heating): number | null {
         const degreeNote = RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
         const durationNote = RecipeAnalysis.scoring(this.getStepParameter(1).value, action.getStepParameter(1).value);
         return Math.min(degreeNote, durationNote) ;

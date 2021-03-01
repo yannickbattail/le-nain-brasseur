@@ -36,24 +36,24 @@ class Scenario {
         let engine = new BrewerDwarf();
         engine.recipes = [
             new Recipe("La Einegloïn", [
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',10000, WATER)
                     ]),
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
                     ]),
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',50, HOUBLON)
                     ]),
-                    new Heat([
+                    new Heating([
                         new StepParameter('température',100),
                         new StepParameter('durée',20*60*1000)
                     ]),
-                    new Filter([]),
-                    new Cool([
+                    new Filtering([]),
+                    new Cooling([
                         new StepParameter('température',30)
                     ]),
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
@@ -62,24 +62,24 @@ class Scenario {
                 ],
                 engine.recipes[0]),
             new Recipe("La kronadil", [
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',10000, WATER)
                     ]),
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
                     ]),
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',50, HOUBLON)
                     ]),
-                    new Heat([
+                    new Heating([
                         new StepParameter('température',100),
                         new StepParameter('durée',20*60*1000)
                     ]),
-                    new Filter([]),
-                    new Cool([
+                    new Filtering([]),
+                    new Cooling([
                         new StepParameter('température',30)
                     ]),
-                    new AddIngredient([
+                    new AddingIngredient([
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
@@ -92,24 +92,24 @@ class Scenario {
         engine.player.setPreventNegativeStorage(true);
         engine.player.setRecipes([
             new Recipe("Ma 0ème Bièbière", [
-                new AddIngredient([
+                new AddingIngredient([
                     new StepParameter('quantité',0, WATER)
                 ]),
-                new AddIngredient([
+                new AddingIngredient([
                     new StepParameter('quantité',0, MALT)
                 ]),
-                new AddIngredient([
+                new AddingIngredient([
                     new StepParameter('quantité',0, HOUBLON)
                 ]),
-                new Heat([
+                new Heating([
                     new StepParameter('température',0),
                     new StepParameter('durée',0)
                 ]),
-                new Filter([]),
-                new Cool([
+                new Filtering([]),
+                new Cooling([
                     new StepParameter('température',0)
                 ]),
-                new AddIngredient([
+                new AddingIngredient([
                     new StepParameter('quantité',0, LEVURE)
                 ]),
                 new Brewing([

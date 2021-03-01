@@ -1,17 +1,17 @@
 /// <reference path="CookingStep.ts" />
 
-class Cool extends CookingStep {
-    $type : string = 'Cool';
+class Cooling extends CookingStep {
+    $type : string = 'Cooling';
     
     constructor(stepParameters: Array<StepParameter> = []) {
         super(stepParameters);
         this.validate();
     }
 
-    public static load(data : any) : AddIngredient {
+    public static load(data : any) : Brewing {
         let curContext : any = window;
         let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : AddIngredient = new AddIngredient(stepParameters);
+        let newObj : Brewing = new Brewing(stepParameters);
         return newObj;
     }
     
@@ -46,11 +46,11 @@ class Cool extends CookingStep {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as Cool;
+        let addIngredient = action as Cooling;
         return this.compareHeat(addIngredient);
     }
     
-    public compareHeat(action : Cool) : string {
+    public compareHeat(action : Cooling) : string {
         if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
             return "Le rafraichissement est trop important";
         }
@@ -61,14 +61,14 @@ class Cool extends CookingStep {
     }
     
     analyse(action: ICookingStep): number | null {
-        if (action instanceof Cool) {
+        if (action instanceof Cooling) {
             this.analyseCool(action);
         }
         return null;
 
     }
 
-    analyseCool(action: Cool): number | null {
+    analyseCool(action: Cooling): number | null {
         return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
     }
 }
