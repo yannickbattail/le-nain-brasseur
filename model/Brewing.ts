@@ -36,7 +36,7 @@ class Brewing extends CookingStep {
         if (this.stepParameters.length != 1) {
             throw "Brewing should have only one StepParameter.";
         }
-        if (this.stepParameters[0].name == "durée") {
+        if (this.stepParameters[0].name != "durée") {
             throw "stepParameters name should be durée";
         }
         if (this.stepParameters[0].resource != null) {

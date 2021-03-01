@@ -41,7 +41,7 @@ class AddingIngredient extends CookingStep {
         if (this.stepParameters.length != 1) {
             throw "AddIngredient should have only one StepParameter.";
         }
-        if (this.stepParameters[0].name == "quantité") {
+        if (this.stepParameters[0].name != "quantité") {
             throw "stepParameters name should be quantité";
         }
         if (this.stepParameters[0].resource == null) {

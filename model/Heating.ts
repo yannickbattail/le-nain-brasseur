@@ -36,10 +36,10 @@ class Heating extends CookingStep {
         if (this.stepParameters.length != 2) {
             throw "Heat should have 2 StepParameters.";
         }
-        if (this.stepParameters[0].name == "température") {
+        if (this.stepParameters[0].name != "température") {
             throw "stepParameters name should be température";
         }
-        if (this.stepParameters[1].name == "durée") {
+        if (this.stepParameters[1].name != "durée") {
             throw "stepParameters name should be durée";
         }
         if (this.stepParameters[0].resource != null
