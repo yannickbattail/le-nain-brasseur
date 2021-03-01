@@ -8,10 +8,10 @@ class Cooling extends CookingStep {
         this.validate();
     }
 
-    public static load(data : any) : Brewing {
+    public static load(data : any) : Cooling {
         let curContext : any = window;
         let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : Brewing = new Brewing(stepParameters);
+        let newObj : Cooling = new Cooling(stepParameters);
         return newObj;
     }
     

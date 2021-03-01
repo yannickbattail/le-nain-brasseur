@@ -76,7 +76,7 @@ class Gui {
     
     private displayPlayerRecipe(recipe : Recipe) : string {
         let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef.getName()+'</th></tr>';
+        h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef?.getName()+'</th></tr>';
 
         recipe.getCookingSteps().forEach(
             res => h += this.displayCookingStep(res)
@@ -110,9 +110,17 @@ class Gui {
             ).join("");
     }
 
+    private editBrewingRecipe() : string {
+        let r = engine.player.getBrewingRecipe();
+        if (r == null) {
+            return "";
+        }
+        return this.editRecipe(r);
+    }
     private editRecipe(recipe : Recipe) : string {
         let h = '<div style="display: inline-block;"><form><table border="1">';
-        h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef.getName()+'</th></tr>';
+        h += '<tr><th colspan="3">À partir de: '+recipe.recipeRef?.getName()+'</th></tr>';
+        h += '<tr><td>Nom: </td><td colspan="3"><input type="text" id="recipeName" value="'+recipe.getName()+'" /></td></tr>';
 
         recipe.getCookingSteps().forEach(
             (step,i) => h += this.editCookingAction(i, step)
@@ -123,17 +131,7 @@ class Gui {
 
     private editCookingAction(index : number, step : ICookingStep) : string {
         let h = '<tr id="'+index+'">';
-        h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"></td>';
-        h += '<td><input type="hidden" id="'+index+'_type" value="'+step.$type+'" />min</td>';
-        if ('duration' in step) {
-            h += '<td></td>';
-        }
-        if ('degrees' in step) {
-            h += '<td></td>';
-        }
-        if ('quantity' in step) {
-            h += '<td><input type="number" id="'+index+'_quantity" min="1" value="'+step['quantity']+'" />°C</td>';
-        }
+        h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"><input type="hidden" id="'+index+'_type" value="'+step.$type+'" /></td>';
         step.getStepParameters().forEach((param, paramIndex) => {
             if (param.name == 'durée') {
                 h += '<td><div title="'+param.name+'"><input type="number" id="'+index+'_'+paramIndex+'_duration" min="1" value="'+(param.value/60000)+'" />min</div></td>';
@@ -260,23 +258,6 @@ class Gui {
         return time;
     }
 
-    private displayProgress(startTime : Date | null, duration : number) : string {
-        let progress = this.calculateProgress(startTime)
-        return this.formatProgress(progress / duration, this.displayTime(duration - progress));
-    }
-
-    private calculateProgress(startTime : Date | null) : number {
-        if (startTime == null) {
-            return 0;
-        }
-        return (new Date().getTime() - startTime.getTime());
-    }
-
-    private formatProgress(percent01 : number, text : string) : string {
-        var percent100 = Math.round(percent01 * 100);
-        return '<progress value="' + percent100 + '" max="100">' + text + '</progress>';
-    }
-
     private displayDoc(): string {
         var h = '<table border="1">';
         h += "<tr><th></th><th>Nom</th><th>Catégorie</th><th>Description</th></tr>";
@@ -387,9 +368,10 @@ class Gui {
     private updateGui() {
         NodeUpdate.updateDiv('level', this.displayLevel());
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
+        NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
-        //NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
-        NodeUpdate.updateDiv('recipes', this.editRecipes());
+        NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
+        //NodeUpdate.updateDiv('recipes', this.editRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }

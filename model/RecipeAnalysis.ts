@@ -8,39 +8,45 @@ class RecipeAnalysis {
     }
     
     public compare() : string {
-        let actions1 = this.recipe.recipeRef.getCookingSteps();
-        let actions2 = this.recipe.getCookingSteps();
+        if (!this.recipe.recipeRef) {
+            throw "no recipeRef";
+        }
+        let stepsRef = this.recipe.recipeRef.getCookingSteps();
+        let steps = this.recipe.getCookingSteps();
         let index : number = 0;
-        while (index < actions1.length && index < actions2.length) {
-            if (actions1[index].$type != actions2[index].$type) {
-                return "L'étape #"+index+" devrait être "+actions2[index].$type;
+        while (index < stepsRef.length && index < steps.length) {
+            if (stepsRef[index].$type != steps[index].$type) {
+                return "L'étape #"+index+" devrait être "+steps[index].$type;
             }
-            let comp = actions1[index].compare(actions2[index]);
+            let comp = stepsRef[index].compare(steps[index]);
             if (comp !== null && comp !== "") {
                 return "Problème avec l'étape #"+index+" "+comp;
             }
             index++;
         }
-        if (actions1.length > actions2.length) {
-            return "Il manque "+(actions1.length - actions2.length)+" étape(s).";
+        if (stepsRef.length > steps.length) {
+            return "Il manque "+(stepsRef.length - steps.length)+" étape(s).";
         }
-        else if (actions1.length < actions2.length) {
-            return "Il y a "+(actions1.length - actions2.length)+" étape(s) en trop.";
+        else if (stepsRef.length < steps.length) {
+            return "Il y a "+(stepsRef.length - steps.length)+" étape(s) en trop.";
         } else {
             return "";
         }
     }
 
     public analyse() : number|null {
-        let actionsRef = this.recipe.recipeRef.getCookingSteps();
-        let actions = this.recipe.getCookingSteps();
+        if (!this.recipe.recipeRef) {
+            throw "no recipeRef";
+        }
+        let stepsRef = this.recipe.recipeRef.getCookingSteps();
+        let steps = this.recipe.getCookingSteps();
         let index : number = 0;
         let notes : Array<number> = [];
-        while (index < actionsRef.length && index < actions.length) {
-            if (actionsRef[index].$type != actions[index].$type) {
+        while (index < stepsRef.length && index < steps.length) {
+            if (stepsRef[index].$type != steps[index].$type) {
                 return null;
             }
-            let note = actionsRef[index].analyse(actions[index]);
+            let note = stepsRef[index].analyse(steps[index]);
             if (note === null) {
                 return null;
             }

@@ -1,9 +1,10 @@
 /// <reference path="ICookingStep.ts" />
+/// <reference path="Recipe.ts" />
 
 class RecipeReference {
     $type : string = 'RecipeReference';
     constructor(public name: string = "",
-                public actions: Array<ICookingStep> = []) {
+                public steps: Array<ICookingStep> = []) {
         
     }
     
@@ -11,14 +12,26 @@ class RecipeReference {
         let curContext : any = window;
         let newObj : RecipeReference = new RecipeReference();
         newObj.name = data.name;
-        newObj.actions = (data.actions as Array<any>).map(p => curContext[p.$type].load(p));
+        newObj.steps = (data.steps as Array<any>).map(p => curContext[p.$type].load(p));
         return newObj;
     }
     
     getCookingSteps() : Array<ICookingStep> {
-        return this.actions;
+        return this.steps;
     }
     getName() : string {
         return this.name;
+    }
+
+    public createRecipe() : Recipe {
+        let recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
+        recipe.name = "ma "+this.name;
+        recipe.recipeRef = this;
+        recipe.steps.forEach(
+            s => s.getStepParameters().forEach(
+                p => p.value = 0
+            )
+        );
+        return recipe;
     }
 }

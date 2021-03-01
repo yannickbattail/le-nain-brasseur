@@ -28,10 +28,12 @@ class BrewerDwarf {
         return newObj;
     }
     
-    brew(recipeName : string) {
-        let recipe = this.getRecipeNameByName(recipeName);
-        
-    }
+    public brew(recipeName : string) {
+        let recipeRef = engine.getRecipeNameByName(recipeName);
+        if (recipeRef == null) {
+            throw "recette "+recipeName+" non dispo";
+        }
+        this.player.setBrewingRecipe(recipeRef.createRecipe());    }
 
     public getRecipeNameByName(recipeName : string) : RecipeReference | null {
         let recipes : RecipeReference[] =  this.recipes.filter(
