@@ -58,6 +58,10 @@ input[type='checkbox'] {
     vertical-align: middle;
 }
 
+input[type='number'] {
+    width: 60px;
+}
+
 .titleIcon {
     width: 24px;
     height: 24px;
@@ -97,18 +101,6 @@ input[type='checkbox'] {
 #producers > table > tbody > tr > th:nth-child(3) {
     width: 110px;
     max-width: 110px;
-}
-
-#fal {
-    width: 100%;
-    height: 100px;
-    padding: 20px;
-    text-align: left;
-    vertical-align: bottom;
-    background-image: url("../images/faluche_big.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
 }
 
 #level {

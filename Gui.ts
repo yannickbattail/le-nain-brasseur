@@ -78,59 +78,73 @@ class Gui {
         let h = '<div style="display: inline-block;"><table border="1">';
         h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef.getName()+'</th></tr>';
 
-        recipe.getActions().forEach(
-            res => h += this.displayCookingAction(res)
+        recipe.getCookingSteps().forEach(
+            res => h += this.displayCookingStep(res)
         );
         h += "</table></div>";
         return h;
     }
 
-    private displayCookingAction(action : ICookingStep) : string {
+    private displayCookingStep(step : ICookingStep) : string {
         let h = '<tr>';
-        h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
-        if ('duration' in action) {
-            h += '<td>'+this.displayTime(action['duration'])+'</td>';
-        }
-        if ('degrees' in action) {
-            h += '<td>'+action['degrees']+'°C</td>';
-        }
-        if ('temperature' in action) {
-            h += '<td>'+action['temperature']+'°C</td>';
-        }
-        if ('quantity' in action) {
-            h += '<td>' + this.displayQuantity(action['quantity']) + '</td>';
-        }
+        h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"></td>';
+        step.getStepParameters().forEach(param => {
+            if (param.name == 'durée') {
+                h += '<td><div title="'+param.name+'">'+this.displayTime(param.value)+'</div></td>';
+            } else if (param.name == 'température') {
+                h += '<td><div title="'+param.name+'">'+param.value+'°C</div></td>';
+            } else if (param.resource != null) {
+                h += '<td><div title="'+param.name+'">'+this.displayQuantity(Q(param.value, param.resource))+'</div></td>';
+            } else {
+                h += '<td><div title="'+param.name+'">'+param.value+'</div></td>';
+            }
+        });
         h += "</tr>";
         return h;
     }
 
+    private editRecipes(): string {
+        return this.engine.player.getRecipes()
+            .map(
+                res => this.editRecipe(res)
+            ).join("");
+    }
+
     private editRecipe(recipe : Recipe) : string {
-        let h = '<div style="display: inline-block;"><table border="1">';
+        let h = '<div style="display: inline-block;"><form><table border="1">';
         h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef.getName()+'</th></tr>';
 
-        recipe.getActions().forEach(
-            res => h += this.displayCookingAction(res)
+        recipe.getCookingSteps().forEach(
+            (step,i) => h += this.editCookingAction(i, step)
         );
-        h += "</table></div>";
+        h += "</table></form></div>";
         return h;
     }
 
-    private editCookingAction(index : number, action : ICookingStep) : string {
+    private editCookingAction(index : number, step : ICookingStep) : string {
         let h = '<tr id="'+index+'">';
-        h += '<td><img src="images/' + action.getImage() + '" title="' + action.getName() + '" alt="' + action.getName() + '" class="resource_img"></td>';
-        h += '<td><input type="hidden" id="'+index+'_type" value="'+action.$type+'" />min</td>';
-        if ('duration' in action) {
-            h += '<td><input type="number" id="'+index+'_duration" min="1" value="'+(action['duration']/60000)+'" />min</td>';
+        h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"></td>';
+        h += '<td><input type="hidden" id="'+index+'_type" value="'+step.$type+'" />min</td>';
+        if ('duration' in step) {
+            h += '<td></td>';
         }
-        if ('degrees' in action) {
-            h += '<td><input type="number" id="'+index+'_degrees" min="1" value="'+action['degrees']+'" />°C</td>';
+        if ('degrees' in step) {
+            h += '<td></td>';
         }
-        if ('temperature' in action) {
-            h += '<td><input type="number" id="'+index+'_temperature" min="1" value="'+action['temperature']+'" />°C</td>';
+        if ('quantity' in step) {
+            h += '<td><input type="number" id="'+index+'_quantity" min="1" value="'+step['quantity']+'" />°C</td>';
         }
-        if ('quantity' in action) {
-            h += '<td><input type="number" id="'+index+'_quantity" min="1" value="'+action['quantity']+'" />°C</td>';
-        }
+        step.getStepParameters().forEach((param, paramIndex) => {
+            if (param.name == 'durée') {
+                h += '<td><div title="'+param.name+'"><input type="number" id="'+index+'_'+paramIndex+'_duration" min="1" value="'+(param.value/60000)+'" />min</div></td>';
+            } else if (param.name == 'température') {
+                h += '<td><div title="'+param.name+'"><input type="number" id="'+index+'_'+paramIndex+'_temperature" min="1" value="'+param.value+'" />°C</div></td>';
+            } else if (param.resource != null) {
+                h += '<td><div title="'+param.name+'">'+this.editQuantity(Q(param.value, param.resource), index, paramIndex)+'</div></td>';
+            } else {
+                h += '<td><div title="'+param.name+'"><input type="number" id="'+index+'_'+paramIndex+'_other" min="1" value="'+param.value+'" /></div></td>';
+            }
+        });
         h += "</tr>";
         return h;
     }
@@ -193,10 +207,30 @@ class Gui {
             details = quantity['getDetails'];
         }
         return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
-        + '<div class="resource_label">'
-        + ((storageRes!=null)?'<span>'+storageRes.show()+'</span>/':'')
-        + quantity.show()
-        + '</div>'
+            + '<div class="resource_label">'
+            + ((storageRes!=null)?'<span>'+storageRes.show()+'</span>/':'')
+            + quantity.show()
+            + '</div>'
+            + ((image=='')?quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')
+            + ((details != null)?details.call(quantity) : '')
+            + '</div>';
+    }
+    
+    private editQuantity(quantity : IQuantity, stepIndex : number, paramIndex : number, optionnalCss : string = '', storageRes : IQuantity | null = null) : string {
+        let res : any = quantity.getResource();
+        let image : string = '';
+        if ('image' in res) {
+            image = res.image;
+        }
+        let details : any = null;
+        if ('getDetails' in quantity) {
+            details = quantity['getDetails'];
+        }
+        return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
+            + '<div class="resource_label">'
+            + '<input type="number" id="'+stepIndex+'_'+paramIndex+'_temperature" min="1" value="'+quantity.getQuantity()+'" />'
+            + ((storageRes!=null)?'/<span>'+storageRes.show()+'</span>':'')
+            + '</div>'
             + ((image=='')?quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')
             + ((details != null)?details.call(quantity) : '')
             + '</div>';
@@ -354,7 +388,8 @@ class Gui {
         NodeUpdate.updateDiv('level', this.displayLevel());
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
-        NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
+        //NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
+        NodeUpdate.updateDiv('recipes', this.editRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }

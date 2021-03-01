@@ -8,8 +8,8 @@ class RecipeAnalysis {
     }
     
     public compare() : string {
-        let actions1 = this.recipe.recipeRef.getActions();
-        let actions2 = this.recipe.getActions();
+        let actions1 = this.recipe.recipeRef.getCookingSteps();
+        let actions2 = this.recipe.getCookingSteps();
         let index : number = 0;
         while (index < actions1.length && index < actions2.length) {
             if (actions1[index].$type != actions2[index].$type) {
@@ -32,8 +32,8 @@ class RecipeAnalysis {
     }
 
     public analyse() : number|null {
-        let actionsRef = this.recipe.recipeRef.getActions();
-        let actions = this.recipe.getActions();
+        let actionsRef = this.recipe.recipeRef.getCookingSteps();
+        let actions = this.recipe.getCookingSteps();
         let index : number = 0;
         let notes : Array<number> = [];
         while (index < actionsRef.length && index < actions.length) {

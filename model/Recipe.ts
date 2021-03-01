@@ -17,7 +17,7 @@ class Recipe extends RecipeReference {
         return newObj;
     }
     
-    getActions() : Array<ICookingStep> {
+    getCookingSteps() : Array<ICookingStep> {
         return this.actions;
     }
     getName() : string {
