@@ -19,6 +19,7 @@
     "./model/Quantity.ts",
     "./model/IPlayer.ts",
     "./model/Player.ts",
+    "./model/StepParameter.ts",
     "./model/ICookingStep.ts",
     "./model/CookingStep.ts",
     "./model/AddIngredient.ts",

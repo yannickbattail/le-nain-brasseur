@@ -2,13 +2,33 @@
 
 class Filter extends CookingStep {
     $type : string = 'Filter';
-    constructor() {
-        super();
+    
+    constructor(stepParameters: Array<StepParameter> = []) {
+        super(stepParameters);
+        this.validate();
     }
 
-    public static load(data : any) : Filter {
-        let newObj : Filter = new Filter();
+    public static load(data : any) : Brewing {
+        let curContext : any = window;
+        let newObj : Brewing = new Brewing();
+        newObj.stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
         return newObj;
+    }
+    
+    getStepParameters() : Array<StepParameter> {
+        return this.stepParameters;
+    }
+    getStepParameter(index : number) : StepParameter {
+        if (index != 0) {
+            throw "Filter has no StepParameter.";
+        }
+        return this.stepParameters[index];
+    }
+
+    validate() : void {
+        if (this.stepParameters.length != 0) {
+            throw "Brewing should have no StepParameter.";
+        }
     }
 
     getName() : string {
@@ -19,11 +39,8 @@ class Filter extends CookingStep {
     }
     public compare(action : ICookingStep) : string {
         if (this.$type != action.$type) {
-            return "L'étape devrait être "+this.$type;
+            return "L'étape devrait être "+this.getName();
         }
-        return "";
-    }
-    public compareFilter(action : Filter) : string {
         return "";
     }
     
@@ -32,7 +49,6 @@ class Filter extends CookingStep {
             this.analyseFilter(action);
         }
         return null;
-
     }
 
     analyseFilter(action: Filter): number | null {
