@@ -21,11 +21,39 @@ var BrewerDwarf = (function () {
         return newObj;
     };
     BrewerDwarf.prototype.brew = function () {
-        var recipe = this.player.getBrewingRecipe();
-        if (recipe != null) {
-            this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe);
+        if (confirm("Si la recette est n'a pas de problème, les ingrédient seront décomptés. Continuer ?")) {
+            var recipe = this.player.getBrewingRecipe();
+            if (recipe != null) {
+                this.loadRecipe(recipe);
+                RecipeAnalysis.analyse(recipe);
+                if (!BrewerDwarf.hasProblem(recipe)) {
+                    console.log('doBrew');
+                    this.doBrew(recipe);
+                }
+            }
         }
+    };
+    BrewerDwarf.prototype.doBrew = function (recipe) {
+        var _this = this;
+        var _a;
+        recipe.getCookingSteps()
+            .map(function (s) { return (s instanceof AddingIngredient) ? s : null; })
+            .forEach(function (s) {
+            if (s != null) {
+                _this.player.decreaseStorage(s.getQuantity());
+            }
+        });
+        var liters = recipe.steps[0].getStepParameter(0).value;
+        var beer = new Beer(recipe.name, 'l', 'beer.svg', "beer", 'Beer à partir de ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.name), recipe);
+        this.player.increaseStorage(Q(liters, beer));
+        this.player.setBrewingRecipe(null);
+        this.player.getRecipes().push(recipe);
+    };
+    BrewerDwarf.hasProblem = function (recipe) {
+        var prob = recipe.getCookingSteps().map(function (s) { return s.getStepParameters()
+            .map(function (s) { return s.score == null || s.score == 0 || (s.problem != null && s.problem != ""); })
+            .reduce(function (a, b) { return (a || b); }, false); }).reduce(function (a, b) { return (a || b); }, false);
+        return prob;
     };
     BrewerDwarf.prototype.loadRecipe = function (recipe) {
         var _this = this;

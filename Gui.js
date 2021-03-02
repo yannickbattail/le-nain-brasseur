@@ -47,32 +47,38 @@ var Gui = (function () {
         var _this = this;
         var _a;
         var h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th>' + recipe.getName() + '</th><th colspan="2">À partir de: ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.getName()) + '</th></tr>';
+        h += '<tr><th>' + Gui.htmlEntities(recipe.getName()) + '</th><th colspan="2">À partir de: ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.getName()) + '</th></tr>';
         recipe.getCookingSteps().forEach(function (res) { return h += _this.displayCookingStep(res); });
         h += "</table></div>";
         return h;
     };
     Gui.prototype.displayCookingStep = function (step) {
-        var _this = this;
         var h = '<tr>';
         h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"></td>';
-        step.getStepParameters().forEach(function (param) {
-            if (param.name == 'durée') {
-                h += '<td><div title="' + param.name + '">' + _this.displayTime(param.value) + '</div></td>';
-            }
-            else if (param.name == 'jour') {
-                h += '<td><div title="' + param.name + '">' + _this.displayTime(param.value) + '</div></td>';
-            }
-            else if (param.name == 'température') {
-                h += '<td><div title="' + param.name + '">' + param.value + '°C</div></td>';
-            }
-            else if (param.resource != null) {
-                h += '<td><div title="' + param.name + '">' + _this.displayQuantity(Q(param.value, param.resource)) + '</div></td>';
+        var params = step.getStepParameters();
+        for (var paramIndex = 0; paramIndex < 2; paramIndex++) {
+            if (paramIndex < params.length) {
+                var param = params[paramIndex];
+                if (param.name == 'durée') {
+                    h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
+                }
+                else if (param.name == 'jour') {
+                    h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
+                }
+                else if (param.name == 'température') {
+                    h += '<td><div title="' + param.name + '">' + param.value + '°C</div></td>';
+                }
+                else if (param.resource != null) {
+                    h += '<td><div title="' + param.name + '">' + this.displayQuantity(Q(param.value, param.resource)) + '</div></td>';
+                }
+                else {
+                    h += '<td><div title="' + param.name + '">' + param.value + '</div></td>';
+                }
             }
             else {
-                h += '<td><div title="' + param.name + '">' + param.value + '</div></td>';
+                h += '<td>&nbsp;</td>';
             }
-        });
+        }
         h += "</tr>";
         return h;
     };
@@ -129,7 +135,7 @@ var Gui = (function () {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / 60000) + '" /> min</div></td>';
                 }
                 else if (param.name == 'jour') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / (24 * 3600 + 1000)) + '" /> jour</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / (24 * 3600 + 1000)) + '" /> jours</div></td>';
                 }
                 else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" /> °C</div></td>';
@@ -214,13 +220,17 @@ var Gui = (function () {
         if ('image' in res) {
             image = res.image;
         }
+        var unit = '';
+        if ('unit' in res) {
+            unit = res.unit;
+        }
         var details = null;
         if ('getDetails' in quantity) {
             details = quantity['getDetails'];
         }
         return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
             + '<div class="resource_label">'
-            + '<input type="number" id="' + stepIndex + '_' + paramIndex + '_quantité" min="1" value="' + quantity.getQuantity() + '" />'
+            + '<input type="number" id="' + stepIndex + '_' + paramIndex + '_quantité" min="1" value="' + quantity.getQuantity() + '" /> ' + unit
             + ((storageRes != null) ? '/<span>' + storageRes.show() + '</span>' : '')
             + '</div>'
             + ((image == '') ? quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')
@@ -271,6 +281,11 @@ var Gui = (function () {
         });
         h += "</table>";
         return h;
+    };
+    Gui.htmlEntities = function (str) {
+        return str.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
+            return '&#' + i.charCodeAt(0) + ';';
+        });
     };
     Gui.prototype.getSimple = function () {
         var checkbox = document.getElementById('simple');
@@ -352,6 +367,7 @@ var Gui = (function () {
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();

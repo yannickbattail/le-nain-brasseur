@@ -22,13 +22,14 @@ const LEVEL = new Level("level", "level.svg", [
     "Maitre brasseur",
 ]);
 //    VARIABLE  TYPE (Material a une unité en plus)         unité           image                   catégorie     description
-const WATER     = new CategorizedMaterial("Eau",       "L",    "water.svg", "Ingredient",   "eau");
+const WATER     = new CategorizedMaterial("Eau",       "cl",    "water.svg", "Ingredient",   "eau");
 const MALT      = new CategorizedMaterial("Malt",      "g",    "grain.svg", "Ingredient",   "Malt d'orge");
 const HOUBLON   = new CategorizedMaterial("Houblon",   "g",    "hops.svg",      "Ingredient",   "Houblon");
 const LEVURE    = new CategorizedMaterial("Levure",    "g",    "eyedropper.svg","Ingredient",   "Levure de bière");
+const BIERE     = new CategorizedMaterial("Bière",     "cl",    "beer.svg","Ingredient",   "Bière");
 
 const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
-    WATER, MALT, HOUBLON, LEVURE
+    WATER, MALT, HOUBLON, LEVURE, BIERE
 ];
 
 class Scenario {
@@ -37,7 +38,7 @@ class Scenario {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10000, WATER)
+                        new StepParameter('quantité',10, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -63,7 +64,7 @@ class Scenario {
                 engine.recipes[0]),
             new Recipe("La kronadil", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10000, WATER)
+                        new StepParameter('quantité',10, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -90,34 +91,6 @@ class Scenario {
         ];
         engine.player = new Player("Gurdil");
         engine.player.setPreventNegativeStorage(true);
-        engine.player.setRecipes([
-            new Recipe("Ma 0ème Bièbière", [
-                new AddingIngredient([
-                    new StepParameter('quantité',0, WATER)
-                ]),
-                new AddingIngredient([
-                    new StepParameter('quantité',0, MALT)
-                ]),
-                new AddingIngredient([
-                    new StepParameter('quantité',0, HOUBLON)
-                ]),
-                new Heating([
-                    new StepParameter('température',0),
-                    new StepParameter('durée',0)
-                ]),
-                new Filtering([]),
-                new Cooling([
-                    new StepParameter('température',0)
-                ]),
-                new AddingIngredient([
-                    new StepParameter('quantité',0, LEVURE)
-                ]),
-                new Brewing([
-                    new StepParameter('jour',0)
-                ])
-            ],
-            engine.recipes[0])
-        ]);
         // initial storage
         engine.player.increaseStorage(Q(1, LEVEL));
         engine.player.increaseStorage(Q(1000, WATER));

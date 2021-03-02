@@ -3,6 +3,7 @@
 /// <reference path="./IPlayer.ts" />
 /// <reference path="./Player.ts" />
 /// <reference path="./Resource.ts" />
+/// <reference path="./Beer.ts" />
 /// <reference path="./BrewerDwarfStatus.ts" />
 
 class BrewerDwarf {
@@ -29,11 +30,42 @@ class BrewerDwarf {
     }
 
     public brew() {
-        let recipe = this.player.getBrewingRecipe();
-        if (recipe != null) {
-            this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe);
+        if (confirm("Si la recette est n'a pas de problème, les ingrédient seront décomptés. Continuer ?")) {
+            let recipe = this.player.getBrewingRecipe();
+            if (recipe != null) {
+                this.loadRecipe(recipe);
+                RecipeAnalysis.analyse(recipe);
+                if (!BrewerDwarf.hasProblem(recipe)) {
+                    console.log('doBrew');
+                    this.doBrew(recipe);
+                }
+            }
         }
+    }
+
+    private doBrew(recipe: Recipe) {
+        recipe.getCookingSteps()
+            .map(s => (s instanceof AddingIngredient)?s:null)
+            .forEach(s => {
+                if (s!=null) {
+                    this.player.decreaseStorage(s.getQuantity());
+                }
+            });
+        let liters = recipe.steps[0].getStepParameter(0).value;
+        let beer = new Beer(recipe.name, 'l', 'beer.svg',
+            "beer", 'Beer à partir de '+recipe.recipeRef?.name, recipe);
+        this.player.increaseStorage(Q(liters ,beer));
+        this.player.setBrewingRecipe(null);
+        this.player.getRecipes().push(recipe);
+    }
+    
+    private static hasProblem(recipe: Recipe) : boolean {
+        let prob = recipe.getCookingSteps().map(
+            s => s.getStepParameters()
+                .map(s => s.score==null || s.score==0 || (s.problem!=null && s.problem!=""))
+                .reduce((a, b) => (a || b), false)
+        ).reduce((a, b) => (a || b), false);
+        return prob;
     }
 
     private loadRecipe(recipe: Recipe) {

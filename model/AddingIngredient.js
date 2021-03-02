@@ -35,6 +35,12 @@ var AddingIngredient = (function (_super) {
     AddingIngredient.prototype.getImage = function () {
         return "AddIngredient.svg";
     };
+    AddingIngredient.prototype.getResource = function () {
+        return this.stepParameters[0].resource ? this.stepParameters[0].resource : new Resource("nothing");
+    };
+    AddingIngredient.prototype.getQuantity = function () {
+        return Q(this.stepParameters[0].value, this.getResource());
+    };
     AddingIngredient.prototype.getStepParameters = function () {
         return this.stepParameters;
     };
