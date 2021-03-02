@@ -42,6 +42,12 @@ class BrewerDwarf {
             (step,stepIndex) => {
                 step.getStepParameters().forEach((param, paramIndex) => {
                     param.value = parseFloat(this.val(stepIndex+"_"+paramIndex+"_"+param.name));
+                    if (param.name == "durée") {
+                        param.value *= 60*1000;
+                    }
+                    if (param.name == "jour") {
+                        param.value *= 24*3600*1000;
+                    }
                 });
             }
         );

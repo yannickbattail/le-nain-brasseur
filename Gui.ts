@@ -91,6 +91,8 @@ class Gui {
         step.getStepParameters().forEach(param => {
             if (param.name == 'durée') {
                 h += '<td><div title="'+param.name+'">'+this.displayTime(param.value)+'</div></td>';
+            } else if (param.name == 'jour') {
+                h += '<td><div title="'+param.name+'">'+this.displayTime(param.value)+'</div></td>';
             } else if (param.name == 'température') {
                 h += '<td><div title="'+param.name+'">'+param.value+'°C</div></td>';
             } else if (param.resource != null) {
@@ -158,7 +160,9 @@ class Gui {
             if (paramIndex < params.length) {
                 let param = params[paramIndex];
                 if (param.name == 'durée') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + (param.value / 60000) + '" /> min</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / 60000) + '" /> min</div></td>';
+                } else if (param.name == 'jour') {
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + (param.value / (24*3600+1000)) + '" /> jour</div></td>';
                 } else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + param.value + '" /> °C</div></td>';
                 } else if (param.resource != null) {

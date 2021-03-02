@@ -57,7 +57,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('durée',30*24*60*60*1000) // 2592000000
+                        new StepParameter('jour',30*24*60*60*1000) // 2592000000
                     ])
                 ],
                 engine.recipes[0]),
@@ -83,7 +83,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('durée',30*24*60*60*1000)
+                        new StepParameter('jour',30*24*60*60*1000)
                     ])
                 ],
                 engine.recipes[0]),
@@ -113,7 +113,7 @@ class Scenario {
                     new StepParameter('quantité',0, LEVURE)
                 ]),
                 new Brewing([
-                    new StepParameter('durée',0)
+                    new StepParameter('jour',0)
                 ])
             ],
             engine.recipes[0])
