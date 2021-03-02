@@ -2,23 +2,27 @@
 
 class Recipe extends RecipeReference {
     $type : string = 'Recipe';
+    public score : number | null = null;
+    public problem: string | null = null;
     constructor(public name: string = "",
-                public actions: Array<ICookingStep> = [],
-                public recipeRef : RecipeReference) {
-        super(name, actions);
+                public steps: Array<ICookingStep> = [],
+                public recipeRef : RecipeReference | null = null) {
+        super(name, steps);
     }
     
     public static load(data : any) : Recipe {
         let curContext : any = window;
         let name = data.name;
-        let actions = (data.actions as Array<any>).map(p => curContext[p.$type].load(p));
-        let recipeRef = curContext[data.recipeRef.$type].load(data.recipeRef);
-        let newObj : Recipe = new Recipe(name, actions, recipeRef);
+        let steps = (data.steps as Array<any>).map(p => curContext[p.$type].load(p));
+        let recipeRef = data.recipeRef!=null?curContext[data.recipeRef.$type].load(data.recipeRef):null;
+        let newObj : Recipe = new Recipe(name, steps, recipeRef);
+        newObj.score = data.score;
+        newObj.problem = data.problem;
         return newObj;
     }
     
     getCookingSteps() : Array<ICookingStep> {
-        return this.actions;
+        return this.steps;
     }
     getName() : string {
         return this.name;

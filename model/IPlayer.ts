@@ -8,6 +8,8 @@ interface IPlayer {
     getStorage() : Array<IQuantity>;
     getRecipes() : Array<Recipe>;
     setRecipes(recipes : Array<Recipe>) : IPlayer;
+    getBrewingRecipe() : Recipe | null;
+    setBrewingRecipe(brewingRecipe : Recipe) : IPlayer;
     getPreventNegativeStorage() : boolean ;
 
     setPreventNegativeStorage(preventNegativeStorage : boolean) : IPlayer;

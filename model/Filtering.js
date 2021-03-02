@@ -33,10 +33,7 @@ var Filtering = (function (_super) {
         return this.stepParameters;
     };
     Filtering.prototype.getStepParameter = function (index) {
-        if (index != 0) {
-            throw "Filter has no StepParameter.";
-        }
-        return this.stepParameters[index];
+        throw "Filter has no StepParameter.";
     };
     Filtering.prototype.validate = function () {
         if (this.stepParameters.length != 0) {
@@ -49,20 +46,10 @@ var Filtering = (function (_super) {
     Filtering.prototype.getImage = function () {
         return "strainer.svg";
     };
-    Filtering.prototype.compare = function (action) {
+    Filtering.prototype.analyse = function (action) {
         if (this.$type != action.$type) {
             return "L'étape devrait être " + this.getName();
         }
-        return "";
-    };
-    Filtering.prototype.analyse = function (action) {
-        if (action instanceof Filtering) {
-            this.analyseFilter(action);
-        }
-        return null;
-    };
-    Filtering.prototype.analyseFilter = function (action) {
-        return 1;
     };
     return Filtering;
 }(CookingStep));

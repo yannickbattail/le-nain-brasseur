@@ -39,7 +39,7 @@ var Brewing = (function (_super) {
         return this.stepParameters;
     };
     Brewing.prototype.getStepParameter = function (index) {
-        if (index != 1) {
+        if (index != 0) {
             throw "Brewing has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -48,37 +48,20 @@ var Brewing = (function (_super) {
         if (this.stepParameters.length != 1) {
             throw "Brewing should have only one StepParameter.";
         }
-        if (this.stepParameters[0].name == "durée") {
-            throw "stepParameters name should be durée";
+        if (this.stepParameters[0].name != "jour") {
+            throw "stepParameters name should be jour";
         }
         if (this.stepParameters[0].resource != null) {
             throw "StepParameter should have not a resource.";
         }
     };
-    Brewing.prototype.compare = function (action) {
+    Brewing.prototype.analyse = function (action) {
         if (this.$type != action.$type) {
             return "L'étape devrait être " + this.getName();
         }
-        var addIngredient = action;
-        return this.compareHeat(addIngredient);
-    };
-    Brewing.prototype.compareHeat = function (action) {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "La fermentation est trop courte";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "La fermentation est trop longue";
-        }
-        return "";
-    };
-    Brewing.prototype.analyse = function (action) {
         if (action instanceof Brewing) {
-            this.analyseBrewing(action);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "La fermentation est trop longue", "La fermentation est trop courte");
         }
-        return null;
-    };
-    Brewing.prototype.analyseBrewing = function (action) {
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
     };
     return Brewing;
 }(CookingStep));

@@ -1,53 +1,46 @@
 "use strict";
 var RecipeAnalysis = (function () {
-    function RecipeAnalysis(recipe) {
-        this.recipe = recipe;
+    function RecipeAnalysis() {
     }
-    RecipeAnalysis.prototype.compare = function () {
-        var actions1 = this.recipe.recipeRef.getCookingSteps();
-        var actions2 = this.recipe.getCookingSteps();
+    RecipeAnalysis.analyse = function (recipe) {
+        if (!recipe.recipeRef) {
+            throw "no recipeRef";
+        }
+        this.resetScore(recipe);
+        var steps = recipe.getCookingSteps();
+        var stepsRef = recipe.recipeRef.getCookingSteps();
         var index = 0;
-        while (index < actions1.length && index < actions2.length) {
-            if (actions1[index].$type != actions2[index].$type) {
-                return "L'étape #" + index + " devrait être " + actions2[index].$type;
+        while (index < stepsRef.length && index < steps.length) {
+            if (stepsRef[index].$type != steps[index].$type) {
+                recipe.problem = "L'étape #" + (index + 1) + " devrait être " + steps[index].$type;
+                return;
             }
-            var comp = actions1[index].compare(actions2[index]);
-            if (comp !== null && comp !== "") {
-                return "Problème avec l'étape #" + index + " " + comp;
-            }
+            steps[index].analyse(stepsRef[index]);
             index++;
         }
-        if (actions1.length > actions2.length) {
-            return "Il manque " + (actions1.length - actions2.length) + " étape(s).";
+        if (stepsRef.length > steps.length) {
+            recipe.problem = "Il manque " + (stepsRef.length - steps.length) + " étape(s).";
         }
-        else if (actions1.length < actions2.length) {
-            return "Il y a " + (actions1.length - actions2.length) + " étape(s) en trop.";
+        else if (stepsRef.length < steps.length) {
+            recipe.problem = "Il y a " + (stepsRef.length - steps.length) + " étape(s) en trop.";
         }
-        else {
-            return "";
-        }
+        recipe.score = steps.map(function (s) { return s.getStepParameters()
+            .map(function (s) { return s.score != null ? s.score : 0; })
+            .reduce(function (a, b) { return Math.min(a, b); }, 1); })
+            .reduce(function (a, b) { return Math.min(a, b); }, 1);
     };
-    RecipeAnalysis.prototype.analyse = function () {
-        var actionsRef = this.recipe.recipeRef.getCookingSteps();
-        var actions = this.recipe.getCookingSteps();
-        var index = 0;
-        var notes = [];
-        while (index < actionsRef.length && index < actions.length) {
-            if (actionsRef[index].$type != actions[index].$type) {
-                return null;
-            }
-            var note = actionsRef[index].analyse(actions[index]);
-            if (note === null) {
-                return null;
-            }
-            notes.push(note);
-            index++;
-        }
-        var sum = notes.reduce(function (a, b) { return a + b; }, 0);
-        var avg = (sum / notes.length) || 0;
-        return avg;
+    RecipeAnalysis.resetScore = function (recipe) {
+        recipe.score = null;
+        recipe.problem = null;
+        recipe.getCookingSteps().forEach(function (step) {
+            step.getStepParameters().forEach(function (param) {
+                param.problem = null;
+                param.advice = null;
+                param.score = null;
+            });
+        });
     };
-    RecipeAnalysis.scoring = function (expected, actual) {
+    RecipeAnalysis.scoring = function (actual, expected) {
         var halfExpected = expected / 2;
         var diff = Math.abs(expected - actual);
         if (diff > halfExpected) {

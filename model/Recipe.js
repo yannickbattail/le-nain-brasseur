@@ -16,26 +16,31 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Recipe = (function (_super) {
     __extends(Recipe, _super);
-    function Recipe(name, actions, recipeRef) {
+    function Recipe(name, steps, recipeRef) {
         if (name === void 0) { name = ""; }
-        if (actions === void 0) { actions = []; }
-        var _this = _super.call(this, name, actions) || this;
+        if (steps === void 0) { steps = []; }
+        if (recipeRef === void 0) { recipeRef = null; }
+        var _this = _super.call(this, name, steps) || this;
         _this.name = name;
-        _this.actions = actions;
+        _this.steps = steps;
         _this.recipeRef = recipeRef;
         _this.$type = 'Recipe';
+        _this.score = null;
+        _this.problem = null;
         return _this;
     }
     Recipe.load = function (data) {
         var curContext = window;
         var name = data.name;
-        var actions = data.actions.map(function (p) { return curContext[p.$type].load(p); });
-        var recipeRef = curContext[data.recipeRef.$type].load(data.recipeRef);
-        var newObj = new Recipe(name, actions, recipeRef);
+        var steps = data.steps.map(function (p) { return curContext[p.$type].load(p); });
+        var recipeRef = data.recipeRef != null ? curContext[data.recipeRef.$type].load(data.recipeRef) : null;
+        var newObj = new Recipe(name, steps, recipeRef);
+        newObj.score = data.score;
+        newObj.problem = data.problem;
         return newObj;
     };
     Recipe.prototype.getCookingSteps = function () {
-        return this.actions;
+        return this.steps;
     };
     Recipe.prototype.getName = function () {
         return this.name;

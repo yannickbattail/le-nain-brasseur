@@ -2,7 +2,7 @@
 
 abstract class CookingStep implements ICookingStep {
     abstract $type: string;
-    
+    public score : number | null = null;
     constructor(public stepParameters: Array<StepParameter>  = []) {
 
     }
@@ -12,6 +12,36 @@ abstract class CookingStep implements ICookingStep {
     abstract getStepParameters() : Array<StepParameter>;
     abstract getStepParameter(index : number) : StepParameter;
     abstract validate() : void;
-    abstract compare(action: ICookingStep) : string;
-    abstract analyse(action: ICookingStep) : number|null;
+    abstract analyse(action: ICookingStep) : void;
+    
+    analyseStep(step: StepParameter, stepRef: StepParameter, tooHighMsg : string, tooLowMsg : string, analyseResource : boolean = false) {
+        step.problem = "";
+        step.advice = "";
+        step.score = null;
+        if (analyseResource && step.resource?.getName() != stepRef.resource?.getName()) {
+            step.problem += "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
+        }
+        if (step.value < stepRef.value) {
+            if (step.value < stepRef.value/2) {
+                step.problem += tooLowMsg;
+            } else {
+                step.advice += tooLowMsg;
+            }
+        }
+        if (step.value > stepRef.value) {
+            if (step.value > stepRef.value + stepRef.value/2) {
+                step.problem += tooHighMsg;
+            } else {
+                step.advice += tooHighMsg;
+            }
+        }
+        if (step.problem == "") {
+            step.problem = null;
+        }
+        if (step.advice == "") {
+            step.advice = null;
+        }
+        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
+    }
+    
 }

@@ -48,10 +48,10 @@ var Heating = (function (_super) {
         if (this.stepParameters.length != 2) {
             throw "Heat should have 2 StepParameters.";
         }
-        if (this.stepParameters[0].name == "température") {
+        if (this.stepParameters[0].name != "température") {
             throw "stepParameters name should be température";
         }
-        if (this.stepParameters[1].name == "durée") {
+        if (this.stepParameters[1].name != "durée") {
             throw "stepParameters name should be durée";
         }
         if (this.stepParameters[0].resource != null
@@ -59,41 +59,14 @@ var Heating = (function (_super) {
             throw "StepParameter should have not a resource.";
         }
     };
-    Heating.prototype.compare = function (action) {
-        if (action instanceof Heating) {
-            return "L'étape devrait être " + this.getName();
-        }
+    Heating.prototype.analyse = function (action) {
         if (this.$type != action.$type) {
             return "L'étape devrait être " + this.getName();
         }
-        var addIngredient = action;
-        return this.compareHeat(addIngredient);
-    };
-    Heating.prototype.compareHeat = function (action) {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "La cuisson n'est pas assez chaude";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "La cuisson est trop chaude";
-        }
-        if (this.getStepParameter(1).value > action.getStepParameter(1).value) {
-            return "La cuisson est trop courte";
-        }
-        if (this.getStepParameter(1).value < action.getStepParameter(1).value) {
-            return "La cuisson est trop longue";
-        }
-        return "";
-    };
-    Heating.prototype.analyse = function (action) {
         if (action instanceof Heating) {
-            this.analyseHeat(action);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "La température est trop chaude", "La température n'est pas assez chaude");
+            this.analyseStep(this.getStepParameter(1), action.getStepParameter(1), "La cuisson est trop longue", "La cuisson est trop courte");
         }
-        return null;
-    };
-    Heating.prototype.analyseHeat = function (action) {
-        var degreeNote = RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
-        var durationNote = RecipeAnalysis.scoring(this.getStepParameter(1).value, action.getStepParameter(1).value);
-        return Math.min(degreeNote, durationNote);
     };
     return Heating;
 }(CookingStep));

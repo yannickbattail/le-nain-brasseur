@@ -6,6 +6,7 @@ var Player = (function () {
         this.preventNegativeStorage = false;
         this.storage = new Array();
         this.recipes = new Array();
+        this.brewingRecipe = null;
     }
     Player.load = function (data) {
         var curContext = window;
@@ -13,6 +14,7 @@ var Player = (function () {
         player.preventNegativeStorage = data.preventNegativeStorage;
         player.storage = data.storage.map(function (p) { return curContext[p.$type].load(p); });
         player.recipes = data.recipes.map(function (p) { return curContext[p.$type].load(p); });
+        player.brewingRecipe = data.brewingRecipe != null ? curContext[data.brewingRecipe.$type].load(data.brewingRecipe) : null;
         return player;
     };
     Player.prototype.getName = function () {
@@ -26,6 +28,13 @@ var Player = (function () {
     };
     Player.prototype.setRecipes = function (recipes) {
         this.recipes = recipes;
+        return this;
+    };
+    Player.prototype.getBrewingRecipe = function () {
+        return this.brewingRecipe;
+    };
+    Player.prototype.setBrewingRecipe = function (brewingRecipe) {
+        this.brewingRecipe = brewingRecipe;
         return this;
     };
     Player.prototype.getPreventNegativeStorage = function () {

@@ -27,10 +27,49 @@ class BrewerDwarf {
         newObj.fastMode = data.fastMode;
         return newObj;
     }
+
+    public brew() {
+        let recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe);
+        }
+    }
+
+    private loadRecipe(recipe: Recipe) {
+        recipe.name = this.val("recipeName");
+        recipe.getCookingSteps().forEach(
+            (step,stepIndex) => {
+                step.getStepParameters().forEach((param, paramIndex) => {
+                    param.value = parseFloat(this.val(stepIndex+"_"+paramIndex+"_"+param.name));
+                    if (param.name == "durée") {
+                        param.value *= 60*1000;
+                    }
+                    if (param.name == "jour") {
+                        param.value *= 24*3600*1000;
+                    }
+                });
+            }
+        );
+    }
     
-    brew(recipeName : string) {
-        let recipe = this.getRecipeNameByName(recipeName);
-        
+    private val(id : string) : string {
+        let elem = document.getElementById(id);
+        if (elem != null && elem instanceof HTMLInputElement ) {
+            if (!elem.value) {
+                throw "no value  for "+id+" "+elem.value;
+            }
+            return elem.value;
+        }
+        throw "no value for "+id;
+    }
+    
+    public prepareBrew(recipeName : string) {
+        let recipeRef = engine.getRecipeNameByName(recipeName);
+        if (recipeRef == null) {
+            throw "recette "+recipeName+" non dispo";
+        }
+        this.player.setBrewingRecipe(recipeRef.createRecipe());
     }
 
     public getRecipeNameByName(recipeName : string) : RecipeReference | null {

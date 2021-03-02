@@ -7,6 +7,5 @@ interface ICookingStep {
     getStepParameters() : Array<StepParameter>;
     getStepParameter(index : number) : StepParameter;
     validate() : void;
-    compare(action: ICookingStep) : string;
-    analyse(action: ICookingStep) : number|null;
+    analyse(action: ICookingStep) : void;
 }

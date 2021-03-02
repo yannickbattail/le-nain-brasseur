@@ -7,6 +7,7 @@ class Player implements IPlayer {
     protected preventNegativeStorage : boolean = false;
     protected storage: Array<Quantity> = new Array<Quantity>();
     protected recipes: Array<Recipe> = new Array<Recipe>();
+    protected brewingRecipe: Recipe | null = null;
     constructor(protected name: string) {
     }
     public static load(data : any) : Player {
@@ -15,19 +16,28 @@ class Player implements IPlayer {
         player.preventNegativeStorage = data.preventNegativeStorage;
         player.storage = (data.storage as Array<any>).map(p => curContext[p.$type].load(p));
         player.recipes = (data.recipes as Array<any>).map(p => curContext[p.$type].load(p));
+        player.brewingRecipe = data.brewingRecipe!=null?curContext[data.brewingRecipe.$type].load(data.brewingRecipe):null;
         return player;
     }
     public getName() : string {
         return this.name;
     }
-    public getStorage() : Array<IQuantity>{
+    public getStorage() : Array<IQuantity> {
         return this.storage;
     }
-    public getRecipes() : Array<Recipe>{
+    public getRecipes() : Array<Recipe> {
         return this.recipes;
     }
     public setRecipes(recipes : Array<Recipe>) : IPlayer {
         this.recipes = recipes;
+        return this;
+    }
+    
+    public getBrewingRecipe() : Recipe | null{
+        return this.brewingRecipe;
+    }
+    public setBrewingRecipe(brewingRecipe : Recipe) : IPlayer {
+        this.brewingRecipe = brewingRecipe;
         return this;
     }
     

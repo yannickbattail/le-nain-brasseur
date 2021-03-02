@@ -31,7 +31,7 @@ class AddingIngredient extends CookingStep {
         return this.stepParameters;
     }
     getStepParameter(index : number) : StepParameter {
-        if (index != 1) {
+        if (index != 0) {
             throw "AddIngredient has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -41,7 +41,7 @@ class AddingIngredient extends CookingStep {
         if (this.stepParameters.length != 1) {
             throw "AddIngredient should have only one StepParameter.";
         }
-        if (this.stepParameters[0].name == "quantité") {
+        if (this.stepParameters[0].name != "quantité") {
             throw "stepParameters name should be quantité";
         }
         if (this.stepParameters[0].resource == null) {
@@ -49,45 +49,15 @@ class AddingIngredient extends CookingStep {
         }
     }
     
-    public getQuantity() {
-        let res = new Resource("nothing");
-        if (this.stepParameters[0].resource !== null) {
-            res = this.stepParameters[0].resource;
-        }
-        return Q(this.stepParameters[0].value, res);
-    }
-    
-    public compare(action : ICookingStep) : string {
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as AddingIngredient;
-        return this.compareAddIngredient(addIngredient);
-    }
-    compareAddIngredient(action : AddingIngredient) : string {
-        if (this.getStepParameter(0).resource?.getName() != action.getStepParameter(0).resource?.getName()) {
-            return "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
-        }
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "Il y n'a pas assez de " + this.getStepParameter(0).resource?.getName();
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "Il y a trop de " + this.getStepParameter(0).resource?.getName();
-        }
-        return "";
-    }
-
-    public analyse(action: ICookingStep): number | null {
         if (action instanceof AddingIngredient) {
-            this.analyseAddIngredient(action);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            "Il y a trop d'ingrédient",
+            "Il y n'a pas assez d'ingrédient",
+            true);
         }
-        return null;
-    }
-
-    analyseAddIngredient(action: AddingIngredient): number | null {
-        if (this.getStepParameter(0).resource?.getName() != action.getStepParameter(0).resource?.getName()) {
-            return 0;
-        }
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
     }
 }

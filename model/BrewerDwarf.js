@@ -20,8 +20,44 @@ var BrewerDwarf = (function () {
         newObj.fastMode = data.fastMode;
         return newObj;
     };
-    BrewerDwarf.prototype.brew = function (recipeName) {
-        var recipe = this.getRecipeNameByName(recipeName);
+    BrewerDwarf.prototype.brew = function () {
+        var recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe);
+        }
+    };
+    BrewerDwarf.prototype.loadRecipe = function (recipe) {
+        var _this = this;
+        recipe.name = this.val("recipeName");
+        recipe.getCookingSteps().forEach(function (step, stepIndex) {
+            step.getStepParameters().forEach(function (param, paramIndex) {
+                param.value = parseFloat(_this.val(stepIndex + "_" + paramIndex + "_" + param.name));
+                if (param.name == "durée") {
+                    param.value *= 60 * 1000;
+                }
+                if (param.name == "jour") {
+                    param.value *= 24 * 3600 * 1000;
+                }
+            });
+        });
+    };
+    BrewerDwarf.prototype.val = function (id) {
+        var elem = document.getElementById(id);
+        if (elem != null && elem instanceof HTMLInputElement) {
+            if (!elem.value) {
+                throw "no value  for " + id + " " + elem.value;
+            }
+            return elem.value;
+        }
+        throw "no value for " + id;
+    };
+    BrewerDwarf.prototype.prepareBrew = function (recipeName) {
+        var recipeRef = engine.getRecipeNameByName(recipeName);
+        if (recipeRef == null) {
+            throw "recette " + recipeName + " non dispo";
+        }
+        this.player.setBrewingRecipe(recipeRef.createRecipe());
     };
     BrewerDwarf.prototype.getRecipeNameByName = function (recipeName) {
         var recipes = this.recipes.filter(function (src) { return src.getName() == recipeName; });

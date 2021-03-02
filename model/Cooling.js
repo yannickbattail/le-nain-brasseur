@@ -26,7 +26,7 @@ var Cooling = (function (_super) {
     Cooling.load = function (data) {
         var curContext = window;
         var stepParameters = data.stepParameters.map(function (p) { return curContext[p.$type].load(p); });
-        var newObj = new Brewing(stepParameters);
+        var newObj = new Cooling(stepParameters);
         return newObj;
     };
     Cooling.prototype.getName = function () {
@@ -39,7 +39,7 @@ var Cooling = (function (_super) {
         return this.stepParameters;
     };
     Cooling.prototype.getStepParameter = function (index) {
-        if (index != 1) {
+        if (index != 0) {
             throw "Cool has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -48,37 +48,20 @@ var Cooling = (function (_super) {
         if (this.stepParameters.length != 1) {
             throw "Cool should have only one StepParameter.";
         }
-        if (this.stepParameters[0].name == "température") {
+        if (this.stepParameters[0].name != "température") {
             throw "stepParameters name should be température";
         }
         if (this.stepParameters[0].resource != null) {
             throw "StepParameter should have not a resource.";
         }
     };
-    Cooling.prototype.compare = function (action) {
+    Cooling.prototype.analyse = function (action) {
         if (this.$type != action.$type) {
             return "L'étape devrait être " + this.getName();
         }
-        var addIngredient = action;
-        return this.compareHeat(addIngredient);
-    };
-    Cooling.prototype.compareHeat = function (action) {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "Le rafraichissement est trop important";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "Le rafraichissement est trop faible";
-        }
-        return "";
-    };
-    Cooling.prototype.analyse = function (action) {
         if (action instanceof Cooling) {
-            this.analyseCool(action);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "La température est trop chaude", "La température n'est pas assez chaude");
         }
-        return null;
-    };
-    Cooling.prototype.analyseCool = function (action) {
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
     };
     return Cooling;
 }(CookingStep));

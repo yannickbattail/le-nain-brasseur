@@ -8,10 +8,10 @@ class Cooling extends CookingStep {
         this.validate();
     }
 
-    public static load(data : any) : Brewing {
+    public static load(data : any) : Cooling {
         let curContext : any = window;
         let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : Brewing = new Brewing(stepParameters);
+        let newObj : Cooling = new Cooling(stepParameters);
         return newObj;
     }
     
@@ -26,7 +26,7 @@ class Cooling extends CookingStep {
         return this.stepParameters;
     }
     getStepParameter(index : number) : StepParameter {
-        if (index != 1) {
+        if (index != 0) {
             throw "Cool has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -36,42 +36,22 @@ class Cooling extends CookingStep {
         if (this.stepParameters.length != 1) {
             throw "Cool should have only one StepParameter.";
         }
-        if (this.stepParameters[0].name == "température") {
+        if (this.stepParameters[0].name != "température") {
             throw "stepParameters name should be température";
         }
         if (this.stepParameters[0].resource != null) {
             throw "StepParameter should have not a resource.";
         }
     }
-
     
-    public compare(action : ICookingStep) : string {
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as Cooling;
-        return this.compareHeat(addIngredient);
-    }
-    
-    public compareHeat(action : Cooling) : string {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "Le rafraichissement est trop important";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "Le rafraichissement est trop faible";
-        }
-        return "";
-    }
-    
-    analyse(action: ICookingStep): number | null {
         if (action instanceof Cooling) {
-            this.analyseCool(action);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            "La température est trop chaude",
+            "La température n'est pas assez chaude");
         }
-        return null;
-
-    }
-
-    analyseCool(action: Cooling): number | null {
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
     }
 }
