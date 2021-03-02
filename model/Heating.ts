@@ -48,44 +48,43 @@ class Heating extends CookingStep {
         }
     }
 
-    public compare(action : ICookingStep) : string {
-        if (action !instanceof Heating) {
-            return "L'étape devrait être "+this.getName();
-        }
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as Heating;
-        return this.compareHeat(addIngredient);
-    }
-    public compareHeat(action : Heating) : string {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "La cuisson n'est pas assez chaude";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "La cuisson est trop chaude";
-        }
-
-        if (this.getStepParameter(1).value > action.getStepParameter(1).value) {
-            return "La cuisson est trop courte";
-        }
-        if (this.getStepParameter(1).value < action.getStepParameter(1).value) {
-            return "La cuisson est trop longue";
-        }
-        return "";
-    }
-
-    analyse(action: ICookingStep): number | null {
         if (action instanceof Heating) {
-            this.analyseHeat(action);
+            this.analyseTemperature(this.getStepParameter(0), action.getStepParameter(0));
+            this.analyseDuree(this.getStepParameter(1), action.getStepParameter(1));
         }
-        return null;
-
     }
 
-    analyseHeat(action: Heating): number | null {
-        const degreeNote = RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
-        const durationNote = RecipeAnalysis.scoring(this.getStepParameter(1).value, action.getStepParameter(1).value);
-        return Math.min(degreeNote, durationNote) ;
+    analyseTemperature(step: StepParameter, stepRef: StepParameter) {
+        step.score = null;
+        step.problem = "";
+        if (step.value < stepRef.value) {
+            step.problem += "La cuisson n'est pas assez chaude";
+        }
+        if (step.value > stepRef.value) {
+            step.problem += "La cuisson est trop chaude";
+        }
+        if (step.problem == "") {
+            step.problem = null;
+        }
+        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
+    }
+
+    analyseDuree(step: StepParameter, stepRef: StepParameter) {
+        step.score = null;
+        step.problem = "";
+        if (step.value < stepRef.value) {
+            step.problem += "La cuisson est trop courte";
+        }
+        if (step.value > stepRef.value) {
+            step.problem += "La cuisson est trop longue";
+        }
+        if (step.problem == "") {
+            step.problem = null;
+        }
+        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
 }

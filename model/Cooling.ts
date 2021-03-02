@@ -26,7 +26,7 @@ class Cooling extends CookingStep {
         return this.stepParameters;
     }
     getStepParameter(index : number) : StepParameter {
-        if (index != 1) {
+        if (index != 0) {
             throw "Cool has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -43,35 +43,41 @@ class Cooling extends CookingStep {
             throw "StepParameter should have not a resource.";
         }
     }
-
     
-    public compare(action : ICookingStep) : string {
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as Cooling;
-        return this.compareHeat(addIngredient);
-    }
-    
-    public compareHeat(action : Cooling) : string {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "Le rafraichissement est trop important";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "Le rafraichissement est trop faible";
-        }
-        return "";
-    }
-    
-    analyse(action: ICookingStep): number | null {
         if (action instanceof Cooling) {
-            this.analyseCool(action);
+            this.analyseCool(this.getStepParameter(0), action.getStepParameter(0));
         }
-        return null;
-
     }
 
-    analyseCool(action: Cooling): number | null {
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
+    analyseCool(step: StepParameter, stepRef: StepParameter) {
+        step.problem = "";
+        step.advice = "";
+        step.score = null;
+        if (step.value < stepRef.value) {
+            if (step.value < stepRef.value/2) {
+                step.problem += "La température n'est pas assez chaude";
+            } else {
+                step.advice += "La température n'est pas assez chaude";
+            }
+        }
+        if (step.value > stepRef.value) {
+            if (step.value > stepRef.value + stepRef.value/2) {
+                step.problem += "La température est trop chaude";
+            } else {
+                step.advice += "La température est trop chaude";
+            }
+        }
+        if (step.problem == "") {
+            step.problem = null;
+        }
+        if (step.advice == "") {
+            step.advice = null;
+        }
+        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
+    
 }

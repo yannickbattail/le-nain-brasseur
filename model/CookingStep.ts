@@ -2,7 +2,7 @@
 
 abstract class CookingStep implements ICookingStep {
     abstract $type: string;
-    
+    public score : number | null = null;
     constructor(public stepParameters: Array<StepParameter>  = []) {
 
     }
@@ -12,6 +12,5 @@ abstract class CookingStep implements ICookingStep {
     abstract getStepParameters() : Array<StepParameter>;
     abstract getStepParameter(index : number) : StepParameter;
     abstract validate() : void;
-    abstract compare(action: ICookingStep) : string;
-    abstract analyse(action: ICookingStep) : number|null;
+    abstract analyse(action: ICookingStep) : void;
 }

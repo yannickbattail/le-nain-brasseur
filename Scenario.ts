@@ -57,7 +57,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('durée',30*24*60*60*1000)
+                        new StepParameter('durée',30*24*60*60*1000) // 2592000000
                     ])
                 ],
                 engine.recipes[0]),

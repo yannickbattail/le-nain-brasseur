@@ -158,6 +158,14 @@ input[type='number'] {
 .notAvailableResource > div > span {
     color: red;
 }
+
+.advice {
+    color: chartreuse;
+}
+.problem {
+    color: red;
+}
+
 .chanceOf {
     font-size: 7px;
 }

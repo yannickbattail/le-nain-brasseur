@@ -19,10 +19,7 @@ class Filtering extends CookingStep {
         return this.stepParameters;
     }
     getStepParameter(index : number) : StepParameter {
-        if (index != 0) {
-            throw "Filter has no StepParameter.";
-        }
-        return this.stepParameters[index];
+        throw "Filter has no StepParameter.";
     }
 
     validate() : void {
@@ -37,21 +34,10 @@ class Filtering extends CookingStep {
     getImage() : string {
         return "strainer.svg";
     }
-    public compare(action : ICookingStep) : string {
+    
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        return "";
-    }
-    
-    analyse(action: ICookingStep): number | null {
-        if (action instanceof Filtering) {
-            this.analyseFilter(action);
-        }
-        return null;
-    }
-
-    analyseFilter(action: Filtering): number | null {
-        return 1;
     }
 }

@@ -31,7 +31,7 @@ class AddingIngredient extends CookingStep {
         return this.stepParameters;
     }
     getStepParameter(index : number) : StepParameter {
-        if (index != 1) {
+        if (index != 0) {
             throw "AddIngredient has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -49,45 +49,30 @@ class AddingIngredient extends CookingStep {
         }
     }
     
-    public getQuantity() {
-        let res = new Resource("nothing");
-        if (this.stepParameters[0].resource !== null) {
-            res = this.stepParameters[0].resource;
-        }
-        return Q(this.stepParameters[0].value, res);
-    }
-    
-    public compare(action : ICookingStep) : string {
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as AddingIngredient;
-        return this.compareAddIngredient(addIngredient);
-    }
-    compareAddIngredient(action : AddingIngredient) : string {
-        if (this.getStepParameter(0).resource?.getName() != action.getStepParameter(0).resource?.getName()) {
-            return "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
-        }
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "Il y n'a pas assez de " + this.getStepParameter(0).resource?.getName();
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "Il y a trop de " + this.getStepParameter(0).resource?.getName();
-        }
-        return "";
-    }
-
-    public analyse(action: ICookingStep): number | null {
         if (action instanceof AddingIngredient) {
-            this.analyseAddIngredient(action);
+            this.analyseAddIngredient(this.getStepParameter(0), action.getStepParameter(0));
         }
-        return null;
     }
 
-    analyseAddIngredient(action: AddingIngredient): number | null {
-        if (this.getStepParameter(0).resource?.getName() != action.getStepParameter(0).resource?.getName()) {
-            return 0;
+    analyseAddIngredient(step: StepParameter, stepRef: StepParameter) {
+        step.score = null;
+        step.problem = "";
+        if (step.resource?.getName() != stepRef.resource?.getName()) {
+            step.problem += "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
         }
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
+        if (step.value < stepRef.value) {
+            step.problem += "Il y n'a pas assez de " + this.getStepParameter(0).resource?.getName();
+        }
+        if (step.value > stepRef.value) {
+            step.problem += "Il y a trop de " + this.getStepParameter(0).resource?.getName();
+        }
+        if (step.problem == "") {
+            step.problem = null;
+        }
+        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
 }

@@ -26,7 +26,7 @@ class Brewing extends CookingStep {
         return this.stepParameters;
     }
     getStepParameter(index : number) : StepParameter {
-        if (index != 1) {
+        if (index != 0) {
             throw "Brewing has only one StepParameter.";
         }
         return this.stepParameters[index];
@@ -44,31 +44,27 @@ class Brewing extends CookingStep {
         }
     }
 
-    public compare(action : ICookingStep) : string {
+    public analyse(action: ICookingStep) {
         if (this.$type != action.$type) {
             return "L'étape devrait être "+this.getName();
         }
-        let addIngredient = action as Brewing;
-        return this.compareHeat(addIngredient);
-    }
-    public compareHeat(action : Brewing) : string {
-        if (this.getStepParameter(0).value > action.getStepParameter(0).value) {
-            return "La fermentation est trop courte";
-        }
-        if (this.getStepParameter(0).value < action.getStepParameter(0).value) {
-            return "La fermentation est trop longue";
-        }
-        return "";
-    }
-
-    analyse(action: ICookingStep): number | null {
         if (action instanceof Brewing) {
-            this.analyseBrewing(action);
+            this.analyseBrewing(this.getStepParameter(0), action.getStepParameter(0));
         }
-        return null;
     }
 
-    analyseBrewing(action: Brewing): number | null {
-        return RecipeAnalysis.scoring(this.getStepParameter(0).value, action.getStepParameter(0).value);
+    analyseBrewing(step: StepParameter, stepRef: StepParameter) {
+        step.score = null;
+        step.problem = "";
+        if (step.value < stepRef.value) {
+            step.problem += "La fermentation est trop courte";
+        }
+        if (step.value > stepRef.value) {
+            step.problem += "La fermentation est trop longue";
+        }
+        if (step.problem == "") {
+            step.problem = null;
+        }
+        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
 }
