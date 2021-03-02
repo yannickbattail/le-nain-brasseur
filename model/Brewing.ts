@@ -49,22 +49,9 @@ class Brewing extends CookingStep {
             return "L'étape devrait être "+this.getName();
         }
         if (action instanceof Brewing) {
-            this.analyseBrewing(this.getStepParameter(0), action.getStepParameter(0));
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+                "La fermentation est trop longue",
+                "La fermentation est trop courte");
         }
-    }
-
-    analyseBrewing(step: StepParameter, stepRef: StepParameter) {
-        step.score = null;
-        step.problem = "";
-        if (step.value < stepRef.value) {
-            step.problem += "La fermentation est trop courte";
-        }
-        if (step.value > stepRef.value) {
-            step.problem += "La fermentation est trop longue";
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
 }

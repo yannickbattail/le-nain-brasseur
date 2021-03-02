@@ -54,25 +54,10 @@ class AddingIngredient extends CookingStep {
             return "L'étape devrait être "+this.getName();
         }
         if (action instanceof AddingIngredient) {
-            this.analyseAddIngredient(this.getStepParameter(0), action.getStepParameter(0));
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            "Il y a trop d'ingrédient",
+            "Il y n'a pas assez d'ingrédient",
+            true);
         }
-    }
-
-    analyseAddIngredient(step: StepParameter, stepRef: StepParameter) {
-        step.score = null;
-        step.problem = "";
-        if (step.resource?.getName() != stepRef.resource?.getName()) {
-            step.problem += "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
-        }
-        if (step.value < stepRef.value) {
-            step.problem += "Il y n'a pas assez de " + this.getStepParameter(0).resource?.getName();
-        }
-        if (step.value > stepRef.value) {
-            step.problem += "Il y a trop de " + this.getStepParameter(0).resource?.getName();
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
 }

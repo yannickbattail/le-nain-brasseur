@@ -53,38 +53,12 @@ class Heating extends CookingStep {
             return "L'étape devrait être "+this.getName();
         }
         if (action instanceof Heating) {
-            this.analyseTemperature(this.getStepParameter(0), action.getStepParameter(0));
-            this.analyseDuree(this.getStepParameter(1), action.getStepParameter(1));
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+                "La température est trop chaude",
+                "La température n'est pas assez chaude");
+            this.analyseStep(this.getStepParameter(1), action.getStepParameter(1),
+                "La cuisson est trop longue",
+                "La cuisson est trop courte");
         }
-    }
-
-    analyseTemperature(step: StepParameter, stepRef: StepParameter) {
-        step.score = null;
-        step.problem = "";
-        if (step.value < stepRef.value) {
-            step.problem += "La cuisson n'est pas assez chaude";
-        }
-        if (step.value > stepRef.value) {
-            step.problem += "La cuisson est trop chaude";
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
-    }
-
-    analyseDuree(step: StepParameter, stepRef: StepParameter) {
-        step.score = null;
-        step.problem = "";
-        if (step.value < stepRef.value) {
-            step.problem += "La cuisson est trop courte";
-        }
-        if (step.value > stepRef.value) {
-            step.problem += "La cuisson est trop longue";
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
     }
 }

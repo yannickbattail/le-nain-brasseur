@@ -49,35 +49,9 @@ class Cooling extends CookingStep {
             return "L'étape devrait être "+this.getName();
         }
         if (action instanceof Cooling) {
-            this.analyseCool(this.getStepParameter(0), action.getStepParameter(0));
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            "La température est trop chaude",
+            "La température n'est pas assez chaude");
         }
     }
-
-    analyseCool(step: StepParameter, stepRef: StepParameter) {
-        step.problem = "";
-        step.advice = "";
-        step.score = null;
-        if (step.value < stepRef.value) {
-            if (step.value < stepRef.value/2) {
-                step.problem += "La température n'est pas assez chaude";
-            } else {
-                step.advice += "La température n'est pas assez chaude";
-            }
-        }
-        if (step.value > stepRef.value) {
-            if (step.value > stepRef.value + stepRef.value/2) {
-                step.problem += "La température est trop chaude";
-            } else {
-                step.advice += "La température est trop chaude";
-            }
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        if (step.advice == "") {
-            step.advice = null;
-        }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
-    }
-    
 }
