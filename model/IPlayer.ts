@@ -9,7 +9,7 @@ interface IPlayer {
     getRecipes() : Array<Recipe>;
     setRecipes(recipes : Array<Recipe>) : IPlayer;
     getBrewingRecipe() : Recipe | null;
-    setBrewingRecipe(brewingRecipe : Recipe) : IPlayer;
+    setBrewingRecipe(brewingRecipe : Recipe | null) : IPlayer;
     getPreventNegativeStorage() : boolean ;
 
     setPreventNegativeStorage(preventNegativeStorage : boolean) : IPlayer;

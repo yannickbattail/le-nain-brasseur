@@ -76,7 +76,7 @@ class Gui {
     
     private displayPlayerRecipe(recipe : Recipe) : string {
         let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th>'+recipe.getName()+'</th><th colspan="2">À partir de: '+recipe.recipeRef?.getName()+'</th></tr>';
+        h += '<tr><th>'+Gui.htmlEntities(recipe.getName())+'</th><th colspan="2">À partir de: '+recipe.recipeRef?.getName()+'</th></tr>';
 
         recipe.getCookingSteps().forEach(
             res => h += this.displayCookingStep(res)
@@ -88,19 +88,26 @@ class Gui {
     private displayCookingStep(step : ICookingStep) : string {
         let h = '<tr>';
         h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"></td>';
-        step.getStepParameters().forEach(param => {
-            if (param.name == 'durée') {
-                h += '<td><div title="'+param.name+'">'+this.displayTime(param.value)+'</div></td>';
-            } else if (param.name == 'jour') {
-                h += '<td><div title="'+param.name+'">'+this.displayTime(param.value)+'</div></td>';
-            } else if (param.name == 'température') {
-                h += '<td><div title="'+param.name+'">'+param.value+'°C</div></td>';
-            } else if (param.resource != null) {
-                h += '<td><div title="'+param.name+'">'+this.displayQuantity(Q(param.value, param.resource))+'</div></td>';
+
+        let params = step.getStepParameters();
+        for (let paramIndex = 0 ; paramIndex < 2 ; paramIndex++) {
+            if (paramIndex < params.length) {
+                let param = params[paramIndex];
+                if (param.name == 'durée') {
+                    h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
+                } else if (param.name == 'jour') {
+                    h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
+                } else if (param.name == 'température') {
+                    h += '<td><div title="' + param.name + '">' + param.value + '°C</div></td>';
+                } else if (param.resource != null) {
+                    h += '<td><div title="' + param.name + '">' + this.displayQuantity(Q(param.value, param.resource)) + '</div></td>';
+                } else {
+                    h += '<td><div title="' + param.name + '">' + param.value + '</div></td>';
+                }
             } else {
-                h += '<td><div title="'+param.name+'">'+param.value+'</div></td>';
+                h += '<td>&nbsp;</td>';
             }
-        });
+        }
         h += "</tr>";
         return h;
     }
@@ -162,7 +169,7 @@ class Gui {
                 if (param.name == 'durée') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / 60000) + '" /> min</div></td>';
                 } else if (param.name == 'jour') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + (param.value / (24*3600+1000)) + '" /> jour</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + (param.value / (24*3600+1000)) + '" /> jours</div></td>';
                 } else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + param.value + '" /> °C</div></td>';
                 } else if (param.resource != null) {
@@ -250,13 +257,17 @@ class Gui {
         if ('image' in res) {
             image = res.image;
         }
+        let unit = '';
+        if ('unit' in res) {
+            unit = res.unit;
+        }
         let details : any = null;
         if ('getDetails' in quantity) {
             details = quantity['getDetails'];
         }
         return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
             + '<div class="resource_label">'
-            + '<input type="number" id="'+stepIndex+'_'+paramIndex+'_quantité" min="1" value="'+quantity.getQuantity()+'" />'
+            + '<input type="number" id="'+stepIndex+'_'+paramIndex+'_quantité" min="1" value="'+quantity.getQuantity()+'" /> '+unit
             + ((storageRes!=null)?'/<span>'+storageRes.show()+'</span>':'')
             + '</div>'
             + ((image=='')?quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')
@@ -312,6 +323,13 @@ class Gui {
         );
         h += "</table>";
         return h;
+    }
+    
+    public static htmlEntities(str : string) {
+        return str.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+            return '&#'+i.charCodeAt(0)+';';
+        });
+
     }
     
     private getSimple() : boolean {
@@ -400,6 +418,7 @@ class Gui {
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
         NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         //NodeUpdate.updateDiv('recipes', this.editRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());

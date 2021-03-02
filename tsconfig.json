@@ -15,6 +15,7 @@
     "./model/CategorizedMaterial.ts",
     "./model/NamedStepResource.ts",
     "./model/Level.ts",
+    "./model/Beer.ts",
     "./model/IQuantity.ts",
     "./model/Quantity.ts",
     "./model/IPlayer.ts",

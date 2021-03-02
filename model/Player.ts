@@ -36,7 +36,7 @@ class Player implements IPlayer {
     public getBrewingRecipe() : Recipe | null{
         return this.brewingRecipe;
     }
-    public setBrewingRecipe(brewingRecipe : Recipe) : IPlayer {
+    public setBrewingRecipe(brewingRecipe : Recipe | null) : IPlayer {
         this.brewingRecipe = brewingRecipe;
         return this;
     }
