@@ -39,7 +39,7 @@ class Scenario {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10, WATER)
+                        new StepParameter('quantité',10000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -65,7 +65,7 @@ class Scenario {
                 engine.recipes[0]),
             new Recipe("La kronadil", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10, WATER)
+                        new StepParameter('quantité',10000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)

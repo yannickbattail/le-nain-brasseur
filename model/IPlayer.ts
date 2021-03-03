@@ -14,6 +14,7 @@ interface IPlayer {
 
     setPreventNegativeStorage(preventNegativeStorage : boolean) : IPlayer;
     
+    getRecipeNameByName(recipeName : string) : Recipe | null ;
     // storage management
     increaseStorage(resourceQuantity: IQuantity) : void;
     decreaseStorage(resourceQuantity: IQuantity) : void;

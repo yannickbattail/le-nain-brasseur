@@ -43,6 +43,14 @@ class BrewerDwarf {
         }
     }
 
+    public analyseBrew() {
+        let recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe);
+        }
+    }
+
     private doBrew(recipe: Recipe) {
         recipe.getCookingSteps()
             .map(s => (s instanceof AddingIngredient)?s:null)
@@ -58,7 +66,7 @@ class BrewerDwarf {
         this.player.setBrewingRecipe(null);
         this.player.getRecipes().push(recipe);
     }
-    
+
     private static hasProblem(recipe: Recipe) : boolean {
         let prob = recipe.getCookingSteps().map(
             s => s.getStepParameters()
@@ -95,13 +103,21 @@ class BrewerDwarf {
         }
         throw "no value for "+id;
     }
-    
+
     public prepareBrew(recipeName : string) {
         let recipeRef = engine.getRecipeNameByName(recipeName);
         if (recipeRef == null) {
             throw "recette "+recipeName+" non dispo";
         }
         this.player.setBrewingRecipe(recipeRef.createRecipe());
+    }
+    
+    public reprepareBrew(recipeName : string) {
+        let recipe = engine.player.getRecipeNameByName(recipeName);
+        if (recipe == null) {
+            throw "recette "+recipeName+" non dispo";
+        }
+        this.player.setBrewingRecipe(recipe);
     }
 
     public getRecipeNameByName(recipeName : string) : RecipeReference | null {
