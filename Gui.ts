@@ -81,6 +81,7 @@ class Gui {
         recipe.getCookingSteps().forEach(
             res => h += this.displayCookingStep(res)
         );
+        h += '<tr><td colspan="3"><button onclick="engine.reprepareBrew(\''+recipe.getName()+'\')">Préparer</button></td></tr>';
         h += "</table></div>";
         return h;
     }
@@ -140,7 +141,11 @@ class Gui {
         recipe.getCookingSteps().forEach(
             (step,i) => h += this.editCookingStep(i, step)
         );
-        h += '<tr><td colspan="3"><button onclick="engine.brew();return false;">Brasser!</button></tr>';
+        h += '<tr>'
+        let disabled = recipe.score == null || recipe.score <= 0 ? 'disabled="disabled" title="La note doit être suppérieure à 0. "' : '';
+        h += '<td colspan="3"><button onclick="engine.brew();return false;" '+ disabled+'>Brasser!</button></td>';
+        h += '<td><button onclick="engine.analyseBrew();return false;">Analyser</button></td>';
+        h += '</tr>'
         h += "</table></div>";
         return h;
     }
@@ -417,10 +422,10 @@ class Gui {
         NodeUpdate.updateDiv('level', this.displayLevel());
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
-        NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageIngredient', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
         NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
-        //NodeUpdate.updateDiv('recipes', this.editRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }

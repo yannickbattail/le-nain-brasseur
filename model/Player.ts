@@ -49,6 +49,16 @@ class Player implements IPlayer {
         this.preventNegativeStorage = preventNegativeStorage;
         return this;
     }
+    
+    public getRecipeNameByName(recipeName : string) : Recipe | null {
+        let recipes : Recipe[] =  this.recipes.filter(
+            src => src.getName() == recipeName
+        );
+        if (recipes.length == 0) {
+            return null;
+        }
+        return recipes[0];
+    }
 
     public increaseStorage(quantity: IQuantity) {
         let resQ = this.getResourceInStorage(quantity.getResource().getName());

@@ -1,8 +1,12 @@
 
 .origin-theme {
-	--background-color : #333333;
-	--dark-background-color : #222222;
-	--text-color : #00a7df;
+	--background-color : #161616;
+    --light-background-color : #222222;
+    --dark-background-color : black;
+    --positive-color : chartreuse;
+    --negative-color : red;
+    --text-color : #00c0ff;
+    --text-disabled-color : #006e92;
 }
 
 body {
@@ -18,12 +22,12 @@ table {
 
 td, th {
     border: none;
-    background-color: var(--dark-background-color);
+    background-color: var(--light-background-color);
     padding: 4px;
     text-align: center;
 }
 th {
-    background-color: black;
+    background-color: var(--dark-background-color);
     padding: 2px;
 }
 
@@ -34,14 +38,14 @@ button {
     text-align: center;
     padding: 2px;
     margin: 3px;
-    background-color: black;
+    background-color: var(--dark-background-color);
     border-color: var(--text-color);
     border-radius: 5px;
     border-style: outset;
     border-width: 2px;
 }
 button:hover {
-    background-color: var(--dark-background-color);
+    background-color: var(--light-background-color);
     border-color: var(--text-color);
 }
 button:active {
@@ -50,8 +54,9 @@ button:active {
 }
 button:disabled, button[disabled] {
     background-color: var(--background-color);
-    border-color: var(--text-color);
+    border-color: var(--text-disabled-color);
     border-style: dotted;
+    color: var(--text-disabled-color);
 }
 
 input[type='checkbox'] {
@@ -97,12 +102,6 @@ input[type='number'] {
     display: none;
 }
 
-#crafters > table > tbody > tr > th:nth-child(4),
-#producers > table > tbody > tr > th:nth-child(3) {
-    width: 110px;
-    max-width: 110px;
-}
-
 #level {
     display: inline-flex;
 }
@@ -134,10 +133,10 @@ input[type='number'] {
     font-size: 80px;
 }
 .loose {
-    color: red;
+    color: var(--negative-color);
 }
 .win {
-    color: chartreuse;
+    color: var(--positive-color);
 }
 
 .resource {
@@ -153,17 +152,17 @@ input[type='number'] {
     min-width: 50px;
 }
 .availableResource > div > span {
-    color: chartreuse;
+    color: var(--positive-color);
 }
 .notAvailableResource > div > span {
-    color: red;
+    color: var(--negative-color);
 }
 
 .advice {
-    color: chartreuse;
+    color: var(--positive-color);
 }
 .problem {
-    color: red;
+    color: var(--negative-color);
 }
 
 .chanceOf {

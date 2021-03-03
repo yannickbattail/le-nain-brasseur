@@ -66,7 +66,7 @@ var AddingIngredient = (function (_super) {
             return "L'étape devrait être " + this.getName();
         }
         if (action instanceof AddingIngredient) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "Il y a trop d'ingrédient", "Il y n'a pas assez d'ingrédient", true);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "Il y a trop d'ingrédient pour la recette.", "Il y n'a pas assez d'ingrédient la recette.", true);
         }
     };
     return AddingIngredient;

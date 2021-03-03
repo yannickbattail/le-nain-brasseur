@@ -49,6 +49,7 @@ var Gui = (function () {
         var h = '<div style="display: inline-block;"><table border="1">';
         h += '<tr><th>' + Gui.htmlEntities(recipe.getName()) + '</th><th colspan="2">À partir de: ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.getName()) + '</th></tr>';
         recipe.getCookingSteps().forEach(function (res) { return h += _this.displayCookingStep(res); });
+        h += '<tr><td colspan="3"><button onclick="engine.reprepareBrew(\'' + recipe.getName() + '\')">Préparer</button></td></tr>';
         h += "</table></div>";
         return h;
     };
@@ -107,7 +108,11 @@ var Gui = (function () {
         h += '<td><b>Conseils:</b></td>';
         h += '</tr>';
         recipe.getCookingSteps().forEach(function (step, i) { return h += _this.editCookingStep(i, step); });
-        h += '<tr><td colspan="3"><button onclick="engine.brew();return false;">Brasser!</button></tr>';
+        h += '<tr>';
+        var disabled = recipe.score == null || recipe.score <= 0 ? 'disabled="disabled" title="La note doit être suppérieure à 0. "' : '';
+        h += '<td colspan="3"><button onclick="engine.brew();return false;" ' + disabled + '>Brasser!</button></td>';
+        h += '<td><button onclick="engine.analyseBrew();return false;">Analyser</button></td>';
+        h += '</tr>';
         h += "</table></div>";
         return h;
     };
@@ -366,7 +371,8 @@ var Gui = (function () {
         NodeUpdate.updateDiv('level', this.displayLevel());
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
-        NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageIngredient', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
         NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());

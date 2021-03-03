@@ -61,8 +61,8 @@ class AddingIngredient extends CookingStep {
         }
         if (action instanceof AddingIngredient) {
             this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
-            "Il y a trop d'ingrédient",
-            "Il y n'a pas assez d'ingrédient",
+            "Il y a trop d'ingrédient pour la recette.",
+            "Il y n'a pas assez d'ingrédient la recette.",
             true);
         }
     }

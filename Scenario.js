@@ -12,6 +12,7 @@ var MALT = new CategorizedMaterial("Malt", "g", "grain.svg", "Ingredient", "Malt
 var HOUBLON = new CategorizedMaterial("Houblon", "g", "hops.svg", "Ingredient", "Houblon");
 var LEVURE = new CategorizedMaterial("Levure", "g", "eyedropper.svg", "Ingredient", "Levure de bière");
 var BIERE = new CategorizedMaterial("Bière", "cl", "beer.svg", "Ingredient", "Bière");
+var GOLD = new CategorizedItem("Or", "cash.svg", "Item", "Pièces d'or");
 var resourceList = [
     WATER, MALT, HOUBLON, LEVURE, BIERE
 ];
@@ -23,7 +24,7 @@ var Scenario = (function () {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                 new AddingIngredient([
-                    new StepParameter('quantité', 10, WATER)
+                    new StepParameter('quantité', 10000, WATER)
                 ]),
                 new AddingIngredient([
                     new StepParameter('quantité', 2000, MALT)
@@ -48,7 +49,7 @@ var Scenario = (function () {
             ], engine.recipes[0]),
             new Recipe("La kronadil", [
                 new AddingIngredient([
-                    new StepParameter('quantité', 10, WATER)
+                    new StepParameter('quantité', 10000, WATER)
                 ]),
                 new AddingIngredient([
                     new StepParameter('quantité', 2000, MALT)
@@ -79,6 +80,7 @@ var Scenario = (function () {
         engine.player.increaseStorage(Q(60 * 1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));
+        engine.player.increaseStorage(Q(10000, GOLD));
         return engine;
     };
     return Scenario;

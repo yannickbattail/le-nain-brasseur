@@ -44,6 +44,13 @@ var Player = (function () {
         this.preventNegativeStorage = preventNegativeStorage;
         return this;
     };
+    Player.prototype.getRecipeNameByName = function (recipeName) {
+        var recipes = this.recipes.filter(function (src) { return src.getName() == recipeName; });
+        if (recipes.length == 0) {
+            return null;
+        }
+        return recipes[0];
+    };
     Player.prototype.increaseStorage = function (quantity) {
         var resQ = this.getResourceInStorage(quantity.getResource().getName());
         if (resQ == null) {

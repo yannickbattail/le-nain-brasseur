@@ -21,12 +21,13 @@ const LEVEL = new Level("level", "level.svg", [
     "Brasseur",
     "Maitre brasseur",
 ]);
-//    VARIABLE  TYPE (Material a une unité en plus)         unité           image                   catégorie     description
-const WATER     = new CategorizedMaterial("Eau",       "cl",    "water.svg", "Ingredient",   "eau");
-const MALT      = new CategorizedMaterial("Malt",      "g",    "grain.svg", "Ingredient",   "Malt d'orge");
-const HOUBLON   = new CategorizedMaterial("Houblon",   "g",    "hops.svg",      "Ingredient",   "Houblon");
-const LEVURE    = new CategorizedMaterial("Levure",    "g",    "eyedropper.svg","Ingredient",   "Levure de bière");
-const BIERE     = new CategorizedMaterial("Bière",     "cl",    "beer.svg","Ingredient",   "Bière");
+//    VARIABLE  TYPE (Material a une unité en plus)               unité         image                         catégorie                 description
+const WATER     = new CategorizedMaterial("Eau",       "cl",   "water.svg",         "Ingredient",   "eau");
+const MALT      = new CategorizedMaterial("Malt",      "g",    "grain.svg",         "Ingredient",   "Malt d'orge");
+const HOUBLON   = new CategorizedMaterial("Houblon",   "g",    "hops.svg",          "Ingredient",   "Houblon");
+const LEVURE    = new CategorizedMaterial("Levure",    "g",    "eyedropper.svg",    "Ingredient",   "Levure de bière");
+const BIERE     = new CategorizedMaterial("Bière",     "cl",   "beer.svg",          "Ingredient",   "Bière");
+const GOLD      = new CategorizedItem("Or",                         "cash.svg",          "Item",         "Pièces d'or");
 
 const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
     WATER, MALT, HOUBLON, LEVURE, BIERE
@@ -38,7 +39,7 @@ class Scenario {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10, WATER)
+                        new StepParameter('quantité',10000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -64,7 +65,7 @@ class Scenario {
                 engine.recipes[0]),
             new Recipe("La kronadil", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10, WATER)
+                        new StepParameter('quantité',10000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -97,6 +98,7 @@ class Scenario {
         engine.player.increaseStorage(Q(60*1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));
+        engine.player.increaseStorage(Q(10000, GOLD));
         return engine;
     }
 }

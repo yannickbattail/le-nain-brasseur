@@ -33,6 +33,13 @@ var BrewerDwarf = (function () {
             }
         }
     };
+    BrewerDwarf.prototype.analyseBrew = function () {
+        var recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe);
+        }
+    };
     BrewerDwarf.prototype.doBrew = function (recipe) {
         var _this = this;
         var _a;
@@ -86,6 +93,13 @@ var BrewerDwarf = (function () {
             throw "recette " + recipeName + " non dispo";
         }
         this.player.setBrewingRecipe(recipeRef.createRecipe());
+    };
+    BrewerDwarf.prototype.reprepareBrew = function (recipeName) {
+        var recipe = engine.player.getRecipeNameByName(recipeName);
+        if (recipe == null) {
+            throw "recette " + recipeName + " non dispo";
+        }
+        this.player.setBrewingRecipe(recipe);
     };
     BrewerDwarf.prototype.getRecipeNameByName = function (recipeName) {
         var recipes = this.recipes.filter(function (src) { return src.getName() == recipeName; });
