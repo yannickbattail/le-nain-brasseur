@@ -27,7 +27,7 @@ const MALT      = new CategorizedMaterial("Malt",      "g",    "grain.svg",     
 const HOUBLON   = new CategorizedMaterial("Houblon",   "g",    "hops.svg",          "Ingredient",   "Houblon");
 const LEVURE    = new CategorizedMaterial("Levure",    "g",    "eyedropper.svg",    "Ingredient",   "Levure de bière");
 const BIERE     = new CategorizedMaterial("Bière",     "cl",   "beer.svg",          "Ingredient",   "Bière");
-const GOLD      = new CategorizedItem("Or",                         "beer.svg",          "item",         "Pièces d'or");
+const GOLD      = new CategorizedItem("Or",                         "cash.svg",          "Item",         "Pièces d'or");
 
 const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
     WATER, MALT, HOUBLON, LEVURE, BIERE

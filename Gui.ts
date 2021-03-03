@@ -417,10 +417,10 @@ class Gui {
         NodeUpdate.updateDiv('level', this.displayLevel());
         NodeUpdate.updateDiv('brewing', this.listRecipeReferences());
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
-        NodeUpdate.updateDiv('storageGlobal', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageIngredient', this.displayStorageCategory("Ingrédients", "Ingredient"));
+        NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
         NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
-        //NodeUpdate.updateDiv('recipes', this.editRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }
