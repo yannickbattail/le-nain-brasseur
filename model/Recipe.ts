@@ -27,4 +27,14 @@ class Recipe extends RecipeReference {
     getName() : string {
         return this.name;
     }
+    
+    public hasProblem() : boolean {
+        let prob = this.getCookingSteps().map(
+            s => s.getStepParameters()
+                .map(s => s.score==null || s.score==0 || (s.problem!=null && s.problem!=""))
+                .reduce((a, b) => (a || b), false)
+        ).reduce((a, b) => (a || b), false);
+        return prob;
+    }
+
 }

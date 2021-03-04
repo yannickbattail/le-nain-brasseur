@@ -29,7 +29,10 @@ class RecipeReference {
         recipe.recipeRef = this;
         recipe.steps.forEach(
             s => s.getStepParameters().forEach(
-                p => p.value = 0
+                p => {
+                    if (p.resource?.getName() != WATER.getName())
+                        p.value = 0;
+                }
             )
         );
         return recipe;

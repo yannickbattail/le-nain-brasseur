@@ -35,7 +35,7 @@ class BrewerDwarf {
             if (recipe != null) {
                 this.loadRecipe(recipe);
                 RecipeAnalysis.analyse(recipe);
-                if (!BrewerDwarf.hasProblem(recipe)) {
+                if (!recipe.hasProblem()) {
                     console.log('doBrew');
                     this.doBrew(recipe);
                 }
@@ -63,17 +63,12 @@ class BrewerDwarf {
         let beer = new Beer(recipe.name, 'l', 'beer.svg',
             "beer", 'Beer à partir de '+recipe.recipeRef?.name, recipe);
         this.player.increaseStorage(Q(liters ,beer));
+        let drechestep = recipe.steps.filter(
+            s => s.getStepParameters()[0]?.resource?.getName() == MALT.getName()
+        );
+        this.player.increaseStorage(Q(drechestep[0].getStepParameters()[0].value ,DRECHE));
         this.player.setBrewingRecipe(null);
         this.player.getRecipes().push(recipe);
-    }
-
-    private static hasProblem(recipe: Recipe) : boolean {
-        let prob = recipe.getCookingSteps().map(
-            s => s.getStepParameters()
-                .map(s => s.score==null || s.score==0 || (s.problem!=null && s.problem!=""))
-                .reduce((a, b) => (a || b), false)
-        ).reduce((a, b) => (a || b), false);
-        return prob;
     }
 
     private loadRecipe(recipe: Recipe) {
