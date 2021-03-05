@@ -3,11 +3,12 @@
 
 class RecipeAnalysis {
 
-    public static analyse(recipe : Recipe, level : AnalysisLevel) {
+    public static analyse(recipe : Recipe, player : IPlayer, level : AnalysisLevel) {
         if (!recipe.recipeRef) {
             throw "no recipeRef";
         }
         this.resetScore(recipe);
+        this.playerHasIngredient(recipe, player)
         let steps = recipe.getCookingSteps();
         let stepsRef = recipe.recipeRef.getCookingSteps();
         let index : number = 0;
@@ -34,15 +35,32 @@ class RecipeAnalysis {
         .reduce((a, b) => Math.min(a, b), 1);
         recipe.analysisLevel = level;
     }
-    
+
+
+    private static playerHasIngredient(recipe : Recipe, player : IPlayer) {
+        recipe.getCookingSteps().forEach(
+            s => {
+                if (s.getStepParameters().length != 0) {
+                    let param = s.getStepParameter(0);
+                    let quantity = param.getQuantity();
+                    if (quantity != null) {
+                        if (!player.hasResources([quantity])) {
+                            param.problem += "Il n'y a pas assez de cet ingrédient dans le stockage. ";
+                        }
+                    }
+                }
+            }
+        )
+    }
+
     private static resetScore(recipe : Recipe) {
+        recipe.problem = "";
         recipe.score = null;
-        recipe.problem = null;
         recipe.getCookingSteps().forEach(
             step => {
                 step.getStepParameters().forEach(param => {
-                    param.problem = null;
-                    param.advice = null;
+                    param.problem = "";
+                    param.advice = "";
                     param.score = null;
                 });
             }

@@ -1,5 +1,5 @@
 "use strict";
-var VERSION = "0.1";
+var VERSION = "0.3";
 function loadEngine() {
     var json = window.localStorage.getItem('BrewerDwarf');
     if (json != null) {

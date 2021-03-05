@@ -2,8 +2,8 @@
 var StepParameter = (function () {
     function StepParameter(name, value, resource, problem, advice, score) {
         if (resource === void 0) { resource = null; }
-        if (problem === void 0) { problem = null; }
-        if (advice === void 0) { advice = null; }
+        if (problem === void 0) { problem = ""; }
+        if (advice === void 0) { advice = ""; }
         if (score === void 0) { score = null; }
         this.name = name;
         this.value = value;
@@ -27,6 +27,12 @@ var StepParameter = (function () {
     };
     StepParameter.prototype.getValue = function () {
         return this.value;
+    };
+    StepParameter.prototype.getQuantity = function () {
+        if (this.resource == null) {
+            return null;
+        }
+        return Q(this.value, this.resource);
     };
     return StepParameter;
 }());

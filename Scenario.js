@@ -1,6 +1,4 @@
 "use strict";
-var MINUTE = 60 * 1000;
-var DAY = 24 * 60 * MINUTE;
 var Q = function (quantity, res) { return new Quantity(quantity, res); };
 var LEVEL = new Level("level", "level.svg", [
     "rien",
@@ -19,7 +17,7 @@ var GOLD = new CategorizedItem("Or", "cash.svg", "Item", "Pièces d'or");
 var resourceList = [
     WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
-var ADVISE_COST = Q(100, GOLD);
+var ADVISE_COST = Q(50, GOLD);
 var Scenario = (function () {
     function Scenario() {
     }
@@ -28,7 +26,7 @@ var Scenario = (function () {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                 new AddingIngredient([
-                    new StepParameter('quantité', 10000, WATER)
+                    new StepParameter('quantité', 1000, WATER)
                 ]),
                 new AddingIngredient([
                     new StepParameter('quantité', 2000, MALT)
@@ -38,7 +36,7 @@ var Scenario = (function () {
                 ]),
                 new Heating([
                     new StepParameter('température', 100),
-                    new StepParameter('durée', 20 * 60 * 1000)
+                    new StepParameter('durée', 20)
                 ]),
                 new Filtering([]),
                 new Cooling([
@@ -48,12 +46,12 @@ var Scenario = (function () {
                     new StepParameter('quantité', 10, LEVURE)
                 ]),
                 new Brewing([
-                    new StepParameter('jour', 30 * 24 * 60 * 60 * 1000)
+                    new StepParameter('jour', 30)
                 ])
             ], engine.recipes[0]),
             new Recipe("La kronadil", [
                 new AddingIngredient([
-                    new StepParameter('quantité', 10000, WATER)
+                    new StepParameter('quantité', 1000, WATER)
                 ]),
                 new AddingIngredient([
                     new StepParameter('quantité', 2000, MALT)
@@ -63,7 +61,7 @@ var Scenario = (function () {
                 ]),
                 new Heating([
                     new StepParameter('température', 100),
-                    new StepParameter('durée', 20 * 60 * 1000)
+                    new StepParameter('durée', 20)
                 ]),
                 new Filtering([]),
                 new Cooling([
@@ -73,14 +71,14 @@ var Scenario = (function () {
                     new StepParameter('quantité', 10, LEVURE)
                 ]),
                 new Brewing([
-                    new StepParameter('jour', 30 * 24 * 60 * 60 * 1000)
+                    new StepParameter('jour', 30)
                 ])
             ], engine.recipes[0]),
         ];
         engine.player = new Player("Gurdil");
         engine.player.setPreventNegativeStorage(true);
         engine.player.increaseStorage(Q(1, LEVEL));
-        engine.player.increaseStorage(Q(1000, WATER));
+        engine.player.increaseStorage(Q(100000, WATER));
         engine.player.increaseStorage(Q(60 * 1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));

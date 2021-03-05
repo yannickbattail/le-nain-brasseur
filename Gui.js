@@ -124,7 +124,7 @@ var Gui = (function () {
         h += '<tr><th colspan="3">Brassée partir de: ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.getName()) + '</th></tr>';
         h += '<tr>';
         h += '<td>Nom: </td>';
-        h += '<td colspan="2"><input type="text" id="recipeName" value="' + recipe.getName() + '" /></td>';
+        h += '<td colspan="2"><input type="text" id="recipeName" value="' + recipe.getName() + '" onchange="engine.checkBrew()" /></td>';
         h += '<td><b>Note:</b> ' + this.displayScore(recipe.score) + '</td>';
         h += '<td><span class="problem"><b>Problème:</b> ' + (recipe.problem != null ? recipe.problem : "") + '</span>';
         h += '<span class="advice"><b>Conseils:</b></span></td>';
@@ -133,7 +133,6 @@ var Gui = (function () {
         h += '<tr>';
         var disabled = recipe.hasProblem() || recipe.analysisLevel == AnalysisLevel.NONE ? 'disabled="disabled" title="On ne brasse pas une bière problématique. Vérifier d\'abord. "' : '';
         h += '<td colspan="3"><button onclick="engine.brew()" ' + disabled + '>Brasser!</button>';
-        h += '<button onclick="engine.analyseBrew()">Vérifier</button></td>';
         h += '<td>&nbsp;</td>';
         var storageRes = this.engine.player.getResourceInStorage(ADVISE_COST.getResource().getName());
         var cssClass = 'notAvailableResource';
@@ -166,19 +165,19 @@ var Gui = (function () {
             if (paramIndex < params.length) {
                 var param = params[paramIndex];
                 if (param.name == 'durée') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / MINUTE) + '" /> min</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" onchange="engine.checkBrew()" /> min</div></td>';
                 }
                 else if (param.name == 'jour') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / DAY) + '" /> jours</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" onchange="engine.checkBrew()" /> jours</div></td>';
                 }
                 else if (param.name == 'température') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" /> °C</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" onchange="engine.checkBrew()" /> °C</div></td>';
                 }
                 else if (param.resource != null) {
                     h += '<td><div title="' + param.name + '">' + this.editQuantity(Q(param.value, param.resource), index, paramIndex) + '</div></td>';
                 }
                 else {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_other" min="1" value="' + param.value + '" /></div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_other" min="1" value="' + param.value + '" onchange="engine.checkBrew()" /></div></td>';
                 }
             }
             else {
@@ -264,7 +263,7 @@ var Gui = (function () {
         }
         return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
             + '<div class="resource_label">'
-            + '<input type="number" id="' + stepIndex + '_' + paramIndex + '_quantité" min="1" value="' + quantity.getQuantity() + '" /> ' + unit
+            + '<input type="number" id="' + stepIndex + '_' + paramIndex + '_quantité" min="1" value="' + quantity.getQuantity() + '" onchange="engine.checkBrew()" /> ' + unit
             + ((storageRes != null) ? '/<span>' + storageRes.show() + '</span>' : '')
             + '</div>'
             + ((image == '') ? quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')

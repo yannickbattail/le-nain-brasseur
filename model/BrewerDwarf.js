@@ -25,49 +25,55 @@ var BrewerDwarf = (function () {
             var recipe = this.player.getBrewingRecipe();
             if (recipe != null) {
                 this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
                 if (!recipe.hasProblem()) {
-                    RecipeAnalysis.analyse(recipe, AnalysisLevel.SCORE);
+                    RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
                     console.log('doBrew');
                     this.doBrew(recipe);
                 }
             }
         }
     };
-    BrewerDwarf.prototype.analyseBrew = function () {
+    BrewerDwarf.prototype.checkBrew = function () {
         var recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            if (!this.player.hasResources([ADVISE_COST])) {
-                recipe.problem = "Pas assez d'or pour acheter les conseils d'aun maistre brasseur.";
-                return;
-            }
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
-            this.player.decreaseStorage(ADVISE_COST);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
         }
     };
     BrewerDwarf.prototype.advise = function () {
         var recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.ADVISE);
+            if (!this.player.hasResources([ADVISE_COST])) {
+                recipe.problem = "Pas assez d'or pour acheter les conseils d'un maistre brasseur.";
+                return;
+            }
+            this.player.decreaseStorage(ADVISE_COST);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.ADVISE);
         }
+    };
+    BrewerDwarf.prototype.brewHasIngredient = function (recipe) {
+        var ingredientList = recipe.getCookingSteps().map(function (s) { return s.getQuantity(); }).filter(function (q) { return q != null; });
+        return this.player.hasResources(ingredientList);
     };
     BrewerDwarf.prototype.doBrew = function (recipe) {
         var _this = this;
         var _a;
         recipe.getCookingSteps()
-            .map(function (s) { return (s instanceof AddingIngredient) ? s : null; })
             .forEach(function (s) {
             if (s != null) {
-                _this.player.decreaseStorage(s.getQuantity());
+                var q = s.getQuantity();
+                if (q != null) {
+                    _this.player.decreaseStorage(q);
+                }
             }
         });
         var liters = recipe.steps[0].getStepParameter(0).value;
         var beer = new Beer(recipe.name, 'l', 'beer.svg', "beer", 'Beer à partir de ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.name), recipe);
         this.player.increaseStorage(Q(liters, beer));
-        var drechestep = recipe.steps.filter(function (s) { var _a, _b; return ((_b = (_a = s.getStepParameters()[0]) === null || _a === void 0 ? void 0 : _a.resource) === null || _b === void 0 ? void 0 : _b.getName()) == MALT.getName(); });
-        this.player.increaseStorage(Q(drechestep[0].getStepParameters()[0].value, DRECHE));
+        var maltStep = recipe.steps.filter(function (s) { var _a, _b; return ((_b = (_a = s.getStepParameters()[0]) === null || _a === void 0 ? void 0 : _a.resource) === null || _b === void 0 ? void 0 : _b.getName()) == MALT.getName(); });
+        this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value, DRECHE));
         this.player.setBrewingRecipe(null);
         this.player.getRecipes().push(recipe);
     };
@@ -75,15 +81,7 @@ var BrewerDwarf = (function () {
         var _this = this;
         recipe.name = this.val("recipeName");
         recipe.getCookingSteps().forEach(function (step, stepIndex) {
-            step.getStepParameters().forEach(function (param, paramIndex) {
-                param.value = parseFloat(_this.val(stepIndex + "_" + paramIndex + "_" + param.name));
-                if (param.name == "durée") {
-                    param.value *= MINUTE;
-                }
-                if (param.name == "jour") {
-                    param.value *= DAY;
-                }
-            });
+            step.getStepParameters().forEach(function (param, paramIndex) { return param.value = parseFloat(_this.val(stepIndex + "_" + paramIndex + "_" + param.name)); });
         });
     };
     BrewerDwarf.prototype.val = function (id) {

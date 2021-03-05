@@ -5,12 +5,15 @@ var CookingStep = (function () {
         this.stepParameters = stepParameters;
         this.score = null;
     }
+    CookingStep.prototype.getQuantity = function () {
+        if (this.stepParameters.length == 0) {
+            return null;
+        }
+        return this.stepParameters[0].getQuantity();
+    };
     CookingStep.prototype.analyseStep = function (step, stepRef, level, tooHighMsg, tooLowMsg, analyseResource) {
         var _a, _b, _c;
         if (analyseResource === void 0) { analyseResource = false; }
-        step.problem = "";
-        step.advice = "";
-        step.score = null;
         if (level == AnalysisLevel.NONE) {
             return;
         }
@@ -36,12 +39,6 @@ var CookingStep = (function () {
                     step.advice += tooHighMsg;
                 }
             }
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        if (step.advice == "") {
-            step.advice = null;
         }
         if (level >= AnalysisLevel.SCORE) {
             step.score = RecipeAnalysis.scoring(step.value, stepRef.value);

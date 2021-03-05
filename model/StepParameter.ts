@@ -6,8 +6,8 @@ class StepParameter {
     constructor(public name: string,
                 public value: number,
                 public resource: Resource | null = null,
-                public problem: string | null = null,
-                public advice: string | null = null,
+                public problem: string = "",
+                public advice: string = "",
                 public score: number | null = null){
         
     }
@@ -28,4 +28,12 @@ class StepParameter {
     getValue() : number {
         return this.value;
     }
+
+    public getQuantity() : IQuantity | null {
+        if (this.resource == null) {
+            return null;
+        }
+        return Q(this.value, this.resource);
+    }
+
 }

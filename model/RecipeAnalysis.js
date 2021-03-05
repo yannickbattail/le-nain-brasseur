@@ -2,11 +2,12 @@
 var RecipeAnalysis = (function () {
     function RecipeAnalysis() {
     }
-    RecipeAnalysis.analyse = function (recipe, level) {
+    RecipeAnalysis.analyse = function (recipe, player, level) {
         if (!recipe.recipeRef) {
             throw "no recipeRef";
         }
         this.resetScore(recipe);
+        this.playerHasIngredient(recipe, player);
         var steps = recipe.getCookingSteps();
         var stepsRef = recipe.recipeRef.getCookingSteps();
         var index = 0;
@@ -30,13 +31,26 @@ var RecipeAnalysis = (function () {
             .reduce(function (a, b) { return Math.min(a, b); }, 1);
         recipe.analysisLevel = level;
     };
+    RecipeAnalysis.playerHasIngredient = function (recipe, player) {
+        recipe.getCookingSteps().forEach(function (s) {
+            if (s.getStepParameters().length != 0) {
+                var param = s.getStepParameter(0);
+                var quantity = param.getQuantity();
+                if (quantity != null) {
+                    if (!player.hasResources([quantity])) {
+                        param.problem += "Il n'y a pas assez de cet ingrédient dans le stockage. ";
+                    }
+                }
+            }
+        });
+    };
     RecipeAnalysis.resetScore = function (recipe) {
+        recipe.problem = "";
         recipe.score = null;
-        recipe.problem = null;
         recipe.getCookingSteps().forEach(function (step) {
             step.getStepParameters().forEach(function (param) {
-                param.problem = null;
-                param.advice = null;
+                param.problem = "";
+                param.advice = "";
                 param.score = null;
             });
         });

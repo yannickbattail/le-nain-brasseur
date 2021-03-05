@@ -4,7 +4,7 @@
 class Recipe extends RecipeReference {
     $type : string = 'Recipe';
     public score : number | null = null;
-    public problem: string | null = null;
+    public problem: string = "";
     public analysisLevel: AnalysisLevel = AnalysisLevel.NONE;
     constructor(public name: string = "",
                 public steps: Array<ICookingStep> = [],

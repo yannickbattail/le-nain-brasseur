@@ -26,7 +26,7 @@ var Recipe = (function (_super) {
         _this.recipeRef = recipeRef;
         _this.$type = 'Recipe';
         _this.score = null;
-        _this.problem = null;
+        _this.problem = "";
         _this.analysisLevel = AnalysisLevel.NONE;
         return _this;
     }

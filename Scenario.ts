@@ -12,10 +12,6 @@
 /// <reference path="./model/BrewerDwarf.ts" />
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 
-
-
-const MINUTE = 60 * 1000;
-const DAY = 24 * 60 * MINUTE;
 let Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
 
 const LEVEL = new Level("level", "level.svg", [
@@ -38,8 +34,7 @@ const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
     WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
 
-
-let ADVISE_COST = Q(100, GOLD);
+let ADVISE_COST = Q(50, GOLD);
 
 class Scenario {
     public static initEngine() : BrewerDwarf {
@@ -47,7 +42,7 @@ class Scenario {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10000, WATER)
+                        new StepParameter('quantité',1000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -57,7 +52,7 @@ class Scenario {
                     ]),
                     new Heating([
                         new StepParameter('température',100),
-                        new StepParameter('durée',20*60*1000)
+                        new StepParameter('durée',20)
                     ]),
                     new Filtering([]),
                     new Cooling([
@@ -67,13 +62,13 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('jour',30*24*60*60*1000) // 2592000000
+                        new StepParameter('jour',30)
                     ])
                 ],
                 engine.recipes[0]),
             new Recipe("La kronadil", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10000, WATER)
+                        new StepParameter('quantité',1000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -83,7 +78,7 @@ class Scenario {
                     ]),
                     new Heating([
                         new StepParameter('température',100),
-                        new StepParameter('durée',20*60*1000)
+                        new StepParameter('durée',20)
                     ]),
                     new Filtering([]),
                     new Cooling([
@@ -93,7 +88,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('jour',30*24*60*60*1000)
+                        new StepParameter('jour',30)
                     ])
                 ],
                 engine.recipes[0]),
@@ -102,7 +97,7 @@ class Scenario {
         engine.player.setPreventNegativeStorage(true);
         // initial storage
         engine.player.increaseStorage(Q(1, LEVEL));
-        engine.player.increaseStorage(Q(1000, WATER));
+        engine.player.increaseStorage(Q(100000, WATER));
         engine.player.increaseStorage(Q(60*1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));

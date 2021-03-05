@@ -34,26 +34,20 @@ class BrewerDwarf {
             let recipe = this.player.getBrewingRecipe();
             if (recipe != null) {
                 this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
                 if (!recipe.hasProblem()) {
-                    RecipeAnalysis.analyse(recipe, AnalysisLevel.SCORE);
+                    RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
                     console.log('doBrew');
                     this.doBrew(recipe);
                 }
             }
         }
     }
-
-    public analyseBrew() {
+    public checkBrew() {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            if (!this.player.hasResources([ADVISE_COST])) {
-                recipe.problem = "Pas assez d'or pour acheter les conseils d'aun maistre brasseur.";
-                return ;
-            } 
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
-            this.player.decreaseStorage(ADVISE_COST);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
         }
     }
 
@@ -61,26 +55,40 @@ class BrewerDwarf {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.ADVISE);
+            if (!this.player.hasResources([ADVISE_COST])) {
+                recipe.problem = "Pas assez d'or pour acheter les conseils d'un maistre brasseur.";
+                return ;
+            }
+            this.player.decreaseStorage(ADVISE_COST);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.ADVISE);
         }
     }
-
+    
+    private brewHasIngredient(recipe : Recipe) : boolean {
+        let ingredientList = recipe.getCookingSteps().map(
+            s => s.getQuantity()
+        ).filter(q => q != null) as Array<IQuantity>;
+        return this.player.hasResources(ingredientList);
+    }
+    
     private doBrew(recipe: Recipe) {
         recipe.getCookingSteps()
-            .map(s => (s instanceof AddingIngredient)?s:null)
             .forEach(s => {
-                if (s!=null) {
-                    this.player.decreaseStorage(s.getQuantity());
+                if (s != null) {
+                    let q = s.getQuantity();
+                    if(q != null) {
+                        this.player.decreaseStorage(q);
+                    }
                 }
             });
         let liters = recipe.steps[0].getStepParameter(0).value;
         let beer = new Beer(recipe.name, 'l', 'beer.svg',
             "beer", 'Beer à partir de '+recipe.recipeRef?.name, recipe);
         this.player.increaseStorage(Q(liters ,beer));
-        let drechestep = recipe.steps.filter(
+        let maltStep = recipe.steps.filter(
             s => s.getStepParameters()[0]?.resource?.getName() == MALT.getName()
         );
-        this.player.increaseStorage(Q(drechestep[0].getStepParameters()[0].value ,DRECHE));
+        this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value ,DRECHE));
         this.player.setBrewingRecipe(null);
         this.player.getRecipes().push(recipe);
     }
@@ -89,15 +97,9 @@ class BrewerDwarf {
         recipe.name = this.val("recipeName");
         recipe.getCookingSteps().forEach(
             (step,stepIndex) => {
-                step.getStepParameters().forEach((param, paramIndex) => {
-                    param.value = parseFloat(this.val(stepIndex+"_"+paramIndex+"_"+param.name));
-                    if (param.name == "durée") {
-                        param.value *= MINUTE;
-                    }
-                    if (param.name == "jour") {
-                        param.value *= DAY;
-                    }
-                });
+                step.getStepParameters().forEach(
+                    (param, paramIndex) => param.value = parseFloat(this.val(stepIndex+"_"+paramIndex+"_"+param.name))
+                );
             }
         );
     }
