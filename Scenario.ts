@@ -42,7 +42,7 @@ class Scenario {
         engine.recipes = [
             new Recipe("La Einegloïn", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10000, WATER)
+                        new StepParameter('quantité',1000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -68,7 +68,7 @@ class Scenario {
                 engine.recipes[0]),
             new Recipe("La kronadil", [
                     new AddingIngredient([
-                        new StepParameter('quantité',10000, WATER)
+                        new StepParameter('quantité',1000, WATER)
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
@@ -97,7 +97,7 @@ class Scenario {
         engine.player.setPreventNegativeStorage(true);
         // initial storage
         engine.player.increaseStorage(Q(1, LEVEL));
-        engine.player.increaseStorage(Q(1000, WATER));
+        engine.player.increaseStorage(Q(100000, WATER));
         engine.player.increaseStorage(Q(60*1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));

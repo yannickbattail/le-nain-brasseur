@@ -34,9 +34,9 @@ class BrewerDwarf {
             let recipe = this.player.getBrewingRecipe();
             if (recipe != null) {
                 this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
                 if (!recipe.hasProblem()) {
-                    RecipeAnalysis.analyse(recipe, AnalysisLevel.SCORE);
+                    RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
                     console.log('doBrew');
                     this.doBrew(recipe);
                 }
@@ -47,20 +47,7 @@ class BrewerDwarf {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
-        }
-    }
-
-    public analyseBrew() {
-        let recipe = this.player.getBrewingRecipe();
-        if (recipe != null) {
-            this.loadRecipe(recipe);
-            if (!this.player.hasResources([ADVISE_COST])) {
-                recipe.problem = "Pas assez d'or pour acheter les conseils d'aun maistre brasseur.";
-                return ;
-            } 
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
-            this.player.decreaseStorage(ADVISE_COST);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
         }
     }
 
@@ -68,10 +55,15 @@ class BrewerDwarf {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe, AnalysisLevel.ADVISE);
+            if (!this.player.hasResources([ADVISE_COST])) {
+                recipe.problem = "Pas assez d'or pour acheter les conseils d'un maistre brasseur.";
+                return ;
+            }
+            this.player.decreaseStorage(ADVISE_COST);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.ADVISE);
         }
     }
-
+    
     private brewHasIngredient(recipe : Recipe) : boolean {
         let ingredientList = recipe.getCookingSteps().map(
             s => s.getQuantity()

@@ -22,9 +22,6 @@ abstract class CookingStep implements ICookingStep {
     }
     
     analyseStep(step: StepParameter, stepRef: StepParameter, level: AnalysisLevel, tooHighMsg : string, tooLowMsg : string, analyseResource : boolean = false) {
-        step.problem = "";
-        step.advice = "";
-        step.score = null;
         if (level == AnalysisLevel.NONE) {
             return;
         }
@@ -48,12 +45,6 @@ abstract class CookingStep implements ICookingStep {
                     step.advice += tooHighMsg;
                 }
             }
-        }
-        if (step.problem == "") {
-            step.problem = null;
-        }
-        if (step.advice == "") {
-            step.advice = null;
         }
         if (level >= AnalysisLevel.SCORE) {
             step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
