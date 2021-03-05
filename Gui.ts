@@ -96,7 +96,7 @@ class Gui {
                 let param = params[paramIndex];
                 if (param.name == 'durée') {
                     h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
-                } else if (param.name == 'jour') {
+                } else if (param.name == 'jours') {
                     h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
                 } else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '">' + param.value + '°C</div></td>';
@@ -172,9 +172,9 @@ class Gui {
             if (paramIndex < params.length) {
                 let param = params[paramIndex];
                 if (param.name == 'durée') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / 60000) + '" /> min</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / MINUTE) + '" /> min</div></td>';
                 } else if (param.name == 'jour') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + (param.value / (24*3600+1000)) + '" /> jours</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + (param.value / DAY) + '" /> jours</div></td>';
                 } else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_'+param.name+'" min="1" value="' + param.value + '" /> °C</div></td>';
                 } else if (param.resource != null) {
@@ -424,7 +424,7 @@ class Gui {
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
         NodeUpdate.updateDiv('storageIngredient', this.displayStorageCategory("Ingrédients", "Ingredient"));
         NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
-        NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
+        NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Brassins", "beer"));
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();

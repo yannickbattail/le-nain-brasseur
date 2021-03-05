@@ -12,6 +12,10 @@
 /// <reference path="./model/BrewerDwarf.ts" />
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 
+
+
+const MINUTE = 60 * 1000;
+const DAY = 24 * 60 * MINUTE;
 let Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
 
 const LEVEL = new Level("level", "level.svg", [
