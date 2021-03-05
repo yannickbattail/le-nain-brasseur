@@ -12,10 +12,6 @@
 /// <reference path="./model/BrewerDwarf.ts" />
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 
-
-
-const MINUTE = 60 * 1000;
-const DAY = 24 * 60 * MINUTE;
 let Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
 
 const LEVEL = new Level("level", "level.svg", [
@@ -38,8 +34,7 @@ const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
     WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
 
-
-let ADVISE_COST = Q(100, GOLD);
+let ADVISE_COST = Q(50, GOLD);
 
 class Scenario {
     public static initEngine() : BrewerDwarf {
@@ -57,7 +52,7 @@ class Scenario {
                     ]),
                     new Heating([
                         new StepParameter('température',100),
-                        new StepParameter('durée',20*60*1000)
+                        new StepParameter('durée',20)
                     ]),
                     new Filtering([]),
                     new Cooling([
@@ -67,7 +62,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('jour',30*24*60*60*1000) // 2592000000
+                        new StepParameter('jour',30)
                     ])
                 ],
                 engine.recipes[0]),
@@ -83,7 +78,7 @@ class Scenario {
                     ]),
                     new Heating([
                         new StepParameter('température',100),
-                        new StepParameter('durée',20*60*1000)
+                        new StepParameter('durée',20)
                     ]),
                     new Filtering([]),
                     new Cooling([
@@ -93,7 +88,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('jour',30*24*60*60*1000)
+                        new StepParameter('jour',30)
                     ])
                 ],
                 engine.recipes[0]),

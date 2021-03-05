@@ -13,6 +13,13 @@ abstract class CookingStep implements ICookingStep {
     abstract getStepParameter(index : number) : StepParameter;
     abstract validate() : void;
     abstract analyse(action: ICookingStep, level: AnalysisLevel) : void;
+
+    public getQuantity() : IQuantity | null {
+        if (this.stepParameters.length == 0 ) {
+            return null;
+        }
+        return this.stepParameters[0].getQuantity();
+    }
     
     analyseStep(step: StepParameter, stepRef: StepParameter, level: AnalysisLevel, tooHighMsg : string, tooLowMsg : string, analyseResource : boolean = false) {
         step.problem = "";

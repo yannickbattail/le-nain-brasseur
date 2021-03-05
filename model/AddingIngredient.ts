@@ -29,9 +29,6 @@ class AddingIngredient extends CookingStep {
     getResource() : Resource {
         return this.stepParameters[0].resource?this.stepParameters[0].resource:new Resource("nothing");
     }
-    getQuantity() : Quantity {
-        return Q(this.stepParameters[0].value, this.getResource());
-    }
     
     getStepParameters() : Array<StepParameter> {
         return this.stepParameters;

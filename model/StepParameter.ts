@@ -28,4 +28,12 @@ class StepParameter {
     getValue() : number {
         return this.value;
     }
+
+    public getQuantity() : IQuantity | null {
+        if (this.resource == null) {
+            return null;
+        }
+        return Q(this.value, this.resource);
+    }
+
 }
