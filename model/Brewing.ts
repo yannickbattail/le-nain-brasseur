@@ -44,12 +44,12 @@ class Brewing extends CookingStep {
         }
     }
 
-    public analyse(action: ICookingStep) {
+    public analyse(action: ICookingStep, level: AnalysisLevel): void {
         if (this.$type != action.$type) {
-            return "L'étape devrait être "+this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être "+this.getName();
         }
         if (action instanceof Brewing) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level,
                 "La fermentation est trop longue",
                 "La fermentation est trop courte");
         }

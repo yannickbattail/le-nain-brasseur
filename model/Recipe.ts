@@ -1,9 +1,11 @@
 /// <reference path="RecipeReference.ts" />
+/// <reference path="AnalysisLevel.ts" />
 
 class Recipe extends RecipeReference {
     $type : string = 'Recipe';
     public score : number | null = null;
     public problem: string | null = null;
+    public analysisLevel: AnalysisLevel = AnalysisLevel.NONE;
     constructor(public name: string = "",
                 public steps: Array<ICookingStep> = [],
                 public recipeRef : RecipeReference | null = null) {
@@ -18,6 +20,7 @@ class Recipe extends RecipeReference {
         let newObj : Recipe = new Recipe(name, steps, recipeRef);
         newObj.score = data.score;
         newObj.problem = data.problem;
+        newObj.analysisLevel = data.analysisLevel;
         return newObj;
     }
     
@@ -26,5 +29,14 @@ class Recipe extends RecipeReference {
     }
     getName() : string {
         return this.name;
+    }
+    
+    public hasProblem() : boolean {
+        let prob = this.getCookingSteps().map(
+            s => s.getStepParameters()
+                .map(s => (s.problem!=null && s.problem!=""))
+                .reduce((a, b) => (a || b), false)
+        ).reduce((a, b) => (a || b), false);
+        return prob;
     }
 }

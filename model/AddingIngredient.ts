@@ -55,14 +55,14 @@ class AddingIngredient extends CookingStep {
         }
     }
     
-    public analyse(action: ICookingStep) {
+    public analyse(action: ICookingStep, level: AnalysisLevel): void {
         if (this.$type != action.$type) {
-            return "L'étape devrait être "+this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être "+this.getName();
         }
         if (action instanceof AddingIngredient) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level,
             "Il y a trop d'ingrédient pour la recette.",
-            "Il y n'a pas assez d'ingrédient la recette.",
+            "Il y n'a pas assez d'ingrédient pour la recette.",
             true);
         }
     }

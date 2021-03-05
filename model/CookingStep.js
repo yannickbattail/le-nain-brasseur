@@ -5,12 +5,15 @@ var CookingStep = (function () {
         this.stepParameters = stepParameters;
         this.score = null;
     }
-    CookingStep.prototype.analyseStep = function (step, stepRef, tooHighMsg, tooLowMsg, analyseResource) {
+    CookingStep.prototype.analyseStep = function (step, stepRef, level, tooHighMsg, tooLowMsg, analyseResource) {
         var _a, _b, _c;
         if (analyseResource === void 0) { analyseResource = false; }
         step.problem = "";
         step.advice = "";
         step.score = null;
+        if (level == AnalysisLevel.NONE) {
+            return;
+        }
         if (analyseResource && ((_a = step.resource) === null || _a === void 0 ? void 0 : _a.getName()) != ((_b = stepRef.resource) === null || _b === void 0 ? void 0 : _b.getName())) {
             step.problem += "Ingredient n'est pas le bon, il devrait être: " + ((_c = this.getStepParameter(0).resource) === null || _c === void 0 ? void 0 : _c.getName());
         }
@@ -19,7 +22,9 @@ var CookingStep = (function () {
                 step.problem += tooLowMsg;
             }
             else {
-                step.advice += tooLowMsg;
+                if (level == AnalysisLevel.ADVISE) {
+                    step.advice += tooLowMsg;
+                }
             }
         }
         if (step.value > stepRef.value) {
@@ -27,7 +32,9 @@ var CookingStep = (function () {
                 step.problem += tooHighMsg;
             }
             else {
-                step.advice += tooHighMsg;
+                if (level == AnalysisLevel.ADVISE) {
+                    step.advice += tooHighMsg;
+                }
             }
         }
         if (step.problem == "") {
@@ -36,7 +43,9 @@ var CookingStep = (function () {
         if (step.advice == "") {
             step.advice = null;
         }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
+        if (level >= AnalysisLevel.SCORE) {
+            step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
+        }
     };
     return CookingStep;
 }());

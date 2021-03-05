@@ -34,8 +34,9 @@ class BrewerDwarf {
             let recipe = this.player.getBrewingRecipe();
             if (recipe != null) {
                 this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe);
-                if (!BrewerDwarf.hasProblem(recipe)) {
+                RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+                if (!recipe.hasProblem()) {
+                    RecipeAnalysis.analyse(recipe, AnalysisLevel.SCORE);
                     console.log('doBrew');
                     this.doBrew(recipe);
                 }
@@ -47,7 +48,20 @@ class BrewerDwarf {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe);
+            if (!this.player.hasResources([ADVISE_COST])) {
+                recipe.problem = "Pas assez d'or pour acheter les conseils d'aun maistre brasseur.";
+                return ;
+            } 
+            RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+            this.player.decreaseStorage(ADVISE_COST);
+        }
+    }
+
+    public advise() {
+        let recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe, AnalysisLevel.ADVISE);
         }
     }
 
@@ -63,17 +77,12 @@ class BrewerDwarf {
         let beer = new Beer(recipe.name, 'l', 'beer.svg',
             "beer", 'Beer à partir de '+recipe.recipeRef?.name, recipe);
         this.player.increaseStorage(Q(liters ,beer));
+        let drechestep = recipe.steps.filter(
+            s => s.getStepParameters()[0]?.resource?.getName() == MALT.getName()
+        );
+        this.player.increaseStorage(Q(drechestep[0].getStepParameters()[0].value ,DRECHE));
         this.player.setBrewingRecipe(null);
         this.player.getRecipes().push(recipe);
-    }
-
-    private static hasProblem(recipe: Recipe) : boolean {
-        let prob = recipe.getCookingSteps().map(
-            s => s.getStepParameters()
-                .map(s => s.score==null || s.score==0 || (s.problem!=null && s.problem!=""))
-                .reduce((a, b) => (a || b), false)
-        ).reduce((a, b) => (a || b), false);
-        return prob;
     }
 
     private loadRecipe(recipe: Recipe) {
@@ -83,10 +92,10 @@ class BrewerDwarf {
                 step.getStepParameters().forEach((param, paramIndex) => {
                     param.value = parseFloat(this.val(stepIndex+"_"+paramIndex+"_"+param.name));
                     if (param.name == "durée") {
-                        param.value *= 60*1000;
+                        param.value *= MINUTE;
                     }
                     if (param.name == "jour") {
-                        param.value *= 24*3600*1000;
+                        param.value *= DAY;
                     }
                 });
             }
@@ -117,7 +126,7 @@ class BrewerDwarf {
         if (recipe == null) {
             throw "recette "+recipeName+" non dispo";
         }
-        this.player.setBrewingRecipe(recipe);
+        this.player.setBrewingRecipe(recipe.duplicate());
     }
 
     public getRecipeNameByName(recipeName : string) : RecipeReference | null {

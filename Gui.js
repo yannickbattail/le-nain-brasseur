@@ -26,6 +26,33 @@ var Gui = (function () {
         }
         return "";
     };
+    Gui.prototype.displayBrews = function () {
+        var _this = this;
+        var content = this.engine.player.getStorage()
+            .filter(function (resQ) {
+            var resource = resQ.getResource();
+            return ('category' in resource) && (resource['category'] == "beer");
+        })
+            .map(function (res) { return _this.displayBrew(res); }).join("");
+        if (content != "") {
+            return this.displayStorageBox("Brassins", content);
+        }
+        return "";
+    };
+    Gui.prototype.displayBrew = function (quantity) {
+        var res = quantity.getResource();
+        if (res instanceof Beer) {
+            return '<div class="resource ' + res.$type + '">'
+                + '<img src="images/' + res.image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">'
+                + '<div class="resource_label">'
+                + res.getName() + ' (' + this.displayScore(res.recipe.score) + ')'
+                + '</div>'
+                + '</div>';
+        }
+        else {
+            return "";
+        }
+    };
     Gui.prototype.listRecipeReferences = function () {
         var _this = this;
         return this.engine.recipes
@@ -63,7 +90,7 @@ var Gui = (function () {
                 if (param.name == 'durée') {
                     h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
                 }
-                else if (param.name == 'jour') {
+                else if (param.name == 'jours') {
                     h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
                 }
                 else if (param.name == 'température') {
@@ -83,11 +110,6 @@ var Gui = (function () {
         h += "</tr>";
         return h;
     };
-    Gui.prototype.editRecipes = function () {
-        var _this = this;
-        return this.engine.player.getRecipes()
-            .map(function (res) { return _this.editRecipe(res); }).join("");
-    };
     Gui.prototype.editBrewingRecipe = function () {
         var r = engine.player.getBrewingRecipe();
         if (r == null) {
@@ -104,14 +126,21 @@ var Gui = (function () {
         h += '<td>Nom: </td>';
         h += '<td colspan="2"><input type="text" id="recipeName" value="' + recipe.getName() + '" /></td>';
         h += '<td><b>Note:</b> ' + this.displayScore(recipe.score) + '</td>';
-        h += '<td><b>Problème:</b> <span class="problem">' + (recipe.problem != null ? recipe.problem : "") + '</span></td>';
-        h += '<td><b>Conseils:</b></td>';
+        h += '<td><span class="problem"><b>Problème:</b> ' + (recipe.problem != null ? recipe.problem : "") + '</span>';
+        h += '<span class="advice"><b>Conseils:</b></span></td>';
         h += '</tr>';
         recipe.getCookingSteps().forEach(function (step, i) { return h += _this.editCookingStep(i, step); });
         h += '<tr>';
-        var disabled = recipe.score == null || recipe.score <= 0 ? 'disabled="disabled" title="La note doit être suppérieure à 0. "' : '';
-        h += '<td colspan="3"><button onclick="engine.brew();return false;" ' + disabled + '>Brasser!</button></td>';
-        h += '<td><button onclick="engine.analyseBrew();return false;">Analyser</button></td>';
+        var disabled = recipe.hasProblem() || recipe.analysisLevel == AnalysisLevel.NONE ? 'disabled="disabled" title="On ne brasse pas une bière problématique. Vérifier d\'abord. "' : '';
+        h += '<td colspan="3"><button onclick="engine.brew()" ' + disabled + '>Brasser!</button>';
+        h += '<button onclick="engine.analyseBrew()">Vérifier</button></td>';
+        h += '<td>&nbsp;</td>';
+        var storageRes = this.engine.player.getResourceInStorage(ADVISE_COST.getResource().getName());
+        var cssClass = 'notAvailableResource';
+        if (storageRes != null && storageRes.getQuantity() >= ADVISE_COST.getQuantity()) {
+            cssClass = 'availableResource';
+        }
+        h += '<td><button onclick="engine.advise()">Conseils ' + this.displayQuantity(ADVISE_COST, cssClass) + '</button></td>';
         h += '</tr>';
         h += "</table></div>";
         return h;
@@ -122,9 +151,9 @@ var Gui = (function () {
         h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"><input type="hidden" id="' + index + '_type" value="' + step.$type + '" /></td>';
         h += this.editStepParameters(step.getStepParameters(), index);
         h += '<td>' + step.getStepParameters().map(function (p) { return _this.displayScore(p.score); }).join(', ')
-            + " = " + this.displayScore(step.getStepParameters().map(function (p) { return p.score != null ? p.score : 0; }).reduce(function (a, b) { return Math.min(a, b); }, 11)) + '</td>';
-        h += '<td><span class="problem">' + step.getStepParameters().map(function (p) { return p.problem; }).filter(function (p) { return p != null && p != ""; }).join(', ') + '</span></td>';
-        h += '<td><span class="advice">' + step.getStepParameters().map(function (p) { return p.advice; }).filter(function (p) { return p != null && p != ""; }).join(', ') + '</span></td>';
+            + " = " + this.displayScore(step.getStepParameters().map(function (p) { return p.score != null ? p.score : 0; }).reduce(function (a, b) { return Math.min(a, b); }, 1)) + '</td>';
+        h += '<td><span class="problem">' + step.getStepParameters().map(function (p) { return p.problem; }).filter(function (p) { return p != null && p != ""; }).join(', ') + '</span>';
+        h += '<span class="advice">' + step.getStepParameters().map(function (p) { return p.advice; }).filter(function (p) { return p != null && p != ""; }).join(', ') + '</span></td>';
         h += "</tr>";
         return h;
     };
@@ -137,10 +166,10 @@ var Gui = (function () {
             if (paramIndex < params.length) {
                 var param = params[paramIndex];
                 if (param.name == 'durée') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / 60000) + '" /> min</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / MINUTE) + '" /> min</div></td>';
                 }
                 else if (param.name == 'jour') {
-                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / (24 * 3600 + 1000)) + '" /> jours</div></td>';
+                    h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + (param.value / DAY) + '" /> jours</div></td>';
                 }
                 else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" /> °C</div></td>';
@@ -373,7 +402,7 @@ var Gui = (function () {
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
         NodeUpdate.updateDiv('storageIngredient', this.displayStorageCategory("Ingrédients", "Ingredient"));
         NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
-        NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Bières", "beer"));
+        NodeUpdate.updateDiv('storageBeer', this.displayBrews());
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();

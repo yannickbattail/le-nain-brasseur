@@ -24,7 +24,16 @@ var RecipeReference = (function () {
         var recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
         recipe.name = "ma " + this.name;
         recipe.recipeRef = this;
-        recipe.steps.forEach(function (s) { return s.getStepParameters().forEach(function (p) { return p.value = 0; }); });
+        recipe.steps.forEach(function (s) { return s.getStepParameters().forEach(function (p) {
+            var _a;
+            if (((_a = p.resource) === null || _a === void 0 ? void 0 : _a.getName()) != WATER.getName())
+                p.value = 0;
+        }); });
+        return recipe;
+    };
+    RecipeReference.prototype.duplicate = function () {
+        var recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
+        recipe.name = this.name + "#";
         return recipe;
     };
     return RecipeReference;

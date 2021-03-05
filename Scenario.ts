@@ -12,11 +12,15 @@
 /// <reference path="./model/BrewerDwarf.ts" />
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 
+
+
+const MINUTE = 60 * 1000;
+const DAY = 24 * 60 * MINUTE;
 let Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
 
 const LEVEL = new Level("level", "level.svg", [
     "rien",
-    "Noob",
+    "Brassouilleur ",
     "Brasseur amateur",
     "Brasseur",
     "Maitre brasseur",
@@ -26,12 +30,16 @@ const WATER     = new CategorizedMaterial("Eau",       "cl",   "water.svg",     
 const MALT      = new CategorizedMaterial("Malt",      "g",    "grain.svg",         "Ingredient",   "Malt d'orge");
 const HOUBLON   = new CategorizedMaterial("Houblon",   "g",    "hops.svg",          "Ingredient",   "Houblon");
 const LEVURE    = new CategorizedMaterial("Levure",    "g",    "eyedropper.svg",    "Ingredient",   "Levure de bière");
+const DRECHE    = new CategorizedMaterial("drêche",    "g",    "dreche.svg",        "Ingredient",   "reste de grain après brassage");
 const BIERE     = new CategorizedMaterial("Bière",     "cl",   "beer.svg",          "Ingredient",   "Bière");
 const GOLD      = new CategorizedItem("Or",                         "cash.svg",          "Item",         "Pièces d'or");
 
 const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
-    WATER, MALT, HOUBLON, LEVURE, BIERE
+    WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
+
+
+let ADVISE_COST = Q(100, GOLD);
 
 class Scenario {
     public static initEngine() : BrewerDwarf {
@@ -98,7 +106,7 @@ class Scenario {
         engine.player.increaseStorage(Q(60*1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));
-        engine.player.increaseStorage(Q(10000, GOLD));
+        engine.player.increaseStorage(Q(1000, GOLD));
         return engine;
     }
 }

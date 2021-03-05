@@ -29,9 +29,18 @@ class RecipeReference {
         recipe.recipeRef = this;
         recipe.steps.forEach(
             s => s.getStepParameters().forEach(
-                p => p.value = 0
+                p => {
+                    if (p.resource?.getName() != WATER.getName())
+                        p.value = 0;
+                }
             )
         );
+        return recipe;
+    }
+    
+    public duplicate() : Recipe {
+        let recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
+        recipe.name = this.name+"#";
         return recipe;
     }
 }

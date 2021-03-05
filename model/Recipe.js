@@ -27,6 +27,7 @@ var Recipe = (function (_super) {
         _this.$type = 'Recipe';
         _this.score = null;
         _this.problem = null;
+        _this.analysisLevel = AnalysisLevel.NONE;
         return _this;
     }
     Recipe.load = function (data) {
@@ -37,6 +38,7 @@ var Recipe = (function (_super) {
         var newObj = new Recipe(name, steps, recipeRef);
         newObj.score = data.score;
         newObj.problem = data.problem;
+        newObj.analysisLevel = data.analysisLevel;
         return newObj;
     };
     Recipe.prototype.getCookingSteps = function () {
@@ -44,6 +46,12 @@ var Recipe = (function (_super) {
     };
     Recipe.prototype.getName = function () {
         return this.name;
+    };
+    Recipe.prototype.hasProblem = function () {
+        var prob = this.getCookingSteps().map(function (s) { return s.getStepParameters()
+            .map(function (s) { return (s.problem != null && s.problem != ""); })
+            .reduce(function (a, b) { return (a || b); }, false); }).reduce(function (a, b) { return (a || b); }, false);
+        return prob;
     };
     return Recipe;
 }(RecipeReference));

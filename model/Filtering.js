@@ -46,9 +46,8 @@ var Filtering = (function (_super) {
     Filtering.prototype.getImage = function () {
         return "strainer.svg";
     };
-    Filtering.prototype.analyse = function (action) {
+    Filtering.prototype.analyse = function (action, level) {
         if (this.$type != action.$type) {
-            return "L'étape devrait être " + this.getName();
         }
     };
     return Filtering;

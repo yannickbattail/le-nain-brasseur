@@ -55,12 +55,12 @@ var Brewing = (function (_super) {
             throw "StepParameter should have not a resource.";
         }
     };
-    Brewing.prototype.analyse = function (action) {
+    Brewing.prototype.analyse = function (action, level) {
         if (this.$type != action.$type) {
-            return "L'étape devrait être " + this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être " + this.getName();
         }
         if (action instanceof Brewing) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "La fermentation est trop longue", "La fermentation est trop courte");
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level, "La fermentation est trop longue", "La fermentation est trop courte");
         }
     };
     return Brewing;

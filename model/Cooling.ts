@@ -44,12 +44,12 @@ class Cooling extends CookingStep {
         }
     }
     
-    public analyse(action: ICookingStep) {
+    public analyse(action: ICookingStep, level: AnalysisLevel): void {
         if (this.$type != action.$type) {
-            return "L'étape devrait être "+this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être "+this.getName();
         }
         if (action instanceof Cooling) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0),
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level,
             "La température est trop chaude",
             "La température n'est pas assez chaude");
         }

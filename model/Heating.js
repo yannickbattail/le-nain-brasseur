@@ -59,13 +59,13 @@ var Heating = (function (_super) {
             throw "StepParameter should have not a resource.";
         }
     };
-    Heating.prototype.analyse = function (action) {
+    Heating.prototype.analyse = function (action, level) {
         if (this.$type != action.$type) {
-            return "L'étape devrait être " + this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être " + this.getName();
         }
         if (action instanceof Heating) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "La température est trop chaude", "La température n'est pas assez chaude");
-            this.analyseStep(this.getStepParameter(1), action.getStepParameter(1), "La cuisson est trop longue", "La cuisson est trop courte");
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level, "La température est trop chaude", "La température n'est pas assez chaude");
+            this.analyseStep(this.getStepParameter(1), action.getStepParameter(1), level, "La cuisson est trop longue", "La cuisson est trop courte");
         }
     };
     return Heating;

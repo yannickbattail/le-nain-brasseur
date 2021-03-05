@@ -61,12 +61,12 @@ var AddingIngredient = (function (_super) {
             throw "StepParameter should have a resource.";
         }
     };
-    AddingIngredient.prototype.analyse = function (action) {
+    AddingIngredient.prototype.analyse = function (action, level) {
         if (this.$type != action.$type) {
-            return "L'étape devrait être " + this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être " + this.getName();
         }
         if (action instanceof AddingIngredient) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "Il y a trop d'ingrédient pour la recette.", "Il y n'a pas assez d'ingrédient la recette.", true);
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level, "Il y a trop d'ingrédient pour la recette.", "Il y n'a pas assez d'ingrédient pour la recette.", true);
         }
     };
     return AddingIngredient;

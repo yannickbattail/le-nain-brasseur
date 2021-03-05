@@ -2,7 +2,7 @@
 var RecipeAnalysis = (function () {
     function RecipeAnalysis() {
     }
-    RecipeAnalysis.analyse = function (recipe) {
+    RecipeAnalysis.analyse = function (recipe, level) {
         if (!recipe.recipeRef) {
             throw "no recipeRef";
         }
@@ -15,7 +15,7 @@ var RecipeAnalysis = (function () {
                 recipe.problem = "L'étape #" + (index + 1) + " devrait être " + steps[index].$type;
                 return;
             }
-            steps[index].analyse(stepsRef[index]);
+            steps[index].analyse(stepsRef[index], level);
             index++;
         }
         if (stepsRef.length > steps.length) {
@@ -28,6 +28,7 @@ var RecipeAnalysis = (function () {
             .map(function (s) { return s.score != null ? s.score : 0; })
             .reduce(function (a, b) { return Math.min(a, b); }, 1); })
             .reduce(function (a, b) { return Math.min(a, b); }, 1);
+        recipe.analysisLevel = level;
     };
     RecipeAnalysis.resetScore = function (recipe) {
         recipe.score = null;

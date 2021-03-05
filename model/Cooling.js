@@ -55,12 +55,12 @@ var Cooling = (function (_super) {
             throw "StepParameter should have not a resource.";
         }
     };
-    Cooling.prototype.analyse = function (action) {
+    Cooling.prototype.analyse = function (action, level) {
         if (this.$type != action.$type) {
-            return "L'étape devrait être " + this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être " + this.getName();
         }
         if (action instanceof Cooling) {
-            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), "La température est trop chaude", "La température n'est pas assez chaude");
+            this.analyseStep(this.getStepParameter(0), action.getStepParameter(0), level, "La température est trop chaude", "La température n'est pas assez chaude");
         }
     };
     return Cooling;

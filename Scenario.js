@@ -1,8 +1,10 @@
 "use strict";
+var MINUTE = 60 * 1000;
+var DAY = 24 * 60 * MINUTE;
 var Q = function (quantity, res) { return new Quantity(quantity, res); };
 var LEVEL = new Level("level", "level.svg", [
     "rien",
-    "Noob",
+    "Brassouilleur ",
     "Brasseur amateur",
     "Brasseur",
     "Maitre brasseur",
@@ -11,11 +13,13 @@ var WATER = new CategorizedMaterial("Eau", "cl", "water.svg", "Ingredient", "eau
 var MALT = new CategorizedMaterial("Malt", "g", "grain.svg", "Ingredient", "Malt d'orge");
 var HOUBLON = new CategorizedMaterial("Houblon", "g", "hops.svg", "Ingredient", "Houblon");
 var LEVURE = new CategorizedMaterial("Levure", "g", "eyedropper.svg", "Ingredient", "Levure de bière");
+var DRECHE = new CategorizedMaterial("drêche", "g", "dreche.svg", "Ingredient", "reste de grain après brassage");
 var BIERE = new CategorizedMaterial("Bière", "cl", "beer.svg", "Ingredient", "Bière");
 var GOLD = new CategorizedItem("Or", "cash.svg", "Item", "Pièces d'or");
 var resourceList = [
-    WATER, MALT, HOUBLON, LEVURE, BIERE
+    WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
+var ADVISE_COST = Q(100, GOLD);
 var Scenario = (function () {
     function Scenario() {
     }
@@ -80,7 +84,7 @@ var Scenario = (function () {
         engine.player.increaseStorage(Q(60 * 1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));
-        engine.player.increaseStorage(Q(10000, GOLD));
+        engine.player.increaseStorage(Q(1000, GOLD));
         return engine;
     };
     return Scenario;
