@@ -48,7 +48,12 @@ class BrewerDwarf {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
+            if (!this.player.hasResources([ADVISE_COST])) {
+                recipe.problem = "Pas assez d'or pour acheter les conseils d'aun maistre brasseur.";
+                return ;
+            } 
             RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+            this.player.decreaseStorage(ADVISE_COST);
         }
     }
 

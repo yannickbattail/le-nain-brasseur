@@ -51,6 +51,38 @@ class Gui {
         }
         return "";
     }
+
+    private displayBrews(): string {
+        let content = this.engine.player.getStorage()
+            .filter(
+                resQ =>
+                {
+                    let resource = resQ.getResource();
+                    return ('category' in resource) && (resource['category'] ==  "beer");
+                }
+            )
+            .map(
+                res => this.displayBrew(res)
+            ).join("");
+        if (content != "") {
+            return this.displayStorageBox("Brassins", content);
+        }
+        return "";
+    }
+    
+    private displayBrew(quantity : IQuantity) : string {
+        let res = quantity.getResource();
+        if (res instanceof Beer) {
+            return '<div class="resource ' + res.$type + '">'
+                + '<img src="images/' + res.image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">'
+                + '<div class="resource_label">'
+                + res.getName() + ' (' + this.displayScore(res.recipe.score) + ')'
+                + '</div>'
+                + '</div>';
+        } else {
+            return "";
+        }
+    }
     
     private listRecipeReferences(): string {
         return this.engine.recipes
@@ -111,13 +143,6 @@ class Gui {
         }
         h += "</tr>";
         return h;
-    }
-
-    private editRecipes(): string {
-        return this.engine.player.getRecipes()
-            .map(
-                res => this.editRecipe(res)
-            ).join("");
     }
 
     private editBrewingRecipe() : string {
@@ -431,7 +456,7 @@ class Gui {
         NodeUpdate.updateDiv('brew', this.editBrewingRecipe());
         NodeUpdate.updateDiv('storageIngredient', this.displayStorageCategory("Ingrédients", "Ingredient"));
         NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
-        NodeUpdate.updateDiv('storageBeer', this.displayStorageCategory("Brassins", "beer"));
+        NodeUpdate.updateDiv('storageBeer', this.displayBrews());
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
