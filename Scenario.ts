@@ -20,7 +20,7 @@ let Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
 
 const LEVEL = new Level("level", "level.svg", [
     "rien",
-    "Noob",
+    "Brassouilleur ",
     "Brasseur amateur",
     "Brasseur",
     "Maitre brasseur",
@@ -37,6 +37,9 @@ const GOLD      = new CategorizedItem("Or",                         "cash.svg", 
 const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
     WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
+
+
+let ADVISE_COST = Q(100, GOLD);
 
 class Scenario {
     public static initEngine() : BrewerDwarf {
@@ -103,7 +106,7 @@ class Scenario {
         engine.player.increaseStorage(Q(60*1000, MALT));
         engine.player.increaseStorage(Q(600, HOUBLON));
         engine.player.increaseStorage(Q(100, LEVURE));
-        engine.player.increaseStorage(Q(10000, GOLD));
+        engine.player.increaseStorage(Q(1000, GOLD));
         return engine;
     }
 }

@@ -34,8 +34,9 @@ class BrewerDwarf {
             let recipe = this.player.getBrewingRecipe();
             if (recipe != null) {
                 this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe);
+                RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
                 if (!recipe.hasProblem()) {
+                    RecipeAnalysis.analyse(recipe, AnalysisLevel.SCORE);
                     console.log('doBrew');
                     this.doBrew(recipe);
                 }
@@ -47,7 +48,15 @@ class BrewerDwarf {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
-            RecipeAnalysis.analyse(recipe);
+            RecipeAnalysis.analyse(recipe, AnalysisLevel.PROBLEM);
+        }
+    }
+
+    public advise() {
+        let recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe, AnalysisLevel.ADVISE);
         }
     }
 
@@ -112,7 +121,7 @@ class BrewerDwarf {
         if (recipe == null) {
             throw "recette "+recipeName+" non dispo";
         }
-        this.player.setBrewingRecipe(recipe);
+        this.player.setBrewingRecipe(recipe.duplicate());
     }
 
     public getRecipeNameByName(recipeName : string) : RecipeReference | null {

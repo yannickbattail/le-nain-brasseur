@@ -35,9 +35,9 @@ class Filtering extends CookingStep {
         return "strainer.svg";
     }
     
-    public analyse(action: ICookingStep) {
+    public analyse(action: ICookingStep, level: AnalysisLevel): void {
         if (this.$type != action.$type) {
-            return "L'étape devrait être "+this.getName();
+            //return "L'étape devrait être "+this.getName();
         }
     }
 }

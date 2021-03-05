@@ -134,17 +134,24 @@ class Gui {
         h += '<td>Nom: </td>';
         h += '<td colspan="2"><input type="text" id="recipeName" value="'+recipe.getName()+'" /></td>';
         h += '<td><b>Note:</b> '+this.displayScore(recipe.score)+'</td>';
-        h += '<td><b>Problème:</b> <span class="problem">'+(recipe.problem!=null?recipe.problem:"")+'</span></td>';
-        h += '<td><b>Conseils:</b></td>';
+        h += '<td><span class="problem"><b>Problème:</b> '+(recipe.problem!=null?recipe.problem:"")+'</span>';
+        h += '<span class="advice"><b>Conseils:</b></span></td>';
         h += '</tr>';
 
         recipe.getCookingSteps().forEach(
             (step,i) => h += this.editCookingStep(i, step)
         );
         h += '<tr>'
-        let disabled = recipe.score == null || recipe.score <= 0 ? 'disabled="disabled" title="La note doit être suppérieure à 0. "' : '';
-        h += '<td colspan="3"><button onclick="engine.brew();return false;" '+ disabled+'>Brasser!</button></td>';
-        h += '<td><button onclick="engine.analyseBrew();return false;">Analyser</button></td>';
+        let disabled = recipe.hasProblem() || recipe.analysisLevel == AnalysisLevel.NONE ? 'disabled="disabled" title="On ne brasse pas une bière problématique. Vérifier d\'abord. "' : '';
+        h += '<td colspan="3"><button onclick="engine.brew()" '+ disabled+'>Brasser!</button>';
+        h += '<button onclick="engine.analyseBrew()">Vérifier</button></td>';
+        h += '<td>&nbsp;</td>';
+        let storageRes = this.engine.player.getResourceInStorage(ADVISE_COST.getResource().getName());
+        let cssClass = 'notAvailableResource';
+        if (storageRes != null && storageRes.getQuantity() >= ADVISE_COST.getQuantity()) {
+            cssClass = 'availableResource';
+        }
+        h += '<td><button onclick="engine.advise()">Conseils '+this.displayQuantity(ADVISE_COST, cssClass)+'</button></td>';
         h += '</tr>'
         h += "</table></div>";
         return h;
@@ -155,9 +162,9 @@ class Gui {
         h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"><input type="hidden" id="'+index+'_type" value="'+step.$type+'" /></td>';
         h += this.editStepParameters(step.getStepParameters(), index);
         h += '<td>'+step.getStepParameters().map(p => this.displayScore(p.score)).join(', ') 
-            + " = " + this.displayScore(step.getStepParameters().map(p => p.score!=null?p.score:0).reduce((a, b) => Math.min(a, b), 11))+'</td>';
-        h += '<td><span class="problem">'+step.getStepParameters().map(p => p.problem).filter(p => p!=null&&p!="").join(', ')+'</span></td>';
-        h += '<td><span class="advice">'+step.getStepParameters().map(p => p.advice).filter(p => p!=null&&p!="").join(', ')+'</span></td>';
+            + " = " + this.displayScore(step.getStepParameters().map(p => p.score!=null?p.score:0).reduce((a, b) => Math.min(a, b), 1))+'</td>';
+        h += '<td><span class="problem">'+step.getStepParameters().map(p => p.problem).filter(p => p!=null&&p!="").join(', ')+'</span>';
+        h += '<span class="advice">'+step.getStepParameters().map(p => p.advice).filter(p => p!=null&&p!="").join(', ')+'</span></td>';
         h += "</tr>";
         return h;
     }

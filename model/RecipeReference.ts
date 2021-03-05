@@ -37,4 +37,10 @@ class RecipeReference {
         );
         return recipe;
     }
+    
+    public duplicate() : Recipe {
+        let recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
+        recipe.name = this.name+"#";
+        return recipe;
+    }
 }

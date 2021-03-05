@@ -12,12 +12,15 @@ abstract class CookingStep implements ICookingStep {
     abstract getStepParameters() : Array<StepParameter>;
     abstract getStepParameter(index : number) : StepParameter;
     abstract validate() : void;
-    abstract analyse(action: ICookingStep) : void;
+    abstract analyse(action: ICookingStep, level: AnalysisLevel) : void;
     
-    analyseStep(step: StepParameter, stepRef: StepParameter, tooHighMsg : string, tooLowMsg : string, analyseResource : boolean = false) {
+    analyseStep(step: StepParameter, stepRef: StepParameter, level: AnalysisLevel, tooHighMsg : string, tooLowMsg : string, analyseResource : boolean = false) {
         step.problem = "";
         step.advice = "";
         step.score = null;
+        if (level == AnalysisLevel.NONE) {
+            return;
+        }
         if (analyseResource && step.resource?.getName() != stepRef.resource?.getName()) {
             step.problem += "Ingredient n'est pas le bon, il devrait être: " + this.getStepParameter(0).resource?.getName();
         }
@@ -25,14 +28,18 @@ abstract class CookingStep implements ICookingStep {
             if (step.value < stepRef.value/2) {
                 step.problem += tooLowMsg;
             } else {
-                step.advice += tooLowMsg;
+                if (level == AnalysisLevel.ADVISE) {
+                    step.advice += tooLowMsg;
+                }
             }
         }
         if (step.value > stepRef.value) {
             if (step.value > stepRef.value + stepRef.value/2) {
                 step.problem += tooHighMsg;
             } else {
-                step.advice += tooHighMsg;
+                if (level == AnalysisLevel.ADVISE) {
+                    step.advice += tooHighMsg;
+                }
             }
         }
         if (step.problem == "") {
@@ -41,7 +48,9 @@ abstract class CookingStep implements ICookingStep {
         if (step.advice == "") {
             step.advice = null;
         }
-        step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
+        if (level >= AnalysisLevel.SCORE) {
+            step.score = RecipeAnalysis.scoring(step.value, stepRef.value);
+        }
     }
     
 }

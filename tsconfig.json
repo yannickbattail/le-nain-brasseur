@@ -28,6 +28,7 @@
     "./model/Cooling.ts",
     "./model/Filtering.ts",
     "./model/Heating.ts",
+    "./model/AnalysisLevel.ts",
     "./model/RecipeReference.ts",
     "./model/Recipe.ts",
     "./model/RecipeAnalysis.ts",

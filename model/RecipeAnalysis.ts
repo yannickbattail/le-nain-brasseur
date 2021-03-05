@@ -3,7 +3,7 @@
 
 class RecipeAnalysis {
 
-    public static analyse(recipe : Recipe) {
+    public static analyse(recipe : Recipe, level : AnalysisLevel) {
         if (!recipe.recipeRef) {
             throw "no recipeRef";
         }
@@ -16,7 +16,7 @@ class RecipeAnalysis {
                 recipe.problem = "L'étape #"+(index+1)+" devrait être "+steps[index].$type;
                 return ;
             }
-            steps[index].analyse(stepsRef[index]);
+            steps[index].analyse(stepsRef[index], level);
             index++;
         }
         if (stepsRef.length > steps.length) {
@@ -32,6 +32,7 @@ class RecipeAnalysis {
                 .reduce((a, b) => Math.min(a, b), 1)
         )
         .reduce((a, b) => Math.min(a, b), 1);
+        recipe.analysisLevel = level;
     }
     
     private static resetScore(recipe : Recipe) {
