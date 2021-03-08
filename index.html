@@ -25,6 +25,7 @@
     <script src="./model/Beer.js"></script>
     <script src="./model/IQuantity.js"></script>
     <script src="./model/Quantity.js"></script>
+    <script src="./model/Article.js"></script>
     <script src="./model/IPlayer.js"></script>
     <script src="./model/Player.js"></script>
     <script src="./model/StepParameter.js"></script>
@@ -74,11 +75,11 @@
             <div id="storageBeer"></div>
         </div>
         <div class="toggleBlock">
-            <div class="toggleHide" onclick="toggle()">Mes recettes</div>
+            <div class="toggleShow" onclick="toggle()">Mes recettes</div>
             <div id="recipes"></div>
         </div>
         <div class="toggleBlock">
-            <div class="toggleHide" onclick="toggle()">Magasin</div>
+            <div class="toggleShow" onclick="toggle()">Magasin</div>
             <div id="shop"></div>
         </div>
         <div class="toggleBlock">
@@ -89,6 +90,9 @@
             <div class="toggleHide" onclick="toggle()">Relase notes</div>
             <div id="releaseNotes">
                 <ul>
+                    <li>
+                        Version 0.4 : ajout du magasin pour l'achat/vente de resources et la vente de brassin
+                    </li>
                     <li>
                         Version 0.3 : vérifie si il y a les ingrédients dans le stockage
                     </li>

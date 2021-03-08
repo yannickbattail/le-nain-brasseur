@@ -108,7 +108,8 @@ class Gui {
     
     private displayPlayerRecipe(recipe : Recipe) : string {
         let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th>'+Gui.htmlEntities(recipe.getName())+'</th><th colspan="2">À partir de: '+recipe.recipeRef?.getName()+'</th></tr>';
+        h += '<tr><th>'+Gui.htmlEntities(recipe.getName()) + ' (' + this.displayScore(recipe.score) + ')</th>';
+        h += '<th colspan="2">À partir de: '+recipe.recipeRef?.getName()+'</th></tr>';
 
         recipe.getCookingSteps().forEach(
             res => h += this.displayCookingStep(res)
@@ -127,9 +128,9 @@ class Gui {
             if (paramIndex < params.length) {
                 let param = params[paramIndex];
                 if (param.name == 'durée') {
-                    h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
-                } else if (param.name == 'jours') {
-                    h += '<td><div title="' + param.name + '">' + this.displayTime(param.value) + '</div></td>';
+                    h += '<td><div title="' + param.name + '">' + param.value + ' min</div></td>';
+                } else if (param.name == 'jour') {
+                    h += '<td><div title="' + param.name + '">' + param.value + ' jours</div></td>';
                 } else if (param.name == 'température') {
                     h += '<td><div title="' + param.name + '">' + param.value + '°C</div></td>';
                 } else if (param.resource != null) {
@@ -231,40 +232,62 @@ class Gui {
     }
 
     private displayStorageCategoryContent(category : string): string {
-        return this.engine.player.getStorage()
-            .filter(
-                resQ =>
-                {   
-                    let resource = resQ.getResource();
-                    return ('category' in resource) && (resource['category'] ==  category);
-                }
-            )
+        return this.engine.player.getStorageByCategory(category)
             .map(
                 res => this.displayQuantity(res)
             ).join("");
     }
     
-    private displayQuantities(quantities : Array<IQuantity>) : string {
-        console.log("displayQuantities");
-        return quantities.map(
-                resQ => this.displayQuantity(resQ)
-            )
-            .join(' ');
-    }
-    private displayAvailableQuantities(quantities : Array<IQuantity>) : string {
-        var h = '';
-        quantities.forEach(
-            resQ => {
-                let storageRes = this.engine.player.getResourceInStorage(resQ.getResource().getName());
-                let cssClass = 'notAvailableResource';
-                if (storageRes != null && storageRes.getQuantity() >= resQ.getQuantity()) {
-                    cssClass = 'availableResource';
+    private displayShop(): string {
+        let h = this.engine.shopStorage
+            .map(
+                res => this.displayArticle(res, this.engine.player)
+            ).join("");
+        h += this.engine.player.getStorageByCategory("beer")
+            .map(b => {
+                let res = b.getResource();
+                if (res instanceof Beer) {
+                    return this.displaySellBrew(res.recipe, this.engine.player);
                 }
-                h += this.displayQuantity(resQ, cssClass, storageRes)
-            }
-        );
-        h += '';
+                return "";
+            })
         return h;
+    }
+
+    private displaySellBrew(recipe : Recipe, player : IPlayer) : string {
+        let cssClass = 'notAvailableResource';
+        let disable = ' disable="disable"';
+        if (player.hasResources([recipe.getArticle().cost.opposite()])) {
+            cssClass = 'availableResource';
+            disable = '';
+        }
+        let sell = 'Acheter';
+        if (recipe.getArticle().resource.getResource().getName() == GOLD.getName()) {
+            sell = 'Vendre';
+        }
+        return '<div class="article">'
+            + this.displayQuantity(recipe.getArticle().resource)
+            + this.displayBrew(recipe.getArticle().cost)
+            + '<button onclick="engine.sellBrew(\''+recipe.getArticle().cost.getResource().getName()+'\')" '+disable+'>'+sell+'</button>'
+            + '</div>';
+    }
+
+    private displayArticle(article : Article, player : IPlayer) : string {
+        let cssClass = 'notAvailableResource';
+        let disable = ' disable="disable"';
+        if (player.hasResources([article.cost.opposite()])) {
+            cssClass = 'availableResource';
+            disable = '';
+        }
+        let sell = 'Acheter';
+        if (article.resource.getResource().getName() == GOLD.getName()) {
+            sell = 'Vendre';
+        }
+        return '<div class="article">'
+            + this.displayQuantity(article.resource)
+            + this.displayQuantity(article.cost, cssClass)
+            + '<button onclick="engine.buy(\''+article.resource.getResource().getName()+'\')" '+disable+'>'+sell+'</button>'
+            + '</div>';
     }
 
     private displayQuantity(quantity : IQuantity, optionnalCss : string = '', storageRes : IQuantity | null = null) : string {
@@ -457,6 +480,7 @@ class Gui {
         NodeUpdate.updateDiv('storageItem', this.displayStorageCategory("Items", "Item"));
         NodeUpdate.updateDiv('storageBeer', this.displayBrews());
         NodeUpdate.updateDiv('recipes', this.displayPlayerRecipes());
+        NodeUpdate.updateDiv('shop', this.displayShop());
         NodeUpdate.updateDiv('doc', this.displayDoc());
         this.loose();
     }

@@ -23,5 +23,8 @@ class Quantity implements IQuantity{
     show() : string{
         return this.resource.show(this.quantity);
     }
+    opposite() : Quantity {
+        return new Quantity(this.quantity * -1 , this.resource);
+    }
 }
 const EMPTY_QUANTITY = new Quantity(0, new Resource("nothing"));

@@ -4,7 +4,8 @@
 class RecipeReference {
     $type : string = 'RecipeReference';
     constructor(public name: string = "",
-                public steps: Array<ICookingStep> = []) {
+                public steps: Array<ICookingStep> = [],
+                protected level : number = 0) {
         
     }
     
@@ -12,6 +13,7 @@ class RecipeReference {
         let curContext : any = window;
         let newObj : RecipeReference = new RecipeReference();
         newObj.name = data.name;
+        newObj.level = data.level;
         newObj.steps = (data.steps as Array<any>).map(p => curContext[p.$type].load(p));
         return newObj;
     }
@@ -21,6 +23,9 @@ class RecipeReference {
     }
     getName() : string {
         return this.name;
+    }
+    getLevel() : number {
+        return this.level;
     }
 
     public createRecipe() : Recipe {

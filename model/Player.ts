@@ -25,6 +25,17 @@ class Player implements IPlayer {
     public getStorage() : Array<IQuantity> {
         return this.storage;
     }
+    public getStorageByCategory(category : string) : Array<IQuantity> {
+        return this.storage.filter(
+            resQ =>
+            {
+                let resource = resQ.getResource();
+                return ('category' in resource) && (resource['category'] ==  category);
+            }
+        );
+    }
+
+
     public getRecipes() : Array<Recipe> {
         return this.recipes;
     }
@@ -71,6 +82,7 @@ class Player implements IPlayer {
         } else {
             resQ.setQuantity(resQ.getQuantity() + quantity.getQuantity());
         }
+        this.removeZeroResource();
     }
     
     public decreaseStorage(quantity: IQuantity) {
@@ -84,8 +96,13 @@ class Player implements IPlayer {
         } else {
             resQ.setQuantity(resQ.getQuantity() + -1*quantity.getQuantity());
         }
+        this.removeZeroResource();
     }
 
+    private removeZeroResource() {
+        this.storage = this.storage.filter(q => q.getQuantity() != 0);
+    }
+    
     public getResourceInStorage(resourceName: string): Quantity | null {
         let res = this.storage.filter((res: Quantity) => res.getResource().getName() == resourceName);
         if (res.length) {

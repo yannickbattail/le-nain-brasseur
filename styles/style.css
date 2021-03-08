@@ -193,6 +193,10 @@ input[type='number'] {
     padding-right: 2px;
 }
 
+.article {
+    
+}
+
 progress {
     display: block;
     width: 80px;

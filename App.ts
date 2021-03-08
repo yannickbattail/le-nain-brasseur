@@ -22,7 +22,7 @@
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 /// <reference path="./NodeUpdate.ts" />
 
-const VERSION = "0.3";
+const VERSION = "0.4";
 
 function loadEngine() : BrewerDwarf | null {
 

@@ -6,6 +6,7 @@ interface IPlayer {
     // getters
     getName() : string;
     getStorage() : Array<IQuantity>;
+    getStorageByCategory(category : string) : Array<IQuantity>;
     getRecipes() : Array<Recipe>;
     setRecipes(recipes : Array<Recipe>) : IPlayer;
     getBrewingRecipe() : Recipe | null;
