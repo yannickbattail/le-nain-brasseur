@@ -18,6 +18,7 @@
     "./model/Beer.ts",
     "./model/IQuantity.ts",
     "./model/Quantity.ts",
+    "./model/Article.ts",
     "./model/IPlayer.ts",
     "./model/Player.ts",
     "./model/StepParameter.ts",

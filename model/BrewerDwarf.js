@@ -8,6 +8,7 @@ var BrewerDwarf = (function () {
         this.status = BrewerDwarfStatus.NOT_YET_STARTED;
         this.player = new Player("");
         this.recipes = new Array();
+        this.shopStorage = new Array();
         this.intervalId = 0;
     }
     BrewerDwarf.load = function (data) {
@@ -17,22 +18,37 @@ var BrewerDwarf = (function () {
         newObj.status = data.status;
         newObj.player = curContext[data.player.$type].load(data.player);
         newObj.recipes = data.recipes.map(function (p) { return curContext[p.$type].load(p); });
+        newObj.shopStorage = data.shopStorage.map(function (p) { return curContext[p.$type].load(p); });
         newObj.fastMode = data.fastMode;
         return newObj;
     };
     BrewerDwarf.prototype.brew = function () {
-        if (confirm("Si la recette est n'a pas de problème, les ingrédient seront décomptés. Continuer ?")) {
-            var recipe = this.player.getBrewingRecipe();
-            if (recipe != null) {
-                this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
-                if (!recipe.hasProblem()) {
-                    RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
-                    console.log('doBrew');
-                    this.doBrew(recipe);
-                }
+        var recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
+            if (!recipe.hasProblem()) {
+                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
+                this.doBrew(recipe);
             }
         }
+    };
+    BrewerDwarf.prototype.doBrew = function (recipe) {
+        var _this = this;
+        recipe.getCookingSteps()
+            .forEach(function (s) {
+            if (s != null) {
+                var q = s.getQuantity();
+                if (q != null) {
+                    _this.player.decreaseStorage(q);
+                }
+            }
+        });
+        this.player.increaseStorage(recipe.getBeer());
+        var maltStep = recipe.steps.filter(function (s) { var _a, _b; return ((_b = (_a = s.getStepParameters()[0]) === null || _a === void 0 ? void 0 : _a.resource) === null || _b === void 0 ? void 0 : _b.getName()) == MALT.getName(); });
+        this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value, DRECHE));
+        this.player.setBrewingRecipe(null);
+        this.player.getRecipes().push(recipe);
     };
     BrewerDwarf.prototype.checkBrew = function () {
         var recipe = this.player.getBrewingRecipe();
@@ -56,26 +72,6 @@ var BrewerDwarf = (function () {
     BrewerDwarf.prototype.brewHasIngredient = function (recipe) {
         var ingredientList = recipe.getCookingSteps().map(function (s) { return s.getQuantity(); }).filter(function (q) { return q != null; });
         return this.player.hasResources(ingredientList);
-    };
-    BrewerDwarf.prototype.doBrew = function (recipe) {
-        var _this = this;
-        var _a;
-        recipe.getCookingSteps()
-            .forEach(function (s) {
-            if (s != null) {
-                var q = s.getQuantity();
-                if (q != null) {
-                    _this.player.decreaseStorage(q);
-                }
-            }
-        });
-        var liters = recipe.steps[0].getStepParameter(0).value;
-        var beer = new Beer(recipe.name, 'l', 'beer.svg', "beer", 'Beer à partir de ' + ((_a = recipe.recipeRef) === null || _a === void 0 ? void 0 : _a.name), recipe);
-        this.player.increaseStorage(Q(liters, beer));
-        var maltStep = recipe.steps.filter(function (s) { var _a, _b; return ((_b = (_a = s.getStepParameters()[0]) === null || _a === void 0 ? void 0 : _a.resource) === null || _b === void 0 ? void 0 : _b.getName()) == MALT.getName(); });
-        this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value, DRECHE));
-        this.player.setBrewingRecipe(null);
-        this.player.getRecipes().push(recipe);
     };
     BrewerDwarf.prototype.loadRecipe = function (recipe) {
         var _this = this;
@@ -114,6 +110,30 @@ var BrewerDwarf = (function () {
             return null;
         }
         return recipes[0];
+    };
+    BrewerDwarf.prototype.sellBrew = function (resourceName) {
+        var quantity = this.player.getResourceInStorage(resourceName);
+        if (quantity != null) {
+            var res = quantity.getResource();
+            if (res instanceof Beer) {
+                this.player.increaseStorage(res.recipe.getArticle().resource);
+                this.player.increaseStorage(res.recipe.getArticle().cost);
+            }
+        }
+    };
+    BrewerDwarf.prototype.buy = function (resourceName) {
+        var article = this.getArticleNameByName(resourceName);
+        if (article != null) {
+            this.player.increaseStorage(article.resource);
+            this.player.increaseStorage(article.cost);
+        }
+    };
+    BrewerDwarf.prototype.getArticleNameByName = function (resourceName) {
+        var article = this.shopStorage.filter(function (a) { return a.resource.getResource().getName() == resourceName; });
+        if (article.length == 0) {
+            return null;
+        }
+        return article[0];
     };
     BrewerDwarf.prototype.run = function (tickInterval, saveCallback) {
         var _this = this;

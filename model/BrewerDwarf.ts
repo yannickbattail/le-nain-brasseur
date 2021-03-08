@@ -15,6 +15,7 @@ class BrewerDwarf {
     status : BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
     player : IPlayer = new Player("");
     recipes: Array<RecipeReference> = new Array<RecipeReference>();
+    public shopStorage: Array<Article> = new Array<Article>();
     
     private intervalId : number = 0;
 
@@ -25,24 +26,42 @@ class BrewerDwarf {
         newObj.status = data.status;
         newObj.player = curContext[data.player.$type].load(data.player);
         newObj.recipes = (data.recipes as Array<any>).map(p => curContext[p.$type].load(p));
+        newObj.shopStorage = (data.shopStorage as Array<any>).map(p => curContext[p.$type].load(p));
         newObj.fastMode = data.fastMode;
         return newObj;
     }
 
     public brew() {
-        if (confirm("Si la recette est n'a pas de problème, les ingrédient seront décomptés. Continuer ?")) {
-            let recipe = this.player.getBrewingRecipe();
-            if (recipe != null) {
-                this.loadRecipe(recipe);
-                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
-                if (!recipe.hasProblem()) {
-                    RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
-                    console.log('doBrew');
-                    this.doBrew(recipe);
-                }
+        let recipe = this.player.getBrewingRecipe();
+        if (recipe != null) {
+            this.loadRecipe(recipe);
+            RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
+            if (!recipe.hasProblem()) {
+                RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.SCORE);
+                this.doBrew(recipe);
             }
         }
     }
+
+    private doBrew(recipe: Recipe) {
+        recipe.getCookingSteps()
+            .forEach(s => {
+                if (s != null) {
+                    let q = s.getQuantity();
+                    if(q != null) {
+                        this.player.decreaseStorage(q);
+                    }
+                }
+            });
+        this.player.increaseStorage(recipe.getBeer());
+        let maltStep = recipe.steps.filter(
+            s => s.getStepParameters()[0]?.resource?.getName() == MALT.getName()
+        );
+        this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value, DRECHE));
+        this.player.setBrewingRecipe(null);
+        this.player.getRecipes().push(recipe);
+    }
+
     public checkBrew() {
         let recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
@@ -69,28 +88,6 @@ class BrewerDwarf {
             s => s.getQuantity()
         ).filter(q => q != null) as Array<IQuantity>;
         return this.player.hasResources(ingredientList);
-    }
-    
-    private doBrew(recipe: Recipe) {
-        recipe.getCookingSteps()
-            .forEach(s => {
-                if (s != null) {
-                    let q = s.getQuantity();
-                    if(q != null) {
-                        this.player.decreaseStorage(q);
-                    }
-                }
-            });
-        let liters = recipe.steps[0].getStepParameter(0).value;
-        let beer = new Beer(recipe.name, 'l', 'beer.svg',
-            "beer", 'Beer à partir de '+recipe.recipeRef?.name, recipe);
-        this.player.increaseStorage(Q(liters ,beer));
-        let maltStep = recipe.steps.filter(
-            s => s.getStepParameters()[0]?.resource?.getName() == MALT.getName()
-        );
-        this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value ,DRECHE));
-        this.player.setBrewingRecipe(null);
-        this.player.getRecipes().push(recipe);
     }
 
     private loadRecipe(recipe: Recipe) {
@@ -139,8 +136,37 @@ class BrewerDwarf {
             return null;
         }
         return recipes[0];
-    }  
+    }
     
+    public sellBrew(resourceName : string) : void {
+        const quantity = this.player.getResourceInStorage(resourceName);
+        
+        if (quantity != null) {
+            let res = quantity.getResource();
+            if (res instanceof Beer) {
+                this.player.increaseStorage(res.recipe.getArticle().resource);
+                this.player.increaseStorage(res.recipe.getArticle().cost);
+            }
+        }
+    }
+    public buy(resourceName : string) : void {
+        const article = this.getArticleNameByName(resourceName);
+        if (article != null) {
+            this.player.increaseStorage(article.resource);
+            this.player.increaseStorage(article.cost);
+        }
+    }
+
+    public getArticleNameByName(resourceName : string) : Article | null {
+        let article = this.shopStorage.filter(
+            a => a.resource.getResource().getName() == resourceName
+        )
+        if (article.length == 0) {
+            return null;
+        }
+        return article[0];
+    }
+
     run(tickInterval : number, saveCallback: (engine: BrewerDwarf) => void) {
         this.tickInterval = tickInterval;
         this.saveCallback = saveCallback;

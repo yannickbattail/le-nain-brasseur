@@ -23,6 +23,12 @@ var Player = (function () {
     Player.prototype.getStorage = function () {
         return this.storage;
     };
+    Player.prototype.getStorageByCategory = function (category) {
+        return this.storage.filter(function (resQ) {
+            var resource = resQ.getResource();
+            return ('category' in resource) && (resource['category'] == category);
+        });
+    };
     Player.prototype.getRecipes = function () {
         return this.recipes;
     };
@@ -63,6 +69,7 @@ var Player = (function () {
         else {
             resQ.setQuantity(resQ.getQuantity() + quantity.getQuantity());
         }
+        this.removeZeroResource();
     };
     Player.prototype.decreaseStorage = function (quantity) {
         var resQ = this.getResourceInStorage(quantity.getResource().getName());
@@ -76,6 +83,10 @@ var Player = (function () {
         else {
             resQ.setQuantity(resQ.getQuantity() + -1 * quantity.getQuantity());
         }
+        this.removeZeroResource();
+    };
+    Player.prototype.removeZeroResource = function () {
+        this.storage = this.storage.filter(function (q) { return q.getQuantity() != 0; });
     };
     Player.prototype.getResourceInStorage = function (resourceName) {
         var res = this.storage.filter(function (res) { return res.getResource().getName() == resourceName; });

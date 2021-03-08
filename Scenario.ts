@@ -65,7 +65,7 @@ class Scenario {
                         new StepParameter('jour',30)
                     ])
                 ],
-                engine.recipes[0]),
+                engine.recipes[0], 1),
             new Recipe("La kronadil", [
                     new AddingIngredient([
                         new StepParameter('quantité',1000, WATER)
@@ -75,6 +75,10 @@ class Scenario {
                     ]),
                     new AddingIngredient([
                         new StepParameter('quantité',50, HOUBLON)
+                    ]),
+                    new Heating([
+                        new StepParameter('température',60),
+                        new StepParameter('durée',10)
                     ]),
                     new Heating([
                         new StepParameter('température',100),
@@ -91,7 +95,14 @@ class Scenario {
                         new StepParameter('jour',30)
                     ])
                 ],
-                engine.recipes[0]),
+                engine.recipes[0], 1),
+        ];
+        engine.shopStorage = [
+            new Article(Q(100000, WATER), Q(-10, GOLD)),
+            new Article(Q(1000, MALT), Q(-5, GOLD)),
+            new Article(Q(200, HOUBLON), Q(-10, GOLD)),
+            new Article(Q(100, LEVURE), Q(-1, GOLD)),
+            new Article(Q(1, GOLD), Q(-1000, DRECHE)),
         ];
         engine.player = new Player("Gurdil");
         engine.player.setPreventNegativeStorage(true);

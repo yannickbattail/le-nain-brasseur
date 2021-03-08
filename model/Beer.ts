@@ -21,6 +21,7 @@ class Beer extends CategorizedMaterial implements ICategorized {
         let r : Beer = new Beer(data.name, data.unit, data.image, data.category, data.description, recipe);
         return r;
     }
+
     public show(quantity : number) : string {
         let u = this.unit;
         let q = quantity;
