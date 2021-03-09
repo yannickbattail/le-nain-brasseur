@@ -82,7 +82,7 @@ input[type='number'] {
 }
 .toggleShow, .toggleHide {
     cursor: pointer;
-
+    font-weight: bold;
 }
 
 .toggleShow {
