@@ -47,14 +47,18 @@ class Scenario {
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
                     ]),
+                    new Heating([
+                        new StepParameter('température',62),
+                        new StepParameter('durée',47)
+                    ]),
+                    new Filtering([]),
                     new AddingIngredient([
                         new StepParameter('quantité',50, HOUBLON)
                     ]),
                     new Heating([
                         new StepParameter('température',100),
-                        new StepParameter('durée',20)
+                        new StepParameter('durée',65)
                     ]),
-                    new Filtering([]),
                     new Cooling([
                         new StepParameter('température',30)
                     ]),
@@ -73,18 +77,22 @@ class Scenario {
                     new AddingIngredient([
                         new StepParameter('quantité',2000, MALT)
                     ]),
+                    new Heating([
+                        new StepParameter('température',50),
+                        new StepParameter('durée',15)
+                    ]),
+                    new Heating([
+                        new StepParameter('température',68),
+                        new StepParameter('durée',37)
+                    ]),
+                    new Filtering([]),
                     new AddingIngredient([
                         new StepParameter('quantité',50, HOUBLON)
                     ]),
                     new Heating([
-                        new StepParameter('température',60),
-                        new StepParameter('durée',10)
-                    ]),
-                    new Heating([
                         new StepParameter('température',100),
-                        new StepParameter('durée',20)
+                        new StepParameter('durée',78)
                     ]),
-                    new Filtering([]),
                     new Cooling([
                         new StepParameter('température',30)
                     ]),
@@ -92,7 +100,7 @@ class Scenario {
                         new StepParameter('quantité',10, LEVURE)
                     ]),
                     new Brewing([
-                        new StepParameter('jour',30)
+                        new StepParameter('jour',32)
                     ])
                 ],
                 engine.recipes[0], 1),

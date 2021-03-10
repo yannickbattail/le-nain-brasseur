@@ -59,8 +59,36 @@
     <div>
         <div class="toggleBlock">
             <div class="toggleShow" onclick="toggle()">Introduction</div>
-            <div id="game">
-                I am a dwarf, i'm digging a hole.
+            <script>
+                function showIntro(current, other) {
+                    document.getElementById(current).style.display = "none";
+                    document.getElementById(other).style.display = "block";
+                }
+            </script>
+            <div id="intro">
+                <div id="intro_0">
+                    Je suis un main, et je creuse des trous, Diggy Diggy Hole ♫ ♬ ♩ ♪<br />
+                    Ho mais qu'est-ce que c'est que ça ?<br />
+                    Mais c'est l'Arkenstone💎  !<br />
+                    Ça y est je suis riche!<br />
+                    Fini les trous et les tournées à la taverne.<br />
+                    Je vais pouvoir créer ma propre <b>basserie!</b><br />
+                    <button onclick="showIntro('intro_0', 'intro_1')">suivant</button>
+                </div>
+                <div id="intro_1" style="display: none">
+                    Brasser de la bière ça ne doit pas etre bien compliqué.<br />
+                    Je vais demander au tavernier, lui il doit savoir.<br />
+                    <button onclick="showIntro('intro_1', 'intro_0')">précédent</button>
+                    <button onclick="showIntro('intro_1', 'intro_2')">suivant</button>
+                </div>
+                <div id="intro_2" style="display: none">
+                    <i>Le tavernier:</i><br />
+                    Bah c'est pas bien dur!<br />
+                    Tu prends ton malt et ton houblon que tu fais bouillir.<br />
+                    Tu filtres pour récupérer le jus, les drêches qui restent tu les files aux cochons.<br />
+                    Et puis tu mets ça à fermenter avec la levure un bon mois.<br />
+                    <button onclick="showIntro('intro_2', 'intro_1')">précédent</button>
+                </div>
             </div>
         </div>
         <div class="toggleBlock">

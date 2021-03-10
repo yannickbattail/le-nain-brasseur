@@ -6,7 +6,6 @@ var Player = (function () {
         this.preventNegativeStorage = false;
         this.storage = new Array();
         this.recipes = new Array();
-        this.brewingRecipe = null;
     }
     Player.load = function (data) {
         var curContext = window;
@@ -14,7 +13,6 @@ var Player = (function () {
         player.preventNegativeStorage = data.preventNegativeStorage;
         player.storage = data.storage.map(function (p) { return curContext[p.$type].load(p); });
         player.recipes = data.recipes.map(function (p) { return curContext[p.$type].load(p); });
-        player.brewingRecipe = data.brewingRecipe != null ? curContext[data.brewingRecipe.$type].load(data.brewingRecipe) : null;
         return player;
     };
     Player.prototype.getName = function () {
@@ -23,24 +21,11 @@ var Player = (function () {
     Player.prototype.getStorage = function () {
         return this.storage;
     };
-    Player.prototype.getStorageByCategory = function (category) {
-        return this.storage.filter(function (resQ) {
-            var resource = resQ.getResource();
-            return ('category' in resource) && (resource['category'] == category);
-        });
-    };
     Player.prototype.getRecipes = function () {
         return this.recipes;
     };
     Player.prototype.setRecipes = function (recipes) {
         this.recipes = recipes;
-        return this;
-    };
-    Player.prototype.getBrewingRecipe = function () {
-        return this.brewingRecipe;
-    };
-    Player.prototype.setBrewingRecipe = function (brewingRecipe) {
-        this.brewingRecipe = brewingRecipe;
         return this;
     };
     Player.prototype.getPreventNegativeStorage = function () {
@@ -49,13 +34,6 @@ var Player = (function () {
     Player.prototype.setPreventNegativeStorage = function (preventNegativeStorage) {
         this.preventNegativeStorage = preventNegativeStorage;
         return this;
-    };
-    Player.prototype.getRecipeNameByName = function (recipeName) {
-        var recipes = this.recipes.filter(function (src) { return src.getName() == recipeName; });
-        if (recipes.length == 0) {
-            return null;
-        }
-        return recipes[0];
     };
     Player.prototype.increaseStorage = function (quantity) {
         var resQ = this.getResourceInStorage(quantity.getResource().getName());
@@ -69,7 +47,6 @@ var Player = (function () {
         else {
             resQ.setQuantity(resQ.getQuantity() + quantity.getQuantity());
         }
-        this.removeZeroResource();
     };
     Player.prototype.decreaseStorage = function (quantity) {
         var resQ = this.getResourceInStorage(quantity.getResource().getName());
@@ -83,10 +60,6 @@ var Player = (function () {
         else {
             resQ.setQuantity(resQ.getQuantity() + -1 * quantity.getQuantity());
         }
-        this.removeZeroResource();
-    };
-    Player.prototype.removeZeroResource = function () {
-        this.storage = this.storage.filter(function (q) { return q.getQuantity() != 0; });
     };
     Player.prototype.getResourceInStorage = function (resourceName) {
         var res = this.storage.filter(function (res) { return res.getResource().getName() == resourceName; });

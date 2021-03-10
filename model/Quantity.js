@@ -23,9 +23,6 @@ var Quantity = (function () {
     Quantity.prototype.show = function () {
         return this.resource.show(this.quantity);
     };
-    Quantity.prototype.opposite = function () {
-        return new Quantity(this.quantity * -1, this.resource);
-    };
     return Quantity;
 }());
 var EMPTY_QUANTITY = new Quantity(0, new Resource("nothing"));
