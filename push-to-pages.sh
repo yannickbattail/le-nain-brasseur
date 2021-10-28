@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#tsc || exit 1
+
 cp -R . ../le-nain-brasseur-bkp-main
 git checkout pages
 rm -Rf ./*
