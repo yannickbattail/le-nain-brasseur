@@ -30,7 +30,7 @@ class Player implements IPlayer {
             resQ =>
             {
                 let resource = resQ.getResource();
-                return ('category' in resource) && (resource['category'] ==  category);
+                return (resource instanceof CategorizedItem || resource instanceof CategorizedMaterial) && (resource.category ==  category);
             }
         );
     }

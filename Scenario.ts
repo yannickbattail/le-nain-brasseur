@@ -19,7 +19,7 @@ const LEVEL = new Level("level", "level.svg", [
     "Brassouilleur ",
     "Brasseur amateur",
     "Brasseur",
-    "Maitre brasseur",
+    "Maistre brasseur",
 ]);
 //    VARIABLE  TYPE (Material a une unité en plus)               unité         image                         catégorie                 description
 const WATER     = new CategorizedMaterial("Eau",       "cl",   "water.svg",         "Ingredient",   "eau");

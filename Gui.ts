@@ -36,9 +36,8 @@ class Gui {
         if (level != null) {
             let q = level.getQuantity();
             let res = level.getResource();
-            if ('getStepName' in res) {
-                let getStepName : Function = res['getStepName'];
-                h += q + " " + getStepName.call(res, q) ;
+            if (res instanceof Level) {
+                h += q + " " + res.getStepName(q);
             }
         }
         return h;
@@ -58,7 +57,7 @@ class Gui {
                 resQ =>
                 {
                     let resource = resQ.getResource();
-                    return ('category' in resource) && (resource['category'] ==  "beer");
+                    return (resource instanceof CategorizedMaterial) && (resource.category ==  "beer");
                 }
             )
             .map(
@@ -296,17 +295,12 @@ class Gui {
         if ('image' in res) {
             image = res.image;
         }
-        let details : any = null;
-        if ('getDetails' in quantity) {
-            details = quantity['getDetails'];
-        }
         return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
             + '<div class="resource_label">'
             + ((storageRes!=null)?'<span>'+storageRes.show()+'</span>/':'')
             + quantity.show()
             + '</div>'
             + ((image=='')?quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')
-            + ((details != null)?details.call(quantity) : '')
             + '</div>';
     }
     
@@ -320,17 +314,12 @@ class Gui {
         if ('unit' in res) {
             unit = res.unit;
         }
-        let details : any = null;
-        if ('getDetails' in quantity) {
-            details = quantity['getDetails'];
-        }
         return '<div class="resource ' + quantity.getResource().$type + ' ' + optionnalCss + '">'
             + '<div class="resource_label">'
             + '<input type="number" id="'+stepIndex+'_'+paramIndex+'_quantité" min="1" value="'+quantity.getQuantity()+'" onchange="engine.checkBrew()" /> '+unit
             + ((storageRes!=null)?'/<span>'+storageRes.show()+'</span>':'')
             + '</div>'
             + ((image=='')?quantity.getResource().getName() : '<img src="images/' + image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">')
-            + ((details != null)?details.call(quantity) : '')
             + '</div>';
     }
 
