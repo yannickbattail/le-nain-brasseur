@@ -1,13 +1,17 @@
-
 interface ICookingStep {
-    $type: string;
+  $type: string;
 
-    getName() : string;
-    getImage() : string;
-    getStepParameters() : Array<StepParameter>;
-    getStepParameter(index : number) : StepParameter;
-    getQuantity() : IQuantity | null;
-    validate() : void;
+  getName(): string;
 
-    analyse(action: ICookingStep, level: AnalysisLevel) : void;
+  getImage(): string;
+
+  getStepParameters(): Array<StepParameter>;
+
+  getStepParameter(index: number): StepParameter;
+
+  getQuantity(): IQuantity | null;
+
+  validate(): void;
+
+  analyse(action: ICookingStep, level: AnalysisLevel): void;
 }

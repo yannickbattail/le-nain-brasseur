@@ -4,9 +4,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": true
   },
-  "lib": ["dom","es6"],
+  "lib": ["dom", "es6"],
   "files": [
     "./model/IResource.ts",
     "./model/Resource.ts",

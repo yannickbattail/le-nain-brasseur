@@ -24,31 +24,33 @@
 
 const VERSION = "0.4";
 
-function loadEngine() : BrewerDwarf | null {
-
-    const json = window.localStorage.getItem('BrewerDwarf');
-    if (json != null) {
-        if ((window.localStorage.getItem('BrewerDwarfVersion') != null)
-            || (window.localStorage.getItem('BrewerDwarfVersion') == VERSION)) {
-            const obj : BrewerDwarf = JSON.parse(json);
-            console.log('load engine');
-            const curContext : any = window;
-            return curContext[obj.$type].load(obj);
-        }
-        console.log('wrong version');
+function loadEngine(): BrewerDwarf | null {
+  const json = window.localStorage.getItem("BrewerDwarf");
+  if (json != null) {
+    if (
+      window.localStorage.getItem("BrewerDwarfVersion") != null ||
+      window.localStorage.getItem("BrewerDwarfVersion") == VERSION
+    ) {
+      const obj: BrewerDwarf = JSON.parse(json);
+      console.log("load engine");
+      const curContext: any = window;
+      return curContext[obj.$type].load(obj);
     }
-    console.log('no engine');
-    return null;
-}
-function saveEngine(engine : BrewerDwarf) {
-    window.localStorage.setItem('BrewerDwarf', JSON.stringify(engine));
-    window.localStorage.setItem('BrewerDwarfVersion', VERSION);
+    console.log("wrong version");
+  }
+  console.log("no engine");
+  return null;
 }
 
-let engine : BrewerDwarf;
+function saveEngine(engine: BrewerDwarf) {
+  window.localStorage.setItem("BrewerDwarf", JSON.stringify(engine));
+  window.localStorage.setItem("BrewerDwarfVersion", VERSION);
+}
+
+let engine: BrewerDwarf;
 const e = loadEngine();
 if (!e) {
-    engine = Scenario.initEngine();
+  engine = Scenario.initEngine();
 } else {
-    engine = e;
+  engine = e;
 }

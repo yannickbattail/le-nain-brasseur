@@ -1,4 +1,4 @@
 interface ICategorized {
-    category : string;
-    description : string;
+  category: string;
+  description: string;
 }

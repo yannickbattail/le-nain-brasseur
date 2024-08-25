@@ -1,6 +1,6 @@
 enum AnalysisLevel {
-    NONE,
-    PROBLEM,
-    SCORE,
-    ADVISE
+  NONE,
+  PROBLEM,
+  SCORE,
+  ADVISE,
 }
