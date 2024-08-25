@@ -9,9 +9,9 @@ class Filtering extends CookingStep {
     }
 
     public static load(data : any) : Filtering {
-        let curContext : any = window;
-        let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : Filtering = new Filtering(stepParameters);
+        const curContext : any = window;
+        const stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        const newObj : Filtering = new Filtering(stepParameters);
         return newObj;
     }
     

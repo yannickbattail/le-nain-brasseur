@@ -31,11 +31,11 @@ class Gui {
     }
 
     private displayLevel(): string {
-        let level = this.engine.player.getResourceInStorage("level");
+        const level = this.engine.player.getResourceInStorage("level");
         let h = "<strong>Level</strong>: ";
         if (level != null) {
-            let q = level.getQuantity();
-            let res = level.getResource();
+            const q = level.getQuantity();
+            const res = level.getResource();
             if (res instanceof Level) {
                 h += q + " " + res.getStepName(q);
             }
@@ -44,7 +44,7 @@ class Gui {
     }
 
     private displayStorageCategory(title : string, category : string): string {
-        let content = this.displayStorageCategoryContent(category);
+        const content = this.displayStorageCategoryContent(category);
         if (content != "") {
             return this.displayStorageBox(title, content);
         }
@@ -52,11 +52,11 @@ class Gui {
     }
 
     private displayBrews(): string {
-        let content = this.engine.player.getStorage()
+        const content = this.engine.player.getStorage()
             .filter(
                 resQ =>
                 {
-                    let resource = resQ.getResource();
+                    const resource = resQ.getResource();
                     return (resource instanceof CategorizedMaterial) && (resource.category ==  "beer");
                 }
             )
@@ -70,7 +70,7 @@ class Gui {
     }
     
     private displayBrew(quantity : IQuantity) : string {
-        let res = quantity.getResource();
+        const res = quantity.getResource();
         if (res instanceof Beer) {
             return '<div class="resource ' + res.$type + '">'
                 + '<img src="images/' + res.image + '" title="' + quantity.getResource().getName() + '" alt="' + quantity.getResource().getName() + '" class="resource_img">'
@@ -122,10 +122,10 @@ class Gui {
         let h = '<tr>';
         h += '<td><img src="images/' + step.getImage() + '" title="' + step.getName() + '" alt="' + step.getName() + '" class="resource_img"></td>';
 
-        let params = step.getStepParameters();
+        const params = step.getStepParameters();
         for (let paramIndex = 0 ; paramIndex < 2 ; paramIndex++) {
             if (paramIndex < params.length) {
-                let param = params[paramIndex];
+                const param = params[paramIndex];
                 if (param.name == 'durée') {
                     h += '<td><div title="' + param.name + '">' + param.value + ' min</div></td>';
                 } else if (param.name == 'jour') {
@@ -146,7 +146,7 @@ class Gui {
     }
 
     private editBrewingRecipe() : string {
-        let r = engine.player.getBrewingRecipe();
+        const r = engine.player.getBrewingRecipe();
         if (r == null) {
             return "";
         }
@@ -167,10 +167,10 @@ class Gui {
             (step,i) => h += this.editCookingStep(i, step)
         );
         h += '<tr>'
-        let disabled = recipe.hasProblem() || recipe.analysisLevel == AnalysisLevel.NONE ? 'disabled="disabled" title="On ne brasse pas une bière problématique. Vérifier d\'abord. "' : '';
+        const disabled = recipe.hasProblem() || recipe.analysisLevel == AnalysisLevel.NONE ? 'disabled="disabled" title="On ne brasse pas une bière problématique. Vérifier d\'abord. "' : '';
         h += '<td colspan="3"><button onclick="engine.brew()" '+ disabled+'>Brasser!</button>';
         h += '<td>&nbsp;</td>';
-        let storageRes = this.engine.player.getResourceInStorage(ADVISE_COST.getResource().getName());
+        const storageRes = this.engine.player.getResourceInStorage(ADVISE_COST.getResource().getName());
         let cssClass = 'notAvailableResource';
         if (storageRes != null && storageRes.getQuantity() >= ADVISE_COST.getQuantity()) {
             cssClass = 'availableResource';
@@ -201,7 +201,7 @@ class Gui {
         let h = '';
         for (let paramIndex = 0 ; paramIndex < 2 ; paramIndex++) {
             if (paramIndex < params.length) {
-                let param = params[paramIndex];
+                const param = params[paramIndex];
                 if (param.name == 'durée') {
                     h += '<td><div title="' + param.name + '"><input type="number" id="' + index + '_' + paramIndex + '_' + param.name + '" min="1" value="' + param.value + '" onchange="engine.checkBrew()" /> min</div></td>';
                 } else if (param.name == 'jour') {
@@ -244,7 +244,7 @@ class Gui {
             ).join("");
         h += this.engine.player.getStorageByCategory("beer")
             .map(b => {
-                let res = b.getResource();
+                const res = b.getResource();
                 if (res instanceof Beer) {
                     return this.displaySellBrew(res.recipe, this.engine.player);
                 }
@@ -290,7 +290,7 @@ class Gui {
     }
 
     private displayQuantity(quantity : IQuantity, optionnalCss : string = '', storageRes : IQuantity | null = null) : string {
-        let res : any = quantity.getResource();
+        const res : any = quantity.getResource();
         let image : string = '';
         if ('image' in res) {
             image = res.image;
@@ -305,7 +305,7 @@ class Gui {
     }
     
     private editQuantity(quantity : IQuantity, stepIndex : number, paramIndex : number, optionnalCss : string = '', storageRes : IQuantity | null = null) : string {
-        let res : any = quantity.getResource();
+        const res : any = quantity.getResource();
         let image : string = '';
         if ('image' in res) {
             image = res.image;
@@ -348,7 +348,7 @@ class Gui {
     }
 
     private displayDoc(): string {
-        var h = '<table border="1">';
+        let h = '<table border="1">';
         h += "<tr><th></th><th>Nom</th><th>Catégorie</th><th>Description</th></tr>";
 
         resourceList.forEach(
@@ -381,7 +381,7 @@ class Gui {
     }
     
     private getSimple() : boolean {
-        let checkbox = document.getElementById('simple');
+        const checkbox = document.getElementById('simple');
         if (checkbox != null && ('checked' in checkbox) && checkbox['checked']) {
             return true;
         }
@@ -404,11 +404,11 @@ class Gui {
     }
 
     public endGame(win : boolean, raison : string) {
-        let raisonDiv = document.getElementById('raison');
+        const raisonDiv = document.getElementById('raison');
         if (raisonDiv != null) {
             raisonDiv.innerHTML = raison;
         }
-        let overlayTitle = document.getElementById('overlayTitle');
+        const overlayTitle = document.getElementById('overlayTitle');
         if (overlayTitle != null) {
             if (win) {
                 overlayTitle.innerText = "Et c'est gagné!";
@@ -418,22 +418,22 @@ class Gui {
                 overlayTitle.className = 'loose';
             }
         }
-        let overlay = document.getElementById('overlay');
+        const overlay = document.getElementById('overlay');
         if (overlay != null) {
-            let o = overlay;
+            const o = overlay;
             o.className = 'show';
             window.setTimeout(() => {o.className += ' shade'}, 500);
         }
     }
 
     public static youWin(raison : string) {
-        let raisonDiv = document.getElementById('raison');
+        const raisonDiv = document.getElementById('raison');
         if (raisonDiv != null) {
             raisonDiv.innerHTML = raison;
         }
-        let overlay = document.getElementById('overlay');
+        const overlay = document.getElementById('overlay');
         if (overlay != null) {
-            let o = overlay;
+            const o = overlay;
             o.className = 'show';
             window.setTimeout(() => {o.className += ' shade'}, 500);
         }

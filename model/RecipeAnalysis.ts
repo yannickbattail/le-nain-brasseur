@@ -9,8 +9,8 @@ class RecipeAnalysis {
         }
         this.resetScore(recipe);
         this.playerHasIngredient(recipe, player)
-        let steps = recipe.getCookingSteps();
-        let stepsRef = recipe.recipeRef.getCookingSteps();
+        const steps = recipe.getCookingSteps();
+        const stepsRef = recipe.recipeRef.getCookingSteps();
         let index : number = 0;
         while (index < stepsRef.length && index < steps.length) {
             if (stepsRef[index].$type != steps[index].$type) {
@@ -41,8 +41,8 @@ class RecipeAnalysis {
         recipe.getCookingSteps().forEach(
             s => {
                 if (s.getStepParameters().length != 0) {
-                    let param = s.getStepParameter(0);
-                    let quantity = param.getQuantity();
+                    const param = s.getStepParameter(0);
+                    const quantity = param.getQuantity();
                     if (quantity != null) {
                         if (!player.hasResources([quantity])) {
                             param.problem += "Il n'y a pas assez de cet ingrédient dans le stockage. ";

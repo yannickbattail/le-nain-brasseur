@@ -8,7 +8,7 @@ class CategorizedItem extends Resource implements ICategorized {
         super(name);
     }
     public static load(data : any) : CategorizedItem {
-        let r : CategorizedItem = new CategorizedItem(data.name, data.image, data.category, data.description);
+        const r : CategorizedItem = new CategorizedItem(data.name, data.image, data.category, data.description);
         return r;
     }
     public show(quantity : number) : string {

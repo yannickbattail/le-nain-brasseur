@@ -13,8 +13,8 @@ class StepParameter {
     }
     
     public static load(data : any) : StepParameter {
-        let curContext : any = window;
-        let newObj : StepParameter = new StepParameter(data.name, data.value);
+        const curContext : any = window;
+        const newObj : StepParameter = new StepParameter(data.name, data.value);
         newObj.resource = data.resource!=null?curContext[data.resource.$type].load(data.resource):null;
         newObj.problem = data.problem;
         newObj.advice = data.advice;

@@ -26,13 +26,13 @@ const VERSION = "0.4";
 
 function loadEngine() : BrewerDwarf | null {
 
-    let json = window.localStorage.getItem('BrewerDwarf');
+    const json = window.localStorage.getItem('BrewerDwarf');
     if (json != null) {
         if ((window.localStorage.getItem('BrewerDwarfVersion') != null)
             || (window.localStorage.getItem('BrewerDwarfVersion') == VERSION)) {
-            let obj : BrewerDwarf = JSON.parse(json);
+            const obj : BrewerDwarf = JSON.parse(json);
             console.log('load engine');
-            let curContext : any = window;
+            const curContext : any = window;
             return curContext[obj.$type].load(obj);
         }
         console.log('wrong version');
@@ -45,8 +45,8 @@ function saveEngine(engine : BrewerDwarf) {
     window.localStorage.setItem('BrewerDwarfVersion', VERSION);
 }
 
-var engine : BrewerDwarf;
-let e = loadEngine();
+let engine : BrewerDwarf;
+const e = loadEngine();
 if (!e) {
     engine = Scenario.initEngine();
 } else {

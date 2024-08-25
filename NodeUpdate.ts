@@ -13,10 +13,10 @@ class NodeUpdate {
     }
     
     public static updateAttributes(oldNode : Element, newNode : Element) {
-        let attrToRm = oldNode.getAttributeNames().filter(attr => newNode.getAttributeNames().indexOf(attr) === -1);
+        const attrToRm = oldNode.getAttributeNames().filter(attr => newNode.getAttributeNames().indexOf(attr) === -1);
         attrToRm.forEach(attr => oldNode.removeAttribute(attr));
 
-        for(var i = 0; i < newNode.attributes.length; ++i) {
+        for(let i = 0; i < newNode.attributes.length; ++i) {
             if ((!oldNode.hasAttribute(newNode.attributes[i].name))
                 || (oldNode.getAttribute(newNode.attributes[i].name) != newNode.attributes[i].value)) {
                 oldNode.setAttribute(newNode.attributes[i].name, newNode.attributes[i].value);
@@ -25,9 +25,9 @@ class NodeUpdate {
     }
 
     public static updateChildren(oldNode : Node, newNode : Node) {
-        let newNodeLength = newNode.childNodes.length
-        let oldNodeLength = oldNode.childNodes.length;
-        let maxLength = Math.max(newNodeLength, oldNodeLength);
+        const newNodeLength = newNode.childNodes.length
+        const oldNodeLength = oldNode.childNodes.length;
+        const maxLength = Math.max(newNodeLength, oldNodeLength);
         for (let i = 0; i < maxLength; i++) {
             if (i >= oldNodeLength) {
                 try {
@@ -38,8 +38,8 @@ class NodeUpdate {
             } else if (i >= newNodeLength) {
                 oldNode.removeChild(oldNode.childNodes[newNodeLength]);
             } else {
-                let oldChild = oldNode.childNodes[i];
-                let newChild = newNode.childNodes[i];
+                const oldChild = oldNode.childNodes[i];
+                const newChild = newNode.childNodes[i];
                 if (NodeUpdate.hasChanged(oldChild, newChild)) {
                     oldNode.replaceChild(newChild.cloneNode(true), oldChild);
                 } else {
@@ -54,9 +54,9 @@ class NodeUpdate {
     }
 
     public static updateDiv(id : string, html : string) {
-        var oldDiv = document.getElementById(id);
+        const oldDiv = document.getElementById(id);
         if (oldDiv != null) {
-            var newdiv = document.createElement('div');
+            const newdiv = document.createElement('div');
             newdiv.innerHTML = html;
             NodeUpdate.updateChildren(oldDiv, newdiv);
         }

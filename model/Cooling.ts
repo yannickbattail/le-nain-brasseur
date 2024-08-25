@@ -9,9 +9,9 @@ class Cooling extends CookingStep {
     }
 
     public static load(data : any) : Cooling {
-        let curContext : any = window;
-        let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : Cooling = new Cooling(stepParameters);
+        const curContext : any = window;
+        const stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        const newObj : Cooling = new Cooling(stepParameters);
         return newObj;
     }
     

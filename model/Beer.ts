@@ -16,9 +16,9 @@ class Beer extends CategorizedMaterial implements ICategorized {
         super(name, unit, image, category, description);
     }
     public static load(data : any) : Beer {
-        let curContext : any = window;
-        let recipe = curContext[data.recipe.$type].load(data.recipe);
-        let r : Beer = new Beer(data.name, data.unit, data.image, data.category, data.description, recipe);
+        const curContext : any = window;
+        const recipe = curContext[data.recipe.$type].load(data.recipe);
+        const r : Beer = new Beer(data.name, data.unit, data.image, data.category, data.description, recipe);
         return r;
     }
 

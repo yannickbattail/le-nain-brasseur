@@ -15,11 +15,11 @@ class Recipe extends RecipeReference {
     }
     
     public static load(data : any) : Recipe {
-        let curContext : any = window;
-        let name = data.name;
-        let steps = (data.steps as Array<any>).map(p => curContext[p.$type].load(p));
-        let recipeRef = data.recipeRef!=null?curContext[data.recipeRef.$type].load(data.recipeRef):null;
-        let newObj : Recipe = new Recipe(name, steps, recipeRef);
+        const curContext : any = window;
+        const name = data.name;
+        const steps = (data.steps as Array<any>).map(p => curContext[p.$type].load(p));
+        const recipeRef = data.recipeRef!=null?curContext[data.recipeRef.$type].load(data.recipeRef):null;
+        const newObj : Recipe = new Recipe(name, steps, recipeRef);
         newObj.level = data.level;
         newObj.score = data.score;
         newObj.problem = data.problem;
@@ -35,15 +35,15 @@ class Recipe extends RecipeReference {
     }
     
     getBeer() : IQuantity{
-        let liters = this.steps[0].getStepParameter(0).value;
-        let beer = new Beer(this.name, 'l', 'beer.svg',
+        const liters = this.steps[0].getStepParameter(0).value;
+        const beer = new Beer(this.name, 'l', 'beer.svg',
             "beer", 'Beer à partir de '+this.recipeRef?.name, this);
         return Q(liters ,beer);
     }
 
     getCost() : number {
         const liters = this.getBeer().getQuantity()/100;
-        let cost = this.level * (this.score??0) * liters * 2;
+        const cost = this.level * (this.score??0) * liters * 2;
         return Math.round(cost * 10) / 10;
     }
     
@@ -52,7 +52,7 @@ class Recipe extends RecipeReference {
     }
 
     public hasProblem() : boolean {
-        let prob = this.getCookingSteps().map(
+        const prob = this.getCookingSteps().map(
             s => s.getStepParameters()
                 .map(s => (s.problem!=null && s.problem!=""))
                 .reduce((a, b) => (a || b), false)

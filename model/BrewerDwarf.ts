@@ -20,8 +20,8 @@ class BrewerDwarf {
     private intervalId : number = 0;
 
     public static load(data : any) : BrewerDwarf {
-        let curContext : any = window;
-        let newObj : BrewerDwarf = new BrewerDwarf();
+        const curContext : any = window;
+        const newObj : BrewerDwarf = new BrewerDwarf();
         newObj.tickInterval = data.tickInterval;
         newObj.status = data.status;
         newObj.player = curContext[data.player.$type].load(data.player);
@@ -32,7 +32,7 @@ class BrewerDwarf {
     }
 
     public brew() {
-        let recipe = this.player.getBrewingRecipe();
+        const recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
             RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
@@ -47,14 +47,14 @@ class BrewerDwarf {
         recipe.getCookingSteps()
             .forEach(s => {
                 if (s != null) {
-                    let q = s.getQuantity();
+                    const q = s.getQuantity();
                     if(q != null) {
                         this.player.decreaseStorage(q);
                     }
                 }
             });
         this.player.increaseStorage(recipe.getBeer());
-        let maltStep = recipe.steps.filter(
+        const maltStep = recipe.steps.filter(
             s => s.getStepParameters()[0]?.resource?.getName() == MALT.getName()
         );
         this.player.increaseStorage(Q(maltStep[0].getStepParameters()[0].value, DRECHE));
@@ -63,7 +63,7 @@ class BrewerDwarf {
     }
 
     public checkBrew() {
-        let recipe = this.player.getBrewingRecipe();
+        const recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
             RecipeAnalysis.analyse(recipe, this.player, AnalysisLevel.PROBLEM);
@@ -71,7 +71,7 @@ class BrewerDwarf {
     }
 
     public advise() {
-        let recipe = this.player.getBrewingRecipe();
+        const recipe = this.player.getBrewingRecipe();
         if (recipe != null) {
             this.loadRecipe(recipe);
             if (!this.player.hasResources([ADVISE_COST])) {
@@ -84,7 +84,7 @@ class BrewerDwarf {
     }
     
     private brewHasIngredient(recipe : Recipe) : boolean {
-        let ingredientList = recipe.getCookingSteps().map(
+        const ingredientList = recipe.getCookingSteps().map(
             s => s.getQuantity()
         ).filter(q => q != null) as Array<IQuantity>;
         return this.player.hasResources(ingredientList);
@@ -102,7 +102,7 @@ class BrewerDwarf {
     }
     
     private val(id : string) : string {
-        let elem = document.getElementById(id);
+        const elem = document.getElementById(id);
         if (elem != null && elem instanceof HTMLInputElement ) {
             if (!elem.value) {
                 throw "no value  for "+id+" "+elem.value;
@@ -113,7 +113,7 @@ class BrewerDwarf {
     }
 
     public prepareBrew(recipeName : string) {
-        let recipeRef = engine.getRecipeNameByName(recipeName);
+        const recipeRef = engine.getRecipeNameByName(recipeName);
         if (recipeRef == null) {
             throw "recette "+recipeName+" non dispo";
         }
@@ -121,7 +121,7 @@ class BrewerDwarf {
     }
     
     public reprepareBrew(recipeName : string) {
-        let recipe = engine.player.getRecipeNameByName(recipeName);
+        const recipe = engine.player.getRecipeNameByName(recipeName);
         if (recipe == null) {
             throw "recette "+recipeName+" non dispo";
         }
@@ -129,7 +129,7 @@ class BrewerDwarf {
     }
 
     public getRecipeNameByName(recipeName : string) : RecipeReference | null {
-        let recipes : RecipeReference[] =  this.recipes.filter(
+        const recipes : RecipeReference[] =  this.recipes.filter(
             src => src.getName() == recipeName
         );
         if (recipes.length == 0) {
@@ -142,7 +142,7 @@ class BrewerDwarf {
         const quantity = this.player.getResourceInStorage(resourceName);
         
         if (quantity != null) {
-            let res = quantity.getResource();
+            const res = quantity.getResource();
             if (res instanceof Beer) {
                 this.player.increaseStorage(res.recipe.getArticle().resource);
                 this.player.increaseStorage(res.recipe.getArticle().cost);
@@ -158,7 +158,7 @@ class BrewerDwarf {
     }
 
     public getArticleNameByName(resourceName : string) : Article | null {
-        let article = this.shopStorage.filter(
+        const article = this.shopStorage.filter(
             a => a.resource.getResource().getName() == resourceName
         )
         if (article.length == 0) {

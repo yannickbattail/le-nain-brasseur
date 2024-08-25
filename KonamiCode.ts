@@ -6,7 +6,7 @@ class KonamiCode {
 
     public constructor(onKonamiCode: () => void) {
         this.onKonamiCodeFunction = onKonamiCode;
-        let body = document.getElementsByTagName('body')[0];
+        const body = document.getElementsByTagName('body')[0];
         body.onkeydown = this.onKeydown.bind(this);
     }
 

@@ -12,7 +12,7 @@
 /// <reference path="./model/BrewerDwarf.ts" />
 /// <reference path="./model/BrewerDwarfStatus.ts" />
 
-let Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
+const Q = (quantity : number, res : IResource) => new Quantity(quantity, res);
 
 const LEVEL = new Level("level", "level.svg", [
     "rien",
@@ -34,11 +34,11 @@ const resourceList : Array<CategorizedItem | CategorizedMaterial> = [
     WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD
 ];
 
-let ADVISE_COST = Q(50, GOLD);
+const ADVISE_COST = Q(50, GOLD);
 
 class Scenario {
     public static initEngine() : BrewerDwarf {
-        let engine = new BrewerDwarf();
+        const engine = new BrewerDwarf();
         engine.recipes = [
             new Recipe("La Einegloïn", [
                     new AddingIngredient([

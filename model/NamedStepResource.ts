@@ -7,7 +7,7 @@ class NamedStepResource extends Resource {
         super(name);
     }
     public static load(data : any) : NamedStepResource {
-        let r : NamedStepResource = new NamedStepResource(data.name, data.image, data.stepNames);
+        const r : NamedStepResource = new NamedStepResource(data.name, data.image, data.stepNames);
         return r;
     }
     public show(quantity : number) : string {

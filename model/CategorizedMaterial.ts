@@ -8,7 +8,7 @@ class CategorizedMaterial extends Resource implements ICategorized {
         super(name);
     }
     public static load(data : any) : CategorizedMaterial {
-        let r : CategorizedMaterial = new CategorizedMaterial(data.name, data.unit, data.image, data.category, data.description);
+        const r : CategorizedMaterial = new CategorizedMaterial(data.name, data.unit, data.image, data.category, data.description);
         return r;
     }
     public show(quantity : number) : string {

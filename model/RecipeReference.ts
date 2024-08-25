@@ -10,8 +10,8 @@ class RecipeReference {
     }
     
     public static load(data : any) : RecipeReference {
-        let curContext : any = window;
-        let newObj : RecipeReference = new RecipeReference();
+        const curContext : any = window;
+        const newObj : RecipeReference = new RecipeReference();
         newObj.name = data.name;
         newObj.level = data.level;
         newObj.steps = (data.steps as Array<any>).map(p => curContext[p.$type].load(p));
@@ -29,7 +29,7 @@ class RecipeReference {
     }
 
     public createRecipe() : Recipe {
-        let recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
+        const recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
         recipe.name = "ma "+this.name;
         recipe.recipeRef = this;
         recipe.steps.forEach(
@@ -44,7 +44,7 @@ class RecipeReference {
     }
     
     public duplicate() : Recipe {
-        let recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
+        const recipe = Recipe.load(JSON.parse(JSON.stringify(this)));
         recipe.name = this.name+"#";
         return recipe;
     }

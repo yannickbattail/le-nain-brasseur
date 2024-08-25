@@ -6,7 +6,7 @@ class Level extends NamedStepResource {
         super(name, image, stepNames);
     }
     public static load(data : any) : Level {
-        let r : Level = new Level(data.name, data.image, data.stepNames);
+        const r : Level = new Level(data.name, data.image, data.stepNames);
         return r;
     }
     public show(quantity : number) : string {

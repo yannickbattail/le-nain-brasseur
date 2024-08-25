@@ -11,8 +11,8 @@ class Player implements IPlayer {
     constructor(protected name: string) {
     }
     public static load(data : any) : Player {
-        let curContext : any = window;
-        let player : Player = new Player(data.name);
+        const curContext : any = window;
+        const player : Player = new Player(data.name);
         player.preventNegativeStorage = data.preventNegativeStorage;
         player.storage = (data.storage as Array<any>).map(p => curContext[p.$type].load(p));
         player.recipes = (data.recipes as Array<any>).map(p => curContext[p.$type].load(p));
@@ -29,7 +29,7 @@ class Player implements IPlayer {
         return this.storage.filter(
             resQ =>
             {
-                let resource = resQ.getResource();
+                const resource = resQ.getResource();
                 return (resource instanceof CategorizedItem || resource instanceof CategorizedMaterial) && (resource.category ==  category);
             }
         );
@@ -62,7 +62,7 @@ class Player implements IPlayer {
     }
     
     public getRecipeNameByName(recipeName : string) : Recipe | null {
-        let recipes : Recipe[] =  this.recipes.filter(
+        const recipes : Recipe[] =  this.recipes.filter(
             src => src.getName() == recipeName
         );
         if (recipes.length == 0) {
@@ -104,7 +104,7 @@ class Player implements IPlayer {
     }
     
     public getResourceInStorage(resourceName: string): Quantity | null {
-        let res = this.storage.filter((res: Quantity) => res.getResource().getName() == resourceName);
+        const res = this.storage.filter((res: Quantity) => res.getResource().getName() == resourceName);
         if (res.length) {
             return res[0];
         }
@@ -114,7 +114,7 @@ class Player implements IPlayer {
         let hasRes = true;
         resourcesQuantity.forEach(
             resQ => {
-                let playerRes = this.getResourceInStorage(resQ.getResource().getName());
+                const playerRes = this.getResourceInStorage(resQ.getResource().getName());
                 if (playerRes == null || playerRes.getQuantity() < resQ.getQuantity()) {
                     hasRes = false;
                 }

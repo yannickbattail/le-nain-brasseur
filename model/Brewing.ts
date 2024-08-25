@@ -9,9 +9,9 @@ class Brewing extends CookingStep {
     }
 
     public static load(data : any) : Brewing {
-        let curContext : any = window;
-        let stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
-        let newObj : Brewing = new Brewing(stepParameters);
+        const curContext : any = window;
+        const stepParameters = (data.stepParameters as Array<any>).map(p => curContext[p.$type].load(p));
+        const newObj : Brewing = new Brewing(stepParameters);
         return newObj;
     }
 

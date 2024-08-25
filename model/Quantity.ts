@@ -6,9 +6,9 @@ class Quantity implements IQuantity{
     constructor(protected quantity: number, protected resource: IResource) {
     }
     public static load(data : any) : Quantity {
-        let curContext : any = window;
-        let res = curContext[data.resource.$type].load(data.resource);
-        let rq : Quantity = new Quantity(data.quantity, res);
+        const curContext : any = window;
+        const res = curContext[data.resource.$type].load(data.resource);
+        const rq : Quantity = new Quantity(data.quantity, res);
         return rq;
     }
     getQuantity() : number {

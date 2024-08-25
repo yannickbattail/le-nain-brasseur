@@ -8,7 +8,7 @@ class Resource implements IResource {
     constructor(protected name: string) {
     }
     public static load(data : any) : Resource {
-        let r : Resource = new Resource(data.name);
+        const r : Resource = new Resource(data.name);
         return r;
     }
     
