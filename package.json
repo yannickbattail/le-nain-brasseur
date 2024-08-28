@@ -1,6 +1,8 @@
 {
   "scripts": {
+    "start": "live-server --wait=1000",
     "build": "tsc",
+    "build:watch": "tsc -w",
     "clean": "rm ./*.js ./*.js.map ./model/*.js ./model/*.js.map",
     "lint": "eslint --fix .",
     "lint:check": "eslint .",
@@ -14,6 +16,9 @@
     "globals": "^15.9.0",
     "prettier": "^3.3.3",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.2.0",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
   }
 }
