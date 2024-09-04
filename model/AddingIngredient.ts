@@ -1,8 +1,8 @@
-import { StepParameter } from "./StepParameter";
-import { Resource } from "./Resource";
-import { CookingStep } from "./CookingStep";
-import { ICookingStep } from "./ICookingStep";
-import { AnalysisLevel } from "./AnalysisLevel";
+import { StepParameter } from "./StepParameter.js";
+import { Resource } from "./Resource.js";
+import { CookingStep } from "./CookingStep.js";
+import { ICookingStep } from "./ICookingStep.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
 
 export class AddingIngredient extends CookingStep {
   $type: string = "AddingIngredient";
@@ -27,7 +27,6 @@ export class AddingIngredient extends CookingStep {
   getImage(): string {
     return "AddIngredient.svg";
   }
-
   getResource(): Resource {
     return this.stepParameters[0].resource
       ? this.stepParameters[0].resource
@@ -37,7 +36,6 @@ export class AddingIngredient extends CookingStep {
   getStepParameters(): Array<StepParameter> {
     return this.stepParameters;
   }
-
   getStepParameter(index: number): StepParameter {
     if (index != 0) {
       throw "AddIngredient has only one StepParameter.";

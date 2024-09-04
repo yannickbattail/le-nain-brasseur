@@ -1,23 +1,26 @@
-import { RecipeReference } from "./RecipeReference";
-import { Player } from "./Player";
-import { Article } from "./Article";
-import { RecipeAnalysis } from "./RecipeAnalysis";
-import { AnalysisLevel } from "./AnalysisLevel";
-import { ADVISE_COST, DRECHE, MALT, Q } from "../Scenario";
-import { Beer } from "./Beer";
-import { Recipe } from "./Recipe";
-import { BrewerDwarfStatus } from "./BrewerDwarfStatus";
-import { IPlayer } from "./IPlayer";
-import { IQuantity } from "./IQuantity";
+import { BrewerDwarfStatus } from "./BrewerDwarfStatus.js";
+import { IPlayer } from "./IPlayer.js";
+import { Player } from "./Player.js";
+import { RecipeReference } from "./RecipeReference.js";
+import { Article } from "./Article.js";
+import { RecipeAnalysis } from "./RecipeAnalysis.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
+import { Recipe } from "./Recipe.js";
+import { ADVISE_COST, DRECHE, MALT, Q } from "../Scenario.js";
+import { IQuantity } from "./IQuantity.js";
+import { Beer } from "./Beer.js";
 
 export class BrewerDwarf {
   public $type: string = "BrewerDwarf";
   tickInterval: number = 100;
   fastMode: number = 0;
+  private saveCallback: (engine: BrewerDwarf) => void = function () {};
+
   status: BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
   player: IPlayer = new Player("");
   recipes: Array<RecipeReference> = new Array<RecipeReference>();
   public shopStorage: Array<Article> = new Array<Article>();
+
   private intervalId: number = 0;
 
   public static load(data: any): BrewerDwarf {
@@ -141,8 +144,6 @@ export class BrewerDwarf {
   stop() {
     window.clearInterval(this.intervalId);
   }
-
-  private saveCallback: (engine: BrewerDwarf) => void = function () {};
 
   private doBrew(recipe: Recipe) {
     recipe.getCookingSteps().forEach((s) => {

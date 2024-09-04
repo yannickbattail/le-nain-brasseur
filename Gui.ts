@@ -1,18 +1,18 @@
-import { BrewerDwarf } from "./model/BrewerDwarf";
-import { Level } from "./model/Level";
-import { CategorizedMaterial } from "./model/CategorizedMaterial";
-import { Beer } from "./model/Beer";
-import { RecipeReference } from "./model/RecipeReference";
-import { Recipe } from "./model/Recipe";
-import { ADVISE_COST, GOLD, Q, resourceList } from "./Scenario";
-import { StepParameter } from "./model/StepParameter";
-import { Article } from "./model/Article";
-import { NodeUpdate } from "./NodeUpdate";
-import { BrewerDwarfStatus } from "./model/BrewerDwarfStatus";
-import { IQuantity } from "./model/IQuantity";
-import { ICookingStep } from "./model/ICookingStep";
-import { AnalysisLevel } from "./model/AnalysisLevel";
-import { IPlayer } from "./model/IPlayer";
+import { BrewerDwarf } from "./model/BrewerDwarf.js";
+import { Level } from "./model/Level.js";
+import { CategorizedMaterial } from "./model/CategorizedMaterial.js";
+import { Beer } from "./model/Beer.js";
+import { RecipeReference } from "./model/RecipeReference.js";
+import { Recipe } from "./model/Recipe.js";
+import { ADVISE_COST, GOLD, Q, resourceList } from "./Scenario.js";
+import { StepParameter } from "./model/StepParameter.js";
+import { Article } from "./model/Article.js";
+import { NodeUpdate } from "./NodeUpdate.js";
+import { BrewerDwarfStatus } from "./model/BrewerDwarfStatus.js";
+import { IQuantity } from "./model/IQuantity.js";
+import { ICookingStep } from "./model/ICookingStep.js";
+import { AnalysisLevel } from "./model/AnalysisLevel.js";
+import { IPlayer } from "./model/IPlayer.js";
 
 export class Gui {
   intervalId: number = 0;

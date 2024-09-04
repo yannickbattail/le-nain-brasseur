@@ -1,7 +1,7 @@
-import { StepParameter } from "./StepParameter";
-import { AnalysisLevel } from "./AnalysisLevel";
-import { CookingStep } from "./CookingStep";
-import { ICookingStep } from "./ICookingStep";
+import { CookingStep } from "./CookingStep.js";
+import { StepParameter } from "./StepParameter.js";
+import { ICookingStep } from "./ICookingStep.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
 
 export class Brewing extends CookingStep {
   $type: string = "Brewing";
@@ -23,7 +23,6 @@ export class Brewing extends CookingStep {
   getName(): string {
     return "Fermenter";
   }
-
   getImage(): string {
     return "boiling-bubbles.svg";
   }
@@ -31,7 +30,6 @@ export class Brewing extends CookingStep {
   getStepParameters(): Array<StepParameter> {
     return this.stepParameters;
   }
-
   getStepParameter(index: number): StepParameter {
     if (index != 0) {
       throw "Brewing has only one StepParameter.";

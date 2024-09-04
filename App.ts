@@ -1,6 +1,6 @@
-import { BrewerDwarf } from "./model/BrewerDwarf";
-import { Scenario } from "./Scenario";
-import { Gui } from "./Gui";
+import { BrewerDwarf } from "./model/BrewerDwarf.js";
+import { Scenario } from "./Scenario.js";
+import { Gui } from "./Gui.js";
 
 export const VERSION = "0.4";
 
@@ -21,16 +21,13 @@ export function loadEngine(): BrewerDwarf | null {
   console.log("no engine");
   return null;
 }
-
 export function saveEngine(engine: BrewerDwarf) {
   window.localStorage.setItem("BrewerDwarf", JSON.stringify(engine));
   window.localStorage.setItem("BrewerDwarfVersion", VERSION);
 }
 
-const e = loadEngine();
-const engine = !e ? Scenario.initEngine() : e;
+export const engine: BrewerDwarf = loadEngine() || Scenario.initEngine();
 
 const gui = new Gui(engine);
 gui.start(500);
-
 engine.run(10000, saveEngine);

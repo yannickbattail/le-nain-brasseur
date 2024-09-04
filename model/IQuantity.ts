@@ -1,5 +1,5 @@
-import { Quantity } from "./Quantity";
-import { IResource } from "./IResource";
+import { Quantity } from "./Quantity.js";
+import { IResource } from "./IResource.js";
 
 export interface IQuantity {
   $type: string;

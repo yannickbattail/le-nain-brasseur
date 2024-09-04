@@ -1,7 +1,7 @@
-import { CookingStep } from "./CookingStep";
-import { StepParameter } from "./StepParameter";
-import { ICookingStep } from "./ICookingStep";
-import { AnalysisLevel } from "./AnalysisLevel";
+import { CookingStep } from "./CookingStep.js";
+import { StepParameter } from "./StepParameter.js";
+import { ICookingStep } from "./ICookingStep.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
 
 export class Heating extends CookingStep {
   $type: string = "Heating";
@@ -23,7 +23,6 @@ export class Heating extends CookingStep {
   getName(): string {
     return "Chauffer";
   }
-
   getImage(): string {
     return "camp-cooking-pot.svg";
   }
@@ -31,7 +30,6 @@ export class Heating extends CookingStep {
   getStepParameters(): Array<StepParameter> {
     return this.stepParameters;
   }
-
   getStepParameter(index: number): StepParameter {
     if (index != 0 && index != 1) {
       throw "Heat has 2 StepParameters.";

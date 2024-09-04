@@ -1,9 +1,9 @@
-import { IPlayer } from "./IPlayer";
-import { Quantity } from "./Quantity";
-import { Recipe } from "./Recipe";
-import { IQuantity } from "./IQuantity";
-import { CategorizedItem } from "./CategorizedItem";
-import { CategorizedMaterial } from "./CategorizedMaterial";
+import { IPlayer } from "./IPlayer.js";
+import { Quantity } from "./Quantity.js";
+import { Recipe } from "./Recipe.js";
+import { IQuantity } from "./IQuantity.js";
+import { CategorizedItem } from "./CategorizedItem.js";
+import { CategorizedMaterial } from "./CategorizedMaterial.js";
 
 export class Player implements IPlayer {
   $type: string = "Player";
@@ -11,9 +11,7 @@ export class Player implements IPlayer {
   protected storage: Array<Quantity> = new Array<Quantity>();
   protected recipes: Array<Recipe> = new Array<Recipe>();
   protected brewingRecipe: Recipe | null = null;
-
   constructor(protected name: string) {}
-
   public static load(data: any): Player {
     const curContext: any = window;
     const player: Player = new Player(data.name);
@@ -30,15 +28,12 @@ export class Player implements IPlayer {
         : null;
     return player;
   }
-
   public getName(): string {
     return this.name;
   }
-
   public getStorage(): Array<IQuantity> {
     return this.storage;
   }
-
   public getStorageByCategory(category: string): Array<IQuantity> {
     return this.storage.filter((resQ) => {
       const resource = resQ.getResource();
@@ -53,7 +48,6 @@ export class Player implements IPlayer {
   public getRecipes(): Array<Recipe> {
     return this.recipes;
   }
-
   public setRecipes(recipes: Array<Recipe>): IPlayer {
     this.recipes = recipes;
     return this;
@@ -62,7 +56,6 @@ export class Player implements IPlayer {
   public getBrewingRecipe(): Recipe | null {
     return this.brewingRecipe;
   }
-
   public setBrewingRecipe(brewingRecipe: Recipe | null): IPlayer {
     this.brewingRecipe = brewingRecipe;
     return this;
@@ -121,6 +114,10 @@ export class Player implements IPlayer {
     this.removeZeroResource();
   }
 
+  private removeZeroResource() {
+    this.storage = this.storage.filter((q) => q.getQuantity() != 0);
+  }
+
   public getResourceInStorage(resourceName: string): Quantity | null {
     const res = this.storage.filter(
       (res: Quantity) => res.getResource().getName() == resourceName,
@@ -130,7 +127,6 @@ export class Player implements IPlayer {
     }
     return null;
   }
-
   public hasResources(resourcesQuantity: Quantity[]): boolean {
     let hasRes = true;
     resourcesQuantity.forEach((resQ) => {
@@ -140,9 +136,5 @@ export class Player implements IPlayer {
       }
     });
     return hasRes;
-  }
-
-  private removeZeroResource() {
-    this.storage = this.storage.filter((q) => q.getQuantity() != 0);
   }
 }

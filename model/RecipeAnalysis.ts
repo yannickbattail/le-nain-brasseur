@@ -1,6 +1,6 @@
-import { Recipe } from "./Recipe";
-import { IPlayer } from "./IPlayer";
-import { AnalysisLevel } from "./AnalysisLevel";
+import { Recipe } from "./Recipe.js";
+import { IPlayer } from "./IPlayer.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
 
 export class RecipeAnalysis {
   public static analyse(recipe: Recipe, player: IPlayer, level: AnalysisLevel) {
@@ -40,15 +40,6 @@ export class RecipeAnalysis {
     recipe.analysisLevel = level;
   }
 
-  public static scoring(actual: number, expected: number): number {
-    const halfExpected = expected / 2;
-    const diff = Math.abs(expected - actual);
-    if (diff > halfExpected) {
-      return 0;
-    }
-    return 1 - diff / halfExpected;
-  }
-
   private static playerHasIngredient(recipe: Recipe, player: IPlayer) {
     recipe.getCookingSteps().forEach((s) => {
       if (s.getStepParameters().length != 0) {
@@ -74,5 +65,14 @@ export class RecipeAnalysis {
         param.score = null;
       });
     });
+  }
+
+  public static scoring(actual: number, expected: number): number {
+    const halfExpected = expected / 2;
+    const diff = Math.abs(expected - actual);
+    if (diff > halfExpected) {
+      return 0;
+    }
+    return 1 - diff / halfExpected;
   }
 }

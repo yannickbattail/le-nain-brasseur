@@ -13,12 +13,6 @@
     "strictPropertyInitialization": true,
     "stripInternal": true
   },
-  "lib": [
-    "dom",
-    "es6"
-  ],
-  "include": [
-    "./model/*.ts",
-    "./*.ts"
-  ]
+  "lib": ["dom", "es6"],
+  "include": ["./model/*.ts", "./*.ts"]
 }

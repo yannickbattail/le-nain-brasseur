@@ -1,13 +1,11 @@
-import { IQuantity } from "./IQuantity";
+import { IQuantity } from "./IQuantity.js";
 
 export class Article {
   $type: string = "Article";
-
   constructor(
     public resource: IQuantity,
     public cost: IQuantity,
   ) {}
-
   public static load(data: any): Article {
     const curContext: any = window;
     const res = curContext[data.resource.$type].load(data.resource);

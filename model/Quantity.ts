@@ -1,6 +1,6 @@
-import { IQuantity } from "./IQuantity";
-import { Resource } from "./Resource";
-import { IResource } from "./IResource";
+import { IQuantity } from "./IQuantity.js";
+import { Resource } from "./Resource.js";
+import { IResource } from "./IResource.js";
 
 export class Quantity implements IQuantity {
   $type: string = "Quantity";

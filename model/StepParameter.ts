@@ -1,10 +1,9 @@
-import { Resource } from "./Resource";
-import { IQuantity } from "./IQuantity";
-import { Q } from "../Scenario";
+import { Resource } from "./Resource.js";
+import { IQuantity } from "./IQuantity.js";
+import { Q } from "../Scenario.js";
 
 export class StepParameter {
   $type: string = "StepParameter";
-
   constructor(
     public name: string,
     public value: number,
@@ -30,7 +29,6 @@ export class StepParameter {
   getName(): string {
     return this.name;
   }
-
   getValue(): number {
     return this.value;
   }

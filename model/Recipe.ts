@@ -1,17 +1,16 @@
-import { RecipeReference } from "./RecipeReference";
-import { AnalysisLevel } from "./AnalysisLevel";
-import { ICookingStep } from "./ICookingStep";
-import { IQuantity } from "./IQuantity";
-import { Beer } from "./Beer";
-import { GOLD, Q } from "../Scenario";
-import { Article } from "./Article";
+import { RecipeReference } from "./RecipeReference.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
+import { ICookingStep } from "./ICookingStep.js";
+import { IQuantity } from "./IQuantity.js";
+import { Beer } from "./Beer.js";
+import { GOLD, Q } from "../Scenario.js";
+import { Article } from "./Article.js";
 
 export class Recipe extends RecipeReference {
   $type: string = "Recipe";
   public score: number | null = null;
   public problem: string = "";
   public analysisLevel: AnalysisLevel = AnalysisLevel.NONE;
-
   constructor(
     public name: string = "",
     public steps: Array<ICookingStep> = [],
@@ -42,7 +41,6 @@ export class Recipe extends RecipeReference {
   getCookingSteps(): Array<ICookingStep> {
     return this.steps;
   }
-
   getName(): string {
     return this.name;
   }

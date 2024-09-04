@@ -1,7 +1,7 @@
-import { CookingStep } from "./CookingStep";
-import { StepParameter } from "./StepParameter";
-import { AnalysisLevel } from "./AnalysisLevel";
-import { ICookingStep } from "./ICookingStep";
+import { CookingStep } from "./CookingStep.js";
+import { StepParameter } from "./StepParameter.js";
+import { ICookingStep } from "./ICookingStep.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
 
 export class Filtering extends CookingStep {
   $type: string = "Filtering";
@@ -23,7 +23,6 @@ export class Filtering extends CookingStep {
   getStepParameters(): Array<StepParameter> {
     return this.stepParameters;
   }
-
   getStepParameter(index: number): StepParameter {
     throw "Filter has no StepParameter.";
   }
@@ -37,7 +36,6 @@ export class Filtering extends CookingStep {
   getName(): string {
     return "Filtrer";
   }
-
   getImage(): string {
     return "strainer.svg";
   }

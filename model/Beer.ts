@@ -1,6 +1,6 @@
-import { CategorizedMaterial } from "./CategorizedMaterial";
-import { Recipe } from "./Recipe";
-import { ICategorized } from "./ICategorized";
+import { CategorizedMaterial } from "./CategorizedMaterial.js";
+import { Recipe } from "./Recipe.js";
+import { ICategorized } from "./ICategorized.js";
 
 export class Beer extends CategorizedMaterial implements ICategorized {
   public $type: string = "Beer";
@@ -15,7 +15,6 @@ export class Beer extends CategorizedMaterial implements ICategorized {
   ) {
     super(name, unit, image, category, description);
   }
-
   public static load(data: any): Beer {
     const curContext: any = window;
     const recipe = curContext[data.recipe.$type].load(data.recipe);

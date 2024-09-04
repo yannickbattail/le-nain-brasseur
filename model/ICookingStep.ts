@@ -1,6 +1,6 @@
-import { StepParameter } from "./StepParameter";
-import { AnalysisLevel } from "./AnalysisLevel";
-import { IQuantity } from "./IQuantity";
+import { StepParameter } from "./StepParameter.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
+import { IQuantity } from "./IQuantity.js";
 
 export interface ICookingStep {
   $type: string;

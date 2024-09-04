@@ -1,8 +1,7 @@
-import { Resource } from "./Resource";
+import { Resource } from "./Resource.js";
 
 export class NamedStepResource extends Resource {
   public $type: string = "Item";
-
   constructor(
     public name: string,
     public image: string,
@@ -10,7 +9,6 @@ export class NamedStepResource extends Resource {
   ) {
     super(name);
   }
-
   public static load(data: any): NamedStepResource {
     const r: NamedStepResource = new NamedStepResource(
       data.name,
@@ -19,7 +17,6 @@ export class NamedStepResource extends Resource {
     );
     return r;
   }
-
   public show(quantity: number): string {
     if (quantity < 0 || quantity >= this.stepNames.length) {
       return "" + quantity + ": UNKOWN";

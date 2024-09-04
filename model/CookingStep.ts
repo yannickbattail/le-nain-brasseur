@@ -1,25 +1,19 @@
-import { StepParameter } from "./StepParameter";
-import { AnalysisLevel } from "./AnalysisLevel";
-import { RecipeAnalysis } from "./RecipeAnalysis";
-import { ICookingStep } from "./ICookingStep";
-import { IQuantity } from "./IQuantity";
+import { ICookingStep } from "./ICookingStep.js";
+import { StepParameter } from "./StepParameter.js";
+import { AnalysisLevel } from "./AnalysisLevel.js";
+import { IQuantity } from "./IQuantity.js";
+import { RecipeAnalysis } from "./RecipeAnalysis.js";
 
 export abstract class CookingStep implements ICookingStep {
   abstract $type: string;
   public score: number | null = null;
-
   constructor(public stepParameters: Array<StepParameter> = []) {}
 
   abstract getName(): string;
-
   abstract getImage(): string;
-
   abstract getStepParameters(): Array<StepParameter>;
-
   abstract getStepParameter(index: number): StepParameter;
-
   abstract validate(): void;
-
   abstract analyse(action: ICookingStep, level: AnalysisLevel): void;
 
   public getQuantity(): IQuantity | null {

@@ -1,18 +1,18 @@
-import { Quantity } from "./model/Quantity";
-import { Level } from "./model/Level";
-import { CategorizedMaterial } from "./model/CategorizedMaterial";
-import { CategorizedItem } from "./model/CategorizedItem";
-import { BrewerDwarf } from "./model/BrewerDwarf";
-import { Recipe } from "./model/Recipe";
-import { AddingIngredient } from "./model/AddingIngredient";
-import { StepParameter } from "./model/StepParameter";
-import { Heating } from "./model/Heating";
-import { Filtering } from "./model/Filtering";
-import { Cooling } from "./model/Cooling";
-import { Brewing } from "./model/Brewing";
-import { Article } from "./model/Article";
-import { Player } from "./model/Player";
-import { IResource } from "./model/IResource";
+import { Quantity } from "./model/Quantity.js";
+import { Level } from "./model/Level.js";
+import { CategorizedMaterial } from "./model/CategorizedMaterial.js";
+import { CategorizedItem } from "./model/CategorizedItem.js";
+import { BrewerDwarf } from "./model/BrewerDwarf.js";
+import { Recipe } from "./model/Recipe.js";
+import { AddingIngredient } from "./model/AddingIngredient.js";
+import { StepParameter } from "./model/StepParameter.js";
+import { Heating } from "./model/Heating.js";
+import { Filtering } from "./model/Filtering.js";
+import { Cooling } from "./model/Cooling.js";
+import { Brewing } from "./model/Brewing.js";
+import { Article } from "./model/Article.js";
+import { Player } from "./model/Player.js";
+import { IResource } from "./model/IResource.js";
 
 export const Q = (quantity: number, res: IResource) =>
   new Quantity(quantity, res);

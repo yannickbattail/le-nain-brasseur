@@ -1,9 +1,8 @@
-import { Resource } from "./Resource";
-import { ICategorized } from "./ICategorized";
+import { Resource } from "./Resource.js";
+import { ICategorized } from "./ICategorized.js";
 
 export class CategorizedMaterial extends Resource implements ICategorized {
   public $type: string = "CategorizedMaterial";
-
   constructor(
     public name: string,
     public unit: string,
@@ -13,7 +12,6 @@ export class CategorizedMaterial extends Resource implements ICategorized {
   ) {
     super(name);
   }
-
   public static load(data: any): CategorizedMaterial {
     const r: CategorizedMaterial = new CategorizedMaterial(
       data.name,
@@ -24,7 +22,6 @@ export class CategorizedMaterial extends Resource implements ICategorized {
     );
     return r;
   }
-
   public show(quantity: number): string {
     let u = this.unit;
     let q = quantity;

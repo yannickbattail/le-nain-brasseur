@@ -1,10 +1,9 @@
-import { ICookingStep } from "./ICookingStep";
-import { Recipe } from "./Recipe";
-import { WATER } from "../Scenario";
+import { ICookingStep } from "./ICookingStep.js";
+import { Recipe } from "./Recipe.js";
+import { WATER } from "../Scenario.js";
 
 export class RecipeReference {
   $type: string = "RecipeReference";
-
   constructor(
     public name: string = "",
     public steps: Array<ICookingStep> = [],
@@ -25,11 +24,9 @@ export class RecipeReference {
   getCookingSteps(): Array<ICookingStep> {
     return this.steps;
   }
-
   getName(): string {
     return this.name;
   }
-
   getLevel(): number {
     return this.level;
   }
