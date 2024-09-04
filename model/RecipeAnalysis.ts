@@ -1,7 +1,8 @@
-/// <reference path="ICookingStep.ts" />
-/// <reference path="Recipe.ts" />
+import { Recipe } from "./Recipe";
+import { IPlayer } from "./IPlayer";
+import { AnalysisLevel } from "./AnalysisLevel";
 
-class RecipeAnalysis {
+export class RecipeAnalysis {
   public static analyse(recipe: Recipe, player: IPlayer, level: AnalysisLevel) {
     if (!recipe.recipeRef) {
       throw "no recipeRef";

@@ -1,20 +1,23 @@
-/// <reference path="./model/IResource.ts" />
-/// <reference path="./model/Resource.ts" />
-/// <reference path="./model/ICategorized.ts" />
-/// <reference path="./model/CategorizedItem.ts" />
-/// <reference path="./model/CategorizedMaterial.ts" />
-/// <reference path="./model/Level.ts" />
-/// <reference path="./model/IQuantity.ts" />
-/// <reference path="./model/Quantity.ts" />
-/// <reference path="./model/IPlayer.ts" />
-/// <reference path="./model/Player.ts" />
-/// <reference path="./model/Recipe.ts" />
-/// <reference path="./model/BrewerDwarf.ts" />
-/// <reference path="./model/BrewerDwarfStatus.ts" />
+import { Quantity } from "./model/Quantity";
+import { Level } from "./model/Level";
+import { CategorizedMaterial } from "./model/CategorizedMaterial";
+import { CategorizedItem } from "./model/CategorizedItem";
+import { BrewerDwarf } from "./model/BrewerDwarf";
+import { Recipe } from "./model/Recipe";
+import { AddingIngredient } from "./model/AddingIngredient";
+import { StepParameter } from "./model/StepParameter";
+import { Heating } from "./model/Heating";
+import { Filtering } from "./model/Filtering";
+import { Cooling } from "./model/Cooling";
+import { Brewing } from "./model/Brewing";
+import { Article } from "./model/Article";
+import { Player } from "./model/Player";
+import { IResource } from "./model/IResource";
 
-const Q = (quantity: number, res: IResource) => new Quantity(quantity, res);
+export const Q = (quantity: number, res: IResource) =>
+  new Quantity(quantity, res);
 
-const LEVEL = new Level("level", "level.svg", [
+export const LEVEL = new Level("level", "level.svg", [
   "rien",
   "Brassouilleur ",
   "Brasseur amateur",
@@ -22,51 +25,56 @@ const LEVEL = new Level("level", "level.svg", [
   "Maistre brasseur",
 ]);
 //    VARIABLE  TYPE (Material a une unité en plus)               unité         image                         catégorie                 description
-const WATER = new CategorizedMaterial(
+export const WATER = new CategorizedMaterial(
   "Eau",
   "cl",
   "water.svg",
   "Ingredient",
   "eau",
 );
-const MALT = new CategorizedMaterial(
+export const MALT = new CategorizedMaterial(
   "Malt",
   "g",
   "grain.svg",
   "Ingredient",
   "Malt d'orge",
 );
-const HOUBLON = new CategorizedMaterial(
+export const HOUBLON = new CategorizedMaterial(
   "Houblon",
   "g",
   "hops.svg",
   "Ingredient",
   "Houblon",
 );
-const LEVURE = new CategorizedMaterial(
+export const LEVURE = new CategorizedMaterial(
   "Levure",
   "g",
   "eyedropper.svg",
   "Ingredient",
   "Levure de bière",
 );
-const DRECHE = new CategorizedMaterial(
+export const DRECHE = new CategorizedMaterial(
   "drêche",
   "g",
   "dreche.svg",
   "Ingredient",
   "reste de grain après brassage",
 );
-const BIERE = new CategorizedMaterial(
+export const BIERE = new CategorizedMaterial(
   "Bière",
   "cl",
   "beer.svg",
   "Ingredient",
   "Bière",
 );
-const GOLD = new CategorizedItem("Or", "cash.svg", "Item", "Pièces d'or");
+export const GOLD = new CategorizedItem(
+  "Or",
+  "cash.svg",
+  "Item",
+  "Pièces d'or",
+);
 
-const resourceList: Array<CategorizedItem | CategorizedMaterial> = [
+export const resourceList: Array<CategorizedItem | CategorizedMaterial> = [
   WATER,
   MALT,
   HOUBLON,
@@ -76,9 +84,9 @@ const resourceList: Array<CategorizedItem | CategorizedMaterial> = [
   GOLD,
 ];
 
-const ADVISE_COST = Q(50, GOLD);
+export const ADVISE_COST = Q(50, GOLD);
 
-class Scenario {
+export class Scenario {
   public static initEngine(): BrewerDwarf {
     const engine = new BrewerDwarf();
     engine.recipes = [

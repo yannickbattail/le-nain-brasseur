@@ -1,8 +1,12 @@
-/// <reference path="RecipeReference.ts" />
-/// <reference path="AnalysisLevel.ts" />
-/// <reference path="Article.ts" />
+import { RecipeReference } from "./RecipeReference";
+import { AnalysisLevel } from "./AnalysisLevel";
+import { ICookingStep } from "./ICookingStep";
+import { IQuantity } from "./IQuantity";
+import { Beer } from "./Beer";
+import { GOLD, Q } from "../Scenario";
+import { Article } from "./Article";
 
-class Recipe extends RecipeReference {
+export class Recipe extends RecipeReference {
   $type: string = "Recipe";
   public score: number | null = null;
   public problem: string = "";
@@ -67,7 +71,7 @@ class Recipe extends RecipeReference {
   }
 
   public hasProblem(): boolean {
-    const prob = this.getCookingSteps()
+    return this.getCookingSteps()
       .map((s) =>
         s
           .getStepParameters()
@@ -75,6 +79,5 @@ class Recipe extends RecipeReference {
           .reduce((a, b) => a || b, false),
       )
       .reduce((a, b) => a || b, false);
-    return prob;
   }
 }

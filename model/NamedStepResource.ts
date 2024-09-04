@@ -1,7 +1,6 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./Resource.ts" />
+import { Resource } from "./Resource";
 
-class NamedStepResource extends Resource {
+export class NamedStepResource extends Resource {
   public $type: string = "Item";
 
   constructor(

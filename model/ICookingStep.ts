@@ -1,4 +1,8 @@
-interface ICookingStep {
+import { StepParameter } from "./StepParameter";
+import { AnalysisLevel } from "./AnalysisLevel";
+import { IQuantity } from "./IQuantity";
+
+export interface ICookingStep {
   $type: string;
 
   getName(): string;

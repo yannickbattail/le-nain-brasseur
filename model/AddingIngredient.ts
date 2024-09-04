@@ -1,11 +1,10 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./Resource.ts" />
-/// <reference path="./IQuantity.ts" />
-/// <reference path="./Quantity.ts" />
-/// <reference path="./ICookingStep.ts" />
-/// <reference path="./CookingStep.ts" />
+import { StepParameter } from "./StepParameter";
+import { Resource } from "./Resource";
+import { CookingStep } from "./CookingStep";
+import { ICookingStep } from "./ICookingStep";
+import { AnalysisLevel } from "./AnalysisLevel";
 
-class AddingIngredient extends CookingStep {
+export class AddingIngredient extends CookingStep {
   $type: string = "AddingIngredient";
 
   constructor(stepParameters: Array<StepParameter> = []) {
@@ -18,8 +17,7 @@ class AddingIngredient extends CookingStep {
     const stepParameters = (data.stepParameters as Array<any>).map((p) =>
       curContext[p.$type].load(p),
     );
-    const newObj: AddingIngredient = new AddingIngredient(stepParameters);
-    return newObj;
+    return new AddingIngredient(stepParameters);
   }
 
   getName(): string {

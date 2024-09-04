@@ -1,7 +1,8 @@
-/// <reference path="Resource.ts" />
-/// <reference path="RecipeReference.ts" />
+import { Resource } from "./Resource";
+import { IQuantity } from "./IQuantity";
+import { Q } from "../Scenario";
 
-class StepParameter {
+export class StepParameter {
   $type: string = "StepParameter";
 
   constructor(

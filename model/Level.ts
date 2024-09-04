@@ -1,6 +1,6 @@
-/// <reference path="./NamedStepResource.ts" />
+import { NamedStepResource } from "./NamedStepResource";
 
-class Level extends NamedStepResource {
+export class Level extends NamedStepResource {
   public $type: string = "Level";
 
   constructor(

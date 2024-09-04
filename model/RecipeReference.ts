@@ -1,7 +1,8 @@
-/// <reference path="ICookingStep.ts" />
-/// <reference path="Recipe.ts" />
+import { ICookingStep } from "./ICookingStep";
+import { Recipe } from "./Recipe";
+import { WATER } from "../Scenario";
 
-class RecipeReference {
+export class RecipeReference {
   $type: string = "RecipeReference";
 
   constructor(

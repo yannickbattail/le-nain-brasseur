@@ -1,8 +1,11 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./IQuantity.ts" />
-/// <reference path="./IPlayer.ts" />
+import { IPlayer } from "./IPlayer";
+import { Quantity } from "./Quantity";
+import { Recipe } from "./Recipe";
+import { IQuantity } from "./IQuantity";
+import { CategorizedItem } from "./CategorizedItem";
+import { CategorizedMaterial } from "./CategorizedMaterial";
 
-class Player implements IPlayer {
+export class Player implements IPlayer {
   $type: string = "Player";
   protected preventNegativeStorage: boolean = false;
   protected storage: Array<Quantity> = new Array<Quantity>();

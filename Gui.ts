@@ -1,30 +1,20 @@
-/// <reference path="./model/IResource.ts" />
-/// <reference path="./model/Resource.ts" />
-/// <reference path="./model/ICategorized.ts" />
-/// <reference path="./model/CategorizedItem.ts" />
-/// <reference path="./model/CategorizedMaterial.ts" />
-/// <reference path="./model/Level.ts" />
-/// <reference path="./model/NamedStepResource.ts" />
-/// <reference path="./model/IQuantity.ts" />
-/// <reference path="./model/Quantity.ts" />
-/// <reference path="./model/IPlayer.ts" />
-/// <reference path="./model/Player.ts" />
-/// <reference path="./model/ICookingStep.ts" />
-/// <reference path="./model/CookingStep.ts" />
-/// <reference path="./model/AddingIngredient.ts" />
-/// <reference path="./model/Heating.ts" />
-/// <reference path="./model/Cooling.ts" />
-/// <reference path="./model/Filtering.ts" />
-/// <reference path="./model/Brewing.ts" />
-/// <reference path="./model/Recipe.ts" />
-/// <reference path="./model/RecipeAnalysis.ts" />
-/// <reference path="./model/BrewerDwarf.ts" />
-/// <reference path="./model/BrewerDwarfStatus.ts" />
-/// <reference path="./Scenario.ts" />
-/// <reference path="./App.ts" />
-/// <reference path="./NodeUpdate.ts" />
+import { BrewerDwarf } from "./model/BrewerDwarf";
+import { Level } from "./model/Level";
+import { CategorizedMaterial } from "./model/CategorizedMaterial";
+import { Beer } from "./model/Beer";
+import { RecipeReference } from "./model/RecipeReference";
+import { Recipe } from "./model/Recipe";
+import { ADVISE_COST, GOLD, Q, resourceList } from "./Scenario";
+import { StepParameter } from "./model/StepParameter";
+import { Article } from "./model/Article";
+import { NodeUpdate } from "./NodeUpdate";
+import { BrewerDwarfStatus } from "./model/BrewerDwarfStatus";
+import { IQuantity } from "./model/IQuantity";
+import { ICookingStep } from "./model/ICookingStep";
+import { AnalysisLevel } from "./model/AnalysisLevel";
+import { IPlayer } from "./model/IPlayer";
 
-class Gui {
+export class Gui {
   intervalId: number = 0;
   private engineStatus: BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
 
@@ -33,9 +23,10 @@ class Gui {
   }
 
   public static htmlEntities(str: string) {
-    return str.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
-      return "&#" + i.charCodeAt(0) + ";";
-    });
+    return str.replace(
+      /[\u00A0-\u9999<>&]/g,
+      (i) => "&#" + i.charCodeAt(0) + ";",
+    );
   }
 
   public static youWin(raison: string) {
@@ -109,7 +100,7 @@ class Gui {
 
   stop() {
     window.clearInterval(this.intervalId);
-    engine.stop();
+    this.engine.stop();
   }
 
   restart() {
@@ -123,7 +114,7 @@ class Gui {
   }
 
   fastMode() {
-    engine.fastMode = 1000;
+    this.engine.fastMode = 1000;
   }
 
   start(refreshInterval: number) {
@@ -157,13 +148,13 @@ class Gui {
   private displayBrews(): string {
     const content = this.engine.player
       .getStorage()
-      .filter((resQ) => {
+      .filter((resQ: IQuantity) => {
         const resource = resQ.getResource();
         return (
           resource instanceof CategorizedMaterial && resource.category == "beer"
         );
       })
-      .map((res) => this.displayBrew(res))
+      .map((res: IQuantity) => this.displayBrew(res))
       .join("");
     if (content != "") {
       return this.displayStorageBox("Brassins", content);
@@ -218,7 +209,7 @@ class Gui {
   private displayPlayerRecipes(): string {
     return this.engine.player
       .getRecipes()
-      .map((res) => this.displayPlayerRecipe(res))
+      .map((res: Recipe) => this.displayPlayerRecipe(res))
       .join("");
   }
 
@@ -306,7 +297,7 @@ class Gui {
   }
 
   private editBrewingRecipe(): string {
-    const r = engine.player.getBrewingRecipe();
+    const r = this.engine.player.getBrewingRecipe();
     if (r == null) {
       return "";
     }
@@ -505,7 +496,7 @@ class Gui {
   private displayStorageCategoryContent(category: string): string {
     return this.engine.player
       .getStorageByCategory(category)
-      .map((res) => this.displayQuantity(res))
+      .map((res: IQuantity) => this.displayQuantity(res))
       .join("");
   }
 
@@ -513,7 +504,7 @@ class Gui {
     let h = this.engine.shopStorage
       .map((res) => this.displayArticle(res, this.engine.player))
       .join("");
-    h += this.engine.player.getStorageByCategory("beer").map((b) => {
+    h += this.engine.player.getStorageByCategory("beer").map((b: IQuantity) => {
       const res = b.getResource();
       if (res instanceof Beer) {
         return this.displaySellBrew(res.recipe, this.engine.player);
@@ -524,10 +515,8 @@ class Gui {
   }
 
   private displaySellBrew(recipe: Recipe, player: IPlayer): string {
-    let cssClass = "notAvailableResource";
     let disable = ' disable="disable"';
     if (player.hasResources([recipe.getArticle().cost.opposite()])) {
-      cssClass = "availableResource";
       disable = "";
     }
     let sell = "Acheter";
@@ -552,34 +541,28 @@ class Gui {
   }
 
   private displayArticle(article: Article, player: IPlayer): string {
-    let cssClass = "notAvailableResource";
-    let disable = ' disable="disable"';
-    if (player.hasResources([article.cost.opposite()])) {
-      cssClass = "availableResource";
-      disable = "";
-    }
-    let sell = "Acheter";
-    if (article.resource.getResource().getName() == GOLD.getName()) {
-      sell = "Vendre";
-    }
+    const hasResource = player.hasResources([article.cost]);
+    const cssClass = hasResource ? "availableResource" : "notAvailableResource";
+    const disable = hasResource ? "" : ' disabled="disabled"';
+    const onclick = hasResource
+      ? "engine.buy('" + article.resource.getResource().getName() + "')"
+      : "";
+    const sell =
+      article.resource.getResource().getName() == GOLD.getName()
+        ? "Vendre"
+        : "Acheter";
     return (
       '<div class="article">' +
       this.displayQuantity(article.resource) +
       this.displayQuantity(article.cost, cssClass) +
-      "<button onclick=\"engine.buy('" +
-      article.resource.getResource().getName() +
-      "')\" " +
-      disable +
-      ">" +
-      sell +
-      "</button>" +
+      `<button onclick="${onclick}" ${disable}>${sell}</button>` +
       "</div>"
     );
   }
 
   private displayQuantity(
     quantity: IQuantity,
-    optionnalCss: string = "",
+    optionalCss: string = "",
     storageRes: IQuantity | null = null,
   ): string {
     const res: any = quantity.getResource();
@@ -591,7 +574,7 @@ class Gui {
       '<div class="resource ' +
       quantity.getResource().$type +
       " " +
-      optionnalCss +
+      optionalCss +
       '">' +
       '<div class="resource_label">' +
       (storageRes != null ? "<span>" + storageRes.show() + "</span>/" : "") +
@@ -614,7 +597,7 @@ class Gui {
     quantity: IQuantity,
     stepIndex: number,
     paramIndex: number,
-    optionnalCss: string = "",
+    optionalCss: string = "",
     storageRes: IQuantity | null = null,
   ): string {
     const res: any = quantity.getResource();
@@ -630,7 +613,7 @@ class Gui {
       '<div class="resource ' +
       quantity.getResource().$type +
       " " +
-      optionnalCss +
+      optionalCss +
       '">' +
       '<div class="resource_label">' +
       '<input type="number" id="' +

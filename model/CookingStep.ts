@@ -1,6 +1,10 @@
-/// <reference path="ICookingStep.ts" />
+import { StepParameter } from "./StepParameter";
+import { AnalysisLevel } from "./AnalysisLevel";
+import { RecipeAnalysis } from "./RecipeAnalysis";
+import { ICookingStep } from "./ICookingStep";
+import { IQuantity } from "./IQuantity";
 
-abstract class CookingStep implements ICookingStep {
+export abstract class CookingStep implements ICookingStep {
   abstract $type: string;
   public score: number | null = null;
 

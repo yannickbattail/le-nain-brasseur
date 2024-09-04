@@ -1,6 +1,9 @@
-/// <reference path="CookingStep.ts" />
+import { CookingStep } from "./CookingStep";
+import { StepParameter } from "./StepParameter";
+import { AnalysisLevel } from "./AnalysisLevel";
+import { ICookingStep } from "./ICookingStep";
 
-class Cooling extends CookingStep {
+export class Cooling extends CookingStep {
   $type: string = "Cooling";
 
   constructor(stepParameters: Array<StepParameter> = []) {

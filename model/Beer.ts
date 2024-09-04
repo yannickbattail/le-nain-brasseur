@@ -1,10 +1,8 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./Resource.ts" />
-/// <reference path="./ICategorized.ts" />
-/// <reference path="./CategorizedMaterial.ts" />
-/// <reference path="./Recipe.ts" />
+import { CategorizedMaterial } from "./CategorizedMaterial";
+import { Recipe } from "./Recipe";
+import { ICategorized } from "./ICategorized";
 
-class Beer extends CategorizedMaterial implements ICategorized {
+export class Beer extends CategorizedMaterial implements ICategorized {
   public $type: string = "Beer";
 
   constructor(

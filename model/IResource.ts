@@ -1,4 +1,4 @@
-interface IResource {
+export interface IResource {
   $type: string;
 
   getName(): string;

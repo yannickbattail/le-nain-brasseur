@@ -1,4 +1,4 @@
-class KonamiCode {
+export class KonamiCode {
   private static readonly keyCodeList: Array<number> = [
     38, 38, 40, 40, 37, 39, 37, 39, 66, 65,
   ];

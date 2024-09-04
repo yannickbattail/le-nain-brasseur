@@ -1,30 +1,10 @@
-/// <reference path="./model/IResource.ts" />
-/// <reference path="./model/Resource.ts" />
-/// <reference path="./model/ICategorized.ts" />
-/// <reference path="./model/CategorizedItem.ts" />
-/// <reference path="./model/CategorizedMaterial.ts" />
-/// <reference path="./model/Level.ts" />
-/// <reference path="./model/NamedStepResource.ts" />
-/// <reference path="./model/IQuantity.ts" />
-/// <reference path="./model/Quantity.ts" />
-/// <reference path="./model/IPlayer.ts" />
-/// <reference path="./model/Player.ts" />
-/// <reference path="./model/ICookingStep.ts" />
-/// <reference path="./model/CookingStep.ts" />
-/// <reference path="./model/AddingIngredient.ts" />
-/// <reference path="./model/Heating.ts" />
-/// <reference path="./model/Cooling.ts" />
-/// <reference path="./model/Filtering.ts" />
-/// <reference path="./model/Brewing.ts" />
-/// <reference path="./model/Recipe.ts" />
-/// <reference path="./model/RecipeAnalysis.ts" />
-/// <reference path="./model/BrewerDwarf.ts" />
-/// <reference path="./model/BrewerDwarfStatus.ts" />
-/// <reference path="./NodeUpdate.ts" />
+import { BrewerDwarf } from "./model/BrewerDwarf";
+import { Scenario } from "./Scenario";
+import { Gui } from "./Gui";
 
-const VERSION = "0.4";
+export const VERSION = "0.4";
 
-function loadEngine(): BrewerDwarf | null {
+export function loadEngine(): BrewerDwarf | null {
   const json = window.localStorage.getItem("BrewerDwarf");
   if (json != null) {
     if (
@@ -42,15 +22,15 @@ function loadEngine(): BrewerDwarf | null {
   return null;
 }
 
-function saveEngine(engine: BrewerDwarf) {
+export function saveEngine(engine: BrewerDwarf) {
   window.localStorage.setItem("BrewerDwarf", JSON.stringify(engine));
   window.localStorage.setItem("BrewerDwarfVersion", VERSION);
 }
 
-let engine: BrewerDwarf;
 const e = loadEngine();
-if (!e) {
-  engine = Scenario.initEngine();
-} else {
-  engine = e;
-}
+const engine = !e ? Scenario.initEngine() : e;
+
+const gui = new Gui(engine);
+gui.start(500);
+
+engine.run(10000, saveEngine);

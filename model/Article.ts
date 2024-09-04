@@ -1,7 +1,6 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./IQuantity.ts" />
+import { IQuantity } from "./IQuantity";
 
-class Article {
+export class Article {
   $type: string = "Article";
 
   constructor(

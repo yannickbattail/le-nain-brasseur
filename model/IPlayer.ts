@@ -1,7 +1,7 @@
-/// <reference path="IResource.ts" />
-/// <reference path="IQuantity.ts" />
+import { Recipe } from "./Recipe";
+import { IQuantity } from "./IQuantity";
 
-interface IPlayer {
+export interface IPlayer {
   $type: string;
 
   // getters

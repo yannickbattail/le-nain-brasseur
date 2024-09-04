@@ -15,38 +15,38 @@
     <link href="styles/style.css" rel="stylesheet" />
     <title>Le nain brasseur</title>
 
-    <script src="./model/IResource.js"></script>
-    <script src="./model/Resource.js"></script>
-    <script src="./model/ICategorized.js"></script>
-    <script src="./model/CategorizedItem.js"></script>
-    <script src="./model/CategorizedMaterial.js"></script>
-    <script src="./model/NamedStepResource.js"></script>
-    <script src="./model/Level.js"></script>
-    <script src="./model/Beer.js"></script>
-    <script src="./model/IQuantity.js"></script>
-    <script src="./model/Quantity.js"></script>
-    <script src="./model/Article.js"></script>
-    <script src="./model/IPlayer.js"></script>
-    <script src="./model/Player.js"></script>
-    <script src="./model/StepParameter.js"></script>
-    <script src="./model/ICookingStep.js"></script>
-    <script src="./model/CookingStep.js"></script>
-    <script src="./model/AddingIngredient.js"></script>
-    <script src="./model/Brewing.js"></script>
-    <script src="./model/Cooling.js"></script>
-    <script src="./model/Filtering.js"></script>
-    <script src="./model/Heating.js"></script>
-    <script src="./model/AnalysisLevel.js"></script>
-    <script src="./model/RecipeReference.js"></script>
-    <script src="./model/Recipe.js"></script>
-    <script src="./model/RecipeAnalysis.js"></script>
-    <script src="./model/BrewerDwarf.js"></script>
-    <script src="./model/BrewerDwarfStatus.js"></script>
-    <script src="./Scenario.js"></script>
-    <script src="./App.js"></script>
-    <script src="./KonamiCode.js"></script>
-    <script src="./NodeUpdate.js"></script>
-    <script src="./Gui.js"></script>
+    <script type="module" src="./model/IResource.js"></script>
+    <script type="module" src="./model/Resource.js"></script>
+    <script type="module" src="./model/ICategorized.js"></script>
+    <script type="module" src="./model/CategorizedItem.js"></script>
+    <script type="module" src="./model/CategorizedMaterial.js"></script>
+    <script type="module" src="./model/NamedStepResource.js"></script>
+    <script type="module" src="./model/Level.js"></script>
+    <script type="module" src="./model/Beer.js"></script>
+    <script type="module" src="./model/IQuantity.js"></script>
+    <script type="module" src="./model/Quantity.js"></script>
+    <script type="module" src="./model/Article.js"></script>
+    <script type="module" src="./model/IPlayer.js"></script>
+    <script type="module" src="./model/Player.js"></script>
+    <script type="module" src="./model/StepParameter.js"></script>
+    <script type="module" src="./model/ICookingStep.js"></script>
+    <script type="module" src="./model/CookingStep.js"></script>
+    <script type="module" src="./model/AddingIngredient.js"></script>
+    <script type="module" src="./model/Brewing.js"></script>
+    <script type="module" src="./model/Cooling.js"></script>
+    <script type="module" src="./model/Filtering.js"></script>
+    <script type="module" src="./model/Heating.js"></script>
+    <script type="module" src="./model/AnalysisLevel.js"></script>
+    <script type="module" src="./model/RecipeReference.js"></script>
+    <script type="module" src="./model/Recipe.js"></script>
+    <script type="module" src="./model/RecipeAnalysis.js"></script>
+    <script type="module" src="./model/BrewerDwarf.js"></script>
+    <script type="module" src="./model/BrewerDwarfStatus.js"></script>
+    <script type="module" src="./Scenario.js"></script>
+    <script type="module" src="./KonamiCode.js"></script>
+    <script type="module" src="./NodeUpdate.js"></script>
+    <script type="module" src="./Gui.js"></script>
+    <script type="module" src="./App.js"></script>
   </head>
   <body class="origin-theme" id="body">
     <h1>
@@ -165,7 +165,7 @@
     </div>
     <div onclick="document.getElementById('debugMode').style.display='block';">
       <script>
-        document.write(VERSION);
+        // document.write(VERSION);
       </script>
     </div>
     <div id="debugMode" style="display: none">
@@ -185,9 +185,18 @@
         event.srcElement.className = "toggleShow";
       }
     }
+  </script>
+  <script type="module">
+    import { Scenario } from "./Scenario.js";
+    import { Gui } from "./Gui.js";
 
-    var gui = new Gui(engine);
+    const e = loadEngine();
+    const engine = !e ? Scenario.initEngine() : e;
+
+    const gui = new Gui(engine);
     gui.start(500);
+
     engine.run(10000, saveEngine);
+
   </script>
 </html>

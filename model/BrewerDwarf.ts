@@ -1,12 +1,16 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./IQuantity.ts" />
-/// <reference path="./IPlayer.ts" />
-/// <reference path="./Player.ts" />
-/// <reference path="./Resource.ts" />
-/// <reference path="./Beer.ts" />
-/// <reference path="./BrewerDwarfStatus.ts" />
+import { RecipeReference } from "./RecipeReference";
+import { Player } from "./Player";
+import { Article } from "./Article";
+import { RecipeAnalysis } from "./RecipeAnalysis";
+import { AnalysisLevel } from "./AnalysisLevel";
+import { ADVISE_COST, DRECHE, MALT, Q } from "../Scenario";
+import { Beer } from "./Beer";
+import { Recipe } from "./Recipe";
+import { BrewerDwarfStatus } from "./BrewerDwarfStatus";
+import { IPlayer } from "./IPlayer";
+import { IQuantity } from "./IQuantity";
 
-class BrewerDwarf {
+export class BrewerDwarf {
   public $type: string = "BrewerDwarf";
   tickInterval: number = 100;
   fastMode: number = 0;
@@ -67,7 +71,7 @@ class BrewerDwarf {
   }
 
   public prepareBrew(recipeName: string) {
-    const recipeRef = engine.getRecipeNameByName(recipeName);
+    const recipeRef = this.getRecipeNameByName(recipeName);
     if (recipeRef == null) {
       throw "recette " + recipeName + " non dispo";
     }
@@ -75,7 +79,7 @@ class BrewerDwarf {
   }
 
   public reprepareBrew(recipeName: string) {
-    const recipe = engine.player.getRecipeNameByName(recipeName);
+    const recipe = this.player.getRecipeNameByName(recipeName);
     if (recipe == null) {
       throw "recette " + recipeName + " non dispo";
     }

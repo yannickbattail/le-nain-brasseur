@@ -1,4 +1,4 @@
-/// <reference path="./IResource.ts" />
+import { IResource } from "./IResource";
 
 class Resource implements IResource {
   public $type: string = "Resource";
@@ -22,3 +22,5 @@ class Resource implements IResource {
     return quantity + " " + this.name;
   }
 }
+
+export { Resource };

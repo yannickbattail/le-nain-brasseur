@@ -1,6 +1,7 @@
-/// <reference path="./IResource.ts" />
+import { Quantity } from "./Quantity";
+import { IResource } from "./IResource";
 
-interface IQuantity {
+export interface IQuantity {
   $type: string;
 
   getQuantity(): number;

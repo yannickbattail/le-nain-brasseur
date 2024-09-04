@@ -1,7 +1,8 @@
-/// <reference path="./IResource.ts" />
-/// <reference path="./IQuantity.ts" />
+import { IQuantity } from "./IQuantity";
+import { Resource } from "./Resource";
+import { IResource } from "./IResource";
 
-class Quantity implements IQuantity {
+export class Quantity implements IQuantity {
   $type: string = "Quantity";
 
   constructor(
@@ -37,4 +38,4 @@ class Quantity implements IQuantity {
   }
 }
 
-const EMPTY_QUANTITY = new Quantity(0, new Resource("nothing"));
+export const EMPTY_QUANTITY = new Quantity(0, new Resource("nothing"));

@@ -1,4 +1,4 @@
-class NodeUpdate {
+export class NodeUpdate {
   public static hasChanged(node1: Node, node2: Node) {
     if (node1.nodeType !== node2.nodeType) return true;
     if (node1.nodeName !== node2.nodeName) return true;
