@@ -1,0 +1,9 @@
+{
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "printWidth": 140,
+    "trailingComma": "all",
+    "overrides": [{ "files": "*.yml", "options": { "tabWidth": 2 } }]
+}
