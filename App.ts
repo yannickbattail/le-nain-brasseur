@@ -1,29 +1,25 @@
-import { BrewerDwarf } from "./model/BrewerDwarf.js";
-import { Scenario } from "./Scenario.js";
-import { Gui } from "./Gui.js";
+import { BrewerDwarf } from './Models/BrewerDwarf.js';
+import { Scenario } from './Scenario.js';
+import { Gui } from './Gui.js';
 
-export const VERSION = "0.4";
+export const VERSION = '0.4';
 
 export function loadEngine(): BrewerDwarf | null {
-  const json = window.localStorage.getItem("BrewerDwarf");
-  if (json != null) {
-    if (
-      window.localStorage.getItem("BrewerDwarfVersion") != null ||
-      window.localStorage.getItem("BrewerDwarfVersion") == VERSION
-    ) {
-      const obj: BrewerDwarf = JSON.parse(json);
-      console.log("load engine");
-      const curContext: any = window;
-      return curContext[obj.$type].load(obj);
+    const json = window.localStorage.getItem('BrewerDwarf');
+    if (json != null) {
+        if (window.localStorage.getItem('BrewerDwarfVersion') != null || window.localStorage.getItem('BrewerDwarfVersion') == VERSION) {
+            const obj: BrewerDwarf = JSON.parse(json);
+            console.log('load engine');
+            return BrewerDwarf.load(obj);
+        }
+        console.log('wrong version');
     }
-    console.log("wrong version");
-  }
-  console.log("no engine");
-  return null;
+    console.log('no engine');
+    return null;
 }
 export function saveEngine(engine: BrewerDwarf) {
-  window.localStorage.setItem("BrewerDwarf", JSON.stringify(engine));
-  window.localStorage.setItem("BrewerDwarfVersion", VERSION);
+    window.localStorage.setItem('BrewerDwarf', JSON.stringify(engine));
+    window.localStorage.setItem('BrewerDwarfVersion', VERSION);
 }
 
 export const engine: BrewerDwarf = loadEngine() || Scenario.initEngine();

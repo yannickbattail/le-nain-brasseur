@@ -1,7 +1,7 @@
 ﻿<!doctype html>
 <html>
-  <head>
-    <!--
+    <head>
+        <!--
       ----------------------------------------------------------------------------
       "THE BEER-WARE LICENSE" (Revision 42):
       Yannick wrote this file.  As long as you retain this notice you
@@ -9,141 +9,128 @@
       this stuff is worth it, you can buy me a beer in return.   Poul-Henning Kamp
       ----------------------------------------------------------------------------
     -->
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link href="images/dwarf-face.svg" rel="shortcut icon" type="image/png" />
-    <link href="styles/style.css" rel="stylesheet" />
-    <title>Le nain brasseur</title>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <link href="images/dwarf-face.svg" rel="shortcut icon" type="image/png" />
+        <link href="styles/style.css" rel="stylesheet" />
+        <title>Le nain brasseur</title>
 
-    <script type="module" src="./model/IResource.js"></script>
-    <script type="module" src="./model/Resource.js"></script>
-    <script type="module" src="./model/ICategorized.js"></script>
-    <script type="module" src="./model/CategorizedItem.js"></script>
-    <script type="module" src="./model/CategorizedMaterial.js"></script>
-    <script type="module" src="./model/NamedStepResource.js"></script>
-    <script type="module" src="./model/Level.js"></script>
-    <script type="module" src="./model/Beer.js"></script>
-    <script type="module" src="./model/IQuantity.js"></script>
-    <script type="module" src="./model/Quantity.js"></script>
-    <script type="module" src="./model/Article.js"></script>
-    <script type="module" src="./model/IPlayer.js"></script>
-    <script type="module" src="./model/Player.js"></script>
-    <script type="module" src="./model/StepParameter.js"></script>
-    <script type="module" src="./model/ICookingStep.js"></script>
-    <script type="module" src="./model/CookingStep.js"></script>
-    <script type="module" src="./model/AddingIngredient.js"></script>
-    <script type="module" src="./model/Brewing.js"></script>
-    <script type="module" src="./model/Cooling.js"></script>
-    <script type="module" src="./model/Filtering.js"></script>
-    <script type="module" src="./model/Heating.js"></script>
-    <script type="module" src="./model/AnalysisLevel.js"></script>
-    <script type="module" src="./model/RecipeReference.js"></script>
-    <script type="module" src="./model/Recipe.js"></script>
-    <script type="module" src="./model/RecipeAnalysis.js"></script>
-    <script type="module" src="./model/BrewerDwarf.js"></script>
-    <script type="module" src="./model/BrewerDwarfStatus.js"></script>
-    <script type="module" src="./Scenario.js"></script>
-    <script type="module" src="./KonamiCode.js"></script>
-    <script type="module" src="./NodeUpdate.js"></script>
-    <script type="module" src="./Gui.js"></script>
-    <script type="module" src="./App.js"></script>
-  </head>
-  <body class="origin-theme" id="body">
-    <h1>
-      <img
-        alt="Desert island"
-        class="titleIcon"
-        src="images/dwarf-face.svg"
-        title="Desert island"
-      />
-      Le nain brasseur
-    </h1>
-    <div id="level">lvl</div>
-    <button onclick="gui.restart();">Restart</button>
-    <input id="simple" type="checkbox" /><label for="simple"
-      >Simplified interface (for mobile)</label
-    >
-    <div>
-      <div class="toggleBlock">
-        <div class="toggleShow" onclick="toggle()">Introduction</div>
-        <script>
-          function showIntro(current, other) {
-            document.getElementById(current).style.display = "none";
-            document.getElementById(other).style.display = "block";
-          }
-        </script>
-        <div id="intro">
-          <div id="intro_0">
-            Je suis un main, et je creuse des trous, Diggy Diggy Hole ♫ ♬ ♩ ♪<br />
-            Ho mais qu'est-ce que c'est que ça ?<br />
-            Mais c'est l'Arkenstone💎 !<br />
-            Ça y est je suis riche!<br />
-            Fini les trous et les tournées à la taverne.<br />
-            Je vais pouvoir créer ma propre <b>basserie!</b><br />
-            <button onclick="showIntro('intro_0', 'intro_1')">suivant</button>
-          </div>
-          <div id="intro_1" style="display: none">
-            Brasser de la bière ça ne doit pas etre bien compliqué.<br />
-            Je vais demander au tavernier, lui il doit savoir.<br />
-            <button onclick="showIntro('intro_1', 'intro_0')">précédent</button>
-            <button onclick="showIntro('intro_1', 'intro_2')">suivant</button>
-          </div>
-          <div id="intro_2" style="display: none">
-            <i>Le tavernier:</i><br />
-            Bah c'est pas bien dur!<br />
-            Tu prends ton malt et ton houblon que tu fais bouillir.<br />
-            Tu filtres pour récupérer le jus, les drêches qui restent tu les
-            files aux cochons.<br />
-            Et puis tu mets ça à fermenter avec la levure un bon mois.<br />
-            <button onclick="showIntro('intro_2', 'intro_1')">précédent</button>
-          </div>
-        </div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleShow" onclick="toggle()">Brassage</div>
-        <div id="brewing"></div>
-        <div id="brew"></div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleShow" onclick="toggle()">Stock</div>
-        <div id="storageIngredient"></div>
-        <div id="storageItem"></div>
-        <div id="storageBeer"></div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleShow" onclick="toggle()">Mes recettes</div>
-        <div id="recipes"></div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleShow" onclick="toggle()">Magasin</div>
-        <div id="shop"></div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleHide" onclick="toggle()">Légende</div>
-        <div id="doc"></div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleHide" onclick="toggle()">Relase notes</div>
-        <div id="releaseNotes">
-          <ul>
-            <li>
-              Version 0.4 : ajout du magasin pour l'achat/vente de resources et
-              la vente de brassin
-            </li>
-            <li>
-              Version 0.3 : vérifie si il y a les ingrédients dans le stockage
-            </li>
-            <li>
-              Version 0.2 : brassage verification conseils, plein d'autres trucs
-            </li>
-            <li>Version 0.1 : base de brassage</li>
-          </ul>
-        </div>
-      </div>
-      <div class="toggleBlock">
-        <div class="toggleHide" onclick="toggle()">License</div>
-        <div id="license">
-          <pre>
+        <script type="module" src="./Services/Throw.js"></script>
+        <script type="module" src="./Services/KonamiCode.js"></script>
+        <script type="module" src="./Services/ClassLoader.js"></script>
+        <script type="module" src="./Services/RecipeAnalysis.js"></script>
+        <script type="module" src="./Services/NodeUpdate.js"></script>
+        <script type="module" src="./Models/CookingSteps/StepParameter.js"></script>
+        <script type="module" src="./Models/CookingSteps/ICookingStep.js"></script>
+        <script type="module" src="./Models/CookingSteps/Filtering.js"></script>
+        <script type="module" src="./Models/CookingSteps/Heating.js"></script>
+        <script type="module" src="./Models/CookingSteps/AddingIngredient.js"></script>
+        <script type="module" src="./Models/CookingSteps/Cooling.js"></script>
+        <script type="module" src="./Models/CookingSteps/CookingStep.js"></script>
+        <script type="module" src="./Models/IPlayer.js"></script>
+        <script type="module" src="./Models/Resources/IQuantity.js"></script>
+        <script type="module" src="./Models/Resources/Beer.js"></script>
+        <script type="module" src="./Models/Resources/NamedStepResource.js"></script>
+        <script type="module" src="./Models/Resources/IResource.js"></script>
+        <script type="module" src="./Models/Resources/CategorizedItem.js"></script>
+        <script type="module" src="./Models/Resources/Level.js"></script>
+        <script type="module" src="./Models/Resources/Quantity.js"></script>
+        <script type="module" src="./Models/Resources/Resource.js"></script>
+        <script type="module" src="./Models/Resources/CategorizedMaterial.js"></script>
+        <script type="module" src="./Models/Article.js"></script>
+        <script type="module" src="./Models/Player.js"></script>
+        <script type="module" src="./Models/BrewerDwarfStatus.js"></script>
+        <script type="module" src="./Models/Brewing.js"></script>
+        <script type="module" src="./Models/ICategorized.js"></script>
+        <script type="module" src="./Models/RecipeReference.js"></script>
+        <script type="module" src="./Models/BrewerDwarf.js"></script>
+        <script type="module" src="./Models/Recipe.js"></script>
+        <script type="module" src="./Models/AnalysisLevel.js"></script>
+        <script type="module" src="./App.js"></script>
+        <script type="module" src="./Gui.js"></script>
+        <script type="module" src="./Scenario.js"></script>
+    </head>
+    <body class="origin-theme" id="body">
+        <h1>
+            <img alt="Desert island" class="titleIcon" src="images/dwarf-face.svg" title="Desert island" />
+            Le nain brasseur
+        </h1>
+        <div id="level">lvl</div>
+        <button onclick="gui.restart();">Restart</button>
+        <input id="simple" type="checkbox" /><label for="simple">Simplified interface (for mobile)</label>
+        <div>
+            <div class="toggleBlock">
+                <div class="toggleShow" onclick="toggle()">Introduction</div>
+                <script>
+                    function showIntro(current, other) {
+                        document.getElementById(current).style.display = 'none';
+                        document.getElementById(other).style.display = 'block';
+                    }
+                </script>
+                <div id="intro">
+                    <div id="intro_0">
+                        Je suis un main, et je creuse des trous, Diggy Diggy Hole ♫ ♬ ♩ ♪<br />
+                        Ho mais qu'est-ce que c'est que ça ?<br />
+                        Mais c'est l'Arkenstone💎 !<br />
+                        Ça y est je suis riche!<br />
+                        Fini les trous et les tournées à la taverne.<br />
+                        Je vais pouvoir créer ma propre <b>basserie!</b><br />
+                        <button onclick="showIntro('intro_0', 'intro_1')">suivant</button>
+                    </div>
+                    <div id="intro_1" style="display: none">
+                        Brasser de la bière ça ne doit pas etre bien compliqué.<br />
+                        Je vais demander au tavernier, lui il doit savoir.<br />
+                        <button onclick="showIntro('intro_1', 'intro_0')">précédent</button>
+                        <button onclick="showIntro('intro_1', 'intro_2')">suivant</button>
+                    </div>
+                    <div id="intro_2" style="display: none">
+                        <i>Le tavernier:</i><br />
+                        Bah c'est pas bien dur!<br />
+                        Tu prends ton malt et ton houblon que tu fais bouillir.<br />
+                        Tu filtres pour récupérer le jus, les drêches qui restent tu les files aux cochons.<br />
+                        Et puis tu mets ça à fermenter avec la levure un bon mois.<br />
+                        <button onclick="showIntro('intro_2', 'intro_1')">précédent</button>
+                    </div>
+                </div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleShow" onclick="toggle()">Brassage</div>
+                <div id="brewing"></div>
+                <div id="brew"></div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleShow" onclick="toggle()">Stock</div>
+                <div id="storageIngredient"></div>
+                <div id="storageItem"></div>
+                <div id="storageBeer"></div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleShow" onclick="toggle()">Mes recettes</div>
+                <div id="recipes"></div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleShow" onclick="toggle()">Magasin</div>
+                <div id="shop"></div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleHide" onclick="toggle()">Légende</div>
+                <div id="doc"></div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleHide" onclick="toggle()">Relase notes</div>
+                <div id="releaseNotes">
+                    <ul>
+                        <li>Version 0.4 : ajout du magasin pour l'achat/vente de resources et la vente de brassin</li>
+                        <li>Version 0.3 : vérifie si il y a les ingrédients dans le stockage</li>
+                        <li>Version 0.2 : brassage verification conseils, plein d'autres trucs</li>
+                        <li>Version 0.1 : base de brassage</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="toggleBlock">
+                <div class="toggleHide" onclick="toggle()">License</div>
+                <div id="license">
+                    <pre>
     ----------------------------------------------------------------------------
     "THE BEER-WARE LICENSE" (Revision 42):
     Yannick wrote this file.  As long as you retain this notice you
@@ -151,49 +138,50 @@
     this stuff is worth it, you can buy me a beer in return.   Poul-Henning Kamp
     ----------------------------------------------------------------------------
                 </pre
-          >
+                    >
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div id="overlay">
-      <div id="overlayTitle">You windie!</div>
-      <div id="raison"></div>
-      <div>
-        <button onclick="gui.restart();">Try again</button>
-      </div>
-    </div>
-    <div onclick="document.getElementById('debugMode').style.display='block';">
-      <script>
-        // document.write(VERSION);
-      </script>
-    </div>
-    <div id="debugMode" style="display: none">
-      <div onclick="gui.stop()">stop</div>
-      <div onclick="Gui.eraseStorage()">clear</div>
-      <!--<div onclick="gui.fastMode()">fast mode</div>-->
-      PS: you just <a href="http://www.perdu.com">lost</a> The
-      <a href="https://en.wikipedia.org/wiki/The_Game_(mind_game)">Game</a>.
-    </div>
-  </body>
-  <script>
-    function toggle() {
-      event.srcElement;
-      if (event.srcElement.className == "toggleShow") {
-        event.srcElement.className = "toggleHide";
-      } else {
-        event.srcElement.className = "toggleShow";
-      }
-    }
-  </script>
-  <script type="module">
-    import { Scenario } from "./Scenario.js";
-    import { Gui } from "./Gui.js";
-    import { loadEngine, saveEngine } from "./App.js";
+        <div id="overlay">
+            <div id="overlayTitle">You windie!</div>
+            <div id="raison"></div>
+            <div>
+                <button onclick="gui.restart();">Try again</button>
+            </div>
+        </div>
+        <div onclick="document.getElementById('debugMode').style.display='block';">
+            <script>
+                // document.write(VERSION);
+            </script>
+        </div>
+        <div id="debugMode" style="display: none">
+            <div onclick="gui.stop()">stop</div>
+            <div onclick="Gui.eraseStorage()">clear</div>
+            <!--<div onclick="gui.fastMode()">fast mode</div>-->
+            PS: you just <a href="http://www.perdu.com">lost</a> The <a href="https://en.wikipedia.org/wiki/The_Game_(mind_game)">Game</a>.
+        </div>
+    </body>
+    <script>
+        function toggle() {
+            event.srcElement;
+            if (event.srcElement.className == 'toggleShow') {
+                event.srcElement.className = 'toggleHide';
+            } else {
+                event.srcElement.className = 'toggleShow';
+            }
+        }
+    </script>
+    <script type="module">
+        import { Scenario } from './Scenario.js';
+        import { Gui } from './Gui.js';
+        import { loadEngine, saveEngine } from './App.js';
 
-    window.engine = loadEngine() || Scenario.initEngine();
-    const gui = new Gui(engine);
-    gui.start(500);
-    engine.run(10000, saveEngine);
-  </script>
+        setTimeout(() => {
+            window.engine = loadEngine() || Scenario.initEngine();
+            const gui = new Gui(engine);
+            gui.start(500);
+            engine.run(10000, saveEngine);
+        }, 1000);
+    </script>
 </html>

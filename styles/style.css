@@ -1,199 +1,199 @@
 .origin-theme {
-  --background-color: #161616;
-  --light-background-color: #222222;
-  --dark-background-color: black;
-  --positive-color: chartreuse;
-  --negative-color: red;
-  --text-color: #00c0ff;
-  --text-disabled-color: #006e92;
+    --background-color: #161616;
+    --light-background-color: #222222;
+    --dark-background-color: black;
+    --positive-color: chartreuse;
+    --negative-color: red;
+    --text-color: #00c0ff;
+    --text-disabled-color: #006e92;
 }
 
 body {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 8pt;
-  background-color: var(--background-color);
-  color: var(--text-color);
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 table {
-  border-color: var(--text-color);
-  border-style: none;
+    border-color: var(--text-color);
+    border-style: none;
 }
 
 td,
 th {
-  border: none;
-  background-color: var(--light-background-color);
-  padding: 4px;
-  text-align: center;
+    border: none;
+    background-color: var(--light-background-color);
+    padding: 4px;
+    text-align: center;
 }
 
 th {
-  background-color: var(--dark-background-color);
-  padding: 2px;
+    background-color: var(--dark-background-color);
+    padding: 2px;
 }
 
 button {
-  color: var(--text-color);
-  font-size: 8pt;
-  text-align: center;
-  padding: 2px;
-  margin: 3px;
-  background-color: var(--dark-background-color);
-  border-color: var(--text-color);
-  border-radius: 5px;
-  border-style: outset;
-  border-width: 2px;
+    color: var(--text-color);
+    font-size: 8pt;
+    text-align: center;
+    padding: 2px;
+    margin: 3px;
+    background-color: var(--dark-background-color);
+    border-color: var(--text-color);
+    border-radius: 5px;
+    border-style: outset;
+    border-width: 2px;
 }
 
 button:hover {
-  background-color: var(--light-background-color);
-  border-color: var(--text-color);
+    background-color: var(--light-background-color);
+    border-color: var(--text-color);
 }
 
 button:active {
-  border-style: inset;
-  background-color: var(--background-color);
+    border-style: inset;
+    background-color: var(--background-color);
 }
 
 button:disabled,
 button[disabled] {
-  background-color: var(--background-color);
-  border-color: var(--text-disabled-color);
-  border-style: dotted;
-  color: var(--text-disabled-color);
+    background-color: var(--background-color);
+    border-color: var(--text-disabled-color);
+    border-style: dotted;
+    color: var(--text-disabled-color);
 }
 
-input[type="checkbox"] {
-  vertical-align: middle;
+input[type='checkbox'] {
+    vertical-align: middle;
 }
 
-input[type="number"] {
-  width: 60px;
+input[type='number'] {
+    width: 60px;
 }
 
 .titleIcon {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 }
 
 .toggleBlock {
-  border-style: solid;
-  border-width: 1px;
-  border-color: var(--text-color);
-  border-radius: 4px 4px 0px 0px;
-  padding: 3px;
-  margin: 4px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--text-color);
+    border-radius: 4px 4px 0px 0px;
+    padding: 3px;
+    margin: 4px;
 }
 
 .toggleShow,
 .toggleHide {
-  cursor: pointer;
-  font-weight: bold;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .toggleShow {
 }
 
 .toggleShow::before {
-  content: "▼ ";
+    content: '▼ ';
 }
 
 .toggleShow + div {
-  display: block;
+    display: block;
 }
 
 .toggleHide {
 }
 
 .toggleHide::before {
-  content: "▶ ";
+    content: '▶ ';
 }
 
 .toggleHide + div {
-  display: none;
+    display: none;
 }
 
 #level {
-  display: inline-flex;
+    display: inline-flex;
 }
 
 #level > button {
-  display: inline-block;
+    display: inline-block;
 }
 
 #overlay {
-  display: none;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #00000011;
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #00000011;
 }
 
 #overlay.show {
-  display: block;
+    display: block;
 }
 
 #overlay.shade {
-  transition: background-color 3s linear;
-  background-color: #000000ee;
+    transition: background-color 3s linear;
+    background-color: #000000ee;
 }
 
 #overlayTitle {
-  padding-top: 25%;
-  font-size: 80px;
+    padding-top: 25%;
+    font-size: 80px;
 }
 
 .loose {
-  color: var(--negative-color);
+    color: var(--negative-color);
 }
 
 .win {
-  color: var(--positive-color);
+    color: var(--positive-color);
 }
 
 .resource {
-  display: inline-block;
-  margin: 2px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--text-color);
-  border-radius: 5px;
-  background-color: var(--background-color);
-  padding: 1px;
-  text-align: right;
-  min-width: 50px;
+    display: inline-block;
+    margin: 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--text-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    padding: 1px;
+    text-align: right;
+    min-width: 50px;
 }
 
 .availableResource {
-  color: var(--positive-color);
+    color: var(--positive-color);
 }
 
 .notAvailableResource {
-  color: var(--negative-color);
+    color: var(--negative-color);
 }
 
 .advice {
-  color: var(--positive-color);
+    color: var(--positive-color);
 }
 
 .problem {
-  color: var(--negative-color);
+    color: var(--negative-color);
 }
 
 .chanceOf {
-  font-size: 7px;
+    font-size: 7px;
 }
 
 #fal .resource {
-  background-color: transparent;
-  border-width: 0px;
-  border-style: none;
+    background-color: transparent;
+    border-width: 0px;
+    border-style: none;
 }
 
 .Level {
@@ -206,39 +206,39 @@ input[type="number"] {
 }
 
 .resource_img {
-  width: 24px;
-  height: 24px;
-  vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
 }
 
 .resource_label {
-  display: inline-block;
-  padding-right: 2px;
+    display: inline-block;
+    padding-right: 2px;
 }
 
 .article {
 }
 
 progress {
-  display: block;
-  width: 80px;
-  height: 2px;
-  margin-top: 4px;
-  border-style: none;
-  border-width: 0px;
+    display: block;
+    width: 80px;
+    height: 2px;
+    margin-top: 4px;
+    border-style: none;
+    border-width: 0px;
 }
 
 progress[value] {
-  /* Reset the default appearance */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 progress[value]::-webkit-progress-bar {
-  background-color: white;
+    background-color: white;
 }
 
 progress[value]::-webkit-progress-value {
-  background-color: var(--text-color);
+    background-color: var(--text-color);
 }

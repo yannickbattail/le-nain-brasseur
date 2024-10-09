@@ -8,49 +8,15 @@
                 "project": ["tsconfig.json", "e2e/tsconfig.json"],
                 "createDefaultProgram": true
             },
-            "extends": [
-                "plugin:@typescript-eslint/recommended",
-                "plugin:@angular-eslint/recommended",
-                "plugin:@angular-eslint/template/process-inline-templates",
-                "plugin:prettier/recommended"
-            ],
+            "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
             "rules": {
-                "@typescript-eslint/no-non-null-assertion": "off",
-                "@angular-eslint/directive-selector": [
-                    "error",
-                    {
-                        "type": "attribute",
-                        "prefix": "app",
-                        "style": "camelCase"
-                    }
-                ],
-                "@angular-eslint/component-selector": [
-                    "error",
-                    {
-                        "type": "element",
-                        "prefix": "app",
-                        "style": "kebab-case"
-                    }
-                ]
+                "@typescript-eslint/no-non-null-assertion": "off"
             }
-        },
-        {
-            "files": ["*.html"],
-            "extends": ["plugin:@angular-eslint/template/recommended"],
-            "rules": {}
         },
         {
             "files": ["*.html"],
             "excludedFiles": ["*inline-template-*.component.html"],
-            "extends": ["plugin:prettier/recommended"],
-            "rules": {
-                "prettier/prettier": [
-                    "error",
-                    {
-                        "parser": "angular"
-                    }
-                ]
-            }
+            "extends": ["plugin:prettier/recommended"]
         }
     ]
 }
