@@ -12,9 +12,9 @@ export class CategorizedMaterial extends Resource implements ICategorized {
     ) {
         super(name);
     }
-    public static load(data: any): CategorizedMaterial {
-        const r: CategorizedMaterial = new CategorizedMaterial(data.name, data.unit, data.image, data.category, data.description);
-        return r;
+    public static load(data: unknown): CategorizedMaterial {
+        const obj: CategorizedMaterial = data as CategorizedMaterial;
+        return new CategorizedMaterial(obj.name, obj.unit, obj.image, obj.category, obj.description);
     }
     public show(quantity: number): string {
         let u = this.unit;

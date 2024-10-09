@@ -1,7 +1,6 @@
 import { CookingStep } from './CookingStep.js';
 import { StepParameter } from './StepParameter.js';
 import { ICookingStep } from './ICookingStep.js';
-import { AnalysisLevel } from '../AnalysisLevel.js';
 import { ClassLoader } from '../../Services/ClassLoader.js';
 
 export class Filtering extends CookingStep {
@@ -15,15 +14,14 @@ export class Filtering extends CookingStep {
     public static load(data: unknown): Filtering {
         const obj: Filtering = data as Filtering;
         const stepParameters = obj.stepParameters.map((p) => ClassLoader.load(p) as StepParameter);
-        const newObj: Filtering = new Filtering(stepParameters);
-        return newObj;
+        return new Filtering(stepParameters);
     }
 
     getStepParameters(): Array<StepParameter> {
         return this.stepParameters;
     }
     getStepParameter(index: number): StepParameter {
-        throw 'Filter has no StepParameter.';
+        throw `Filter has no StepParameter. ${index}`;
     }
 
     validate(): void {
@@ -39,9 +37,9 @@ export class Filtering extends CookingStep {
         return 'strainer.svg';
     }
 
-    public analyse(action: ICookingStep, level: AnalysisLevel): void {
+    public analyse(action: ICookingStep): void {
         if (this.$type != action.$type) {
-            //return "L'étape devrait être "+this.getName();
+            this.getStepParameter(0).problem = "L'étape devrait être " + this.getName();
         }
     }
 }

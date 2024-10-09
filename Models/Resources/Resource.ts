@@ -6,9 +6,9 @@ export class Resource implements IResource {
         return this.name;
     }
     constructor(protected name: string) {}
-    public static load(data: any): Resource {
-        const r: Resource = new Resource(data.name);
-        return r;
+    public static load(data: unknown): Resource {
+        const obj: Resource = data as Resource;
+        return new Resource(obj.name);
     }
 
     public equals(obj: IResource): boolean {

@@ -11,9 +11,9 @@ export class CategorizedItem extends Resource implements ICategorized {
     ) {
         super(name);
     }
-    public static load(data: any): CategorizedItem {
-        const r: CategorizedItem = new CategorizedItem(data.name, data.image, data.category, data.description);
-        return r;
+    public static load(data: unknown): CategorizedItem {
+        const obj: CategorizedItem = data as CategorizedItem;
+        return new CategorizedItem(obj.name, obj.image, obj.category, obj.description);
     }
     public show(quantity: number): string {
         return '' + quantity;

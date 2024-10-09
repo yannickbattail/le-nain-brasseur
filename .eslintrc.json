@@ -5,18 +5,13 @@
         {
             "files": ["*.ts"],
             "parserOptions": {
-                "project": ["tsconfig.json", "e2e/tsconfig.json"],
-                "createDefaultProgram": true
+                "project": ["tsconfig.json"],
+                "sourceType": "module"
             },
             "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
             "rules": {
                 "@typescript-eslint/no-non-null-assertion": "off"
             }
-        },
-        {
-            "files": ["*.html"],
-            "excludedFiles": ["*inline-template-*.component.html"],
-            "extends": ["plugin:prettier/recommended"]
         }
     ]
 }

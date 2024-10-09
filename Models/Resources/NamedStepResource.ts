@@ -9,9 +9,9 @@ export class NamedStepResource extends Resource {
     ) {
         super(name);
     }
-    public static load(data: any): NamedStepResource {
-        const r: NamedStepResource = new NamedStepResource(data.name, data.image, data.stepNames);
-        return r;
+    public static load(data: unknown): NamedStepResource {
+        const obj: NamedStepResource = data as NamedStepResource;
+        return new NamedStepResource(obj.name, obj.image, obj.stepNames);
     }
     public show(quantity: number): string {
         if (quantity < 0 || quantity >= this.stepNames.length) {

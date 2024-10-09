@@ -9,9 +9,9 @@ export class Level extends NamedStepResource {
     ) {
         super(name, image, stepNames);
     }
-    public static load(data: any): Level {
-        const r: Level = new Level(data.name, data.image, data.stepNames);
-        return r;
+    public static load(data: unknown): Level {
+        const obj: Level = data as Level;
+        return new Level(obj.name, obj.image, obj.stepNames);
     }
     public show(quantity: number): string {
         return '' + quantity;

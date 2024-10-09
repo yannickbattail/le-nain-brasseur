@@ -13,6 +13,9 @@ import { IQuantity } from './Models/Resources/IQuantity.js';
 import { ICookingStep } from './Models/CookingSteps/ICookingStep.js';
 import { AnalysisLevel } from './Models/AnalysisLevel.js';
 import { IPlayer } from './Models/IPlayer.js';
+import { IResource } from './Models/Resources/IResource';
+import { CategorizedItem } from './Models/Resources/CategorizedItem';
+import { NamedStepResource } from './Models/Resources/NamedStepResource';
 
 export class Gui {
     intervalId: number = 0;
@@ -463,9 +466,9 @@ export class Gui {
     }
 
     private displayQuantity(quantity: IQuantity, optionalCss: string = '', storageRes: IQuantity | null = null): string {
-        const res: any = quantity.getResource();
+        const res: IResource = quantity.getResource();
         let image: string = '';
-        if ('image' in res) {
+        if (res instanceof CategorizedItem || res instanceof CategorizedMaterial || res instanceof NamedStepResource) {
             image = res.image;
         }
         return (
@@ -498,13 +501,13 @@ export class Gui {
         optionalCss: string = '',
         storageRes: IQuantity | null = null,
     ): string {
-        const res: any = quantity.getResource();
+        const res: IResource = quantity.getResource();
         let image: string = '';
-        if ('image' in res) {
+        if (res instanceof CategorizedItem || res instanceof CategorizedMaterial || res instanceof NamedStepResource) {
             image = res.image;
         }
         let unit = '';
-        if ('unit' in res) {
+        if (res instanceof CategorizedMaterial) {
             unit = res.unit;
         }
         return (
