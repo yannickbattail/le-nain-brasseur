@@ -73,7 +73,7 @@ export class BrewerDwarf {
         if (recipeRef == null) {
             throw 'recette ' + recipeName + ' non dispo';
         }
-        this.player.setBrewingRecipe(recipeRef.createRecipe());
+        this.player.setBrewingRecipe(Recipe.createRecipe(recipeRef));
     }
 
     public reprepareBrew(recipeName: string) {
@@ -81,7 +81,7 @@ export class BrewerDwarf {
         if (recipe == null) {
             throw 'recette ' + recipeName + ' non dispo';
         }
-        this.player.setBrewingRecipe(recipe.duplicate());
+        this.player.setBrewingRecipe(Recipe.duplicate(recipe));
     }
 
     public getRecipeNameByName(recipeName: string): RecipeReference | null {

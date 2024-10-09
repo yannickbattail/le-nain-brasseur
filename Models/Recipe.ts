@@ -3,7 +3,7 @@ import { AnalysisLevel } from './AnalysisLevel.js';
 import { ICookingStep } from './CookingSteps/ICookingStep.js';
 import { IQuantity } from './Resources/IQuantity.js';
 import { Beer } from './Resources/Beer.js';
-import { GOLD, Q } from '../Scenario.js';
+import { GOLD, Q, WATER } from '../Scenario.js';
 import { Article } from './Article.js';
 import { ClassLoader } from '../Services/ClassLoader.js';
 
@@ -66,5 +66,23 @@ export class Recipe extends RecipeReference {
                     .reduce((a, b) => a || b, false),
             )
             .reduce((a, b) => a || b, false);
+    }
+
+    public static createRecipe(recipeRef: RecipeReference): Recipe {
+        const recipe = Recipe.load(JSON.parse(JSON.stringify(recipeRef)));
+        recipe.name = 'ma ' + recipeRef.name;
+        recipe.recipeRef = recipeRef;
+        recipe.steps.forEach((s) =>
+            s.getStepParameters().forEach((p) => {
+                if (p.resource?.getName() != WATER.getName()) p.value = 0;
+            }),
+        );
+        return recipe;
+    }
+
+    public static duplicate(recipeRef: RecipeReference): Recipe {
+        const recipe = Recipe.load(JSON.parse(JSON.stringify(recipeRef)));
+        recipe.name = recipeRef.name + '#';
+        return recipe;
     }
 }

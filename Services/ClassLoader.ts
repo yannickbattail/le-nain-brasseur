@@ -19,7 +19,10 @@ import { Brewing } from '../Models/Brewing.js';
 
 export class ClassLoader {
     public static load(data: unknown) {
-        if (data === null || typeof data !== 'object') {
+        if (data === null) {
+            return null;
+        }
+        if (typeof data !== 'object') {
             throw new Error(`Invalid resource data: ${data}`);
         }
         if (!('$type' in data)) {
