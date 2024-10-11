@@ -37,6 +37,15 @@ export class RecipeAnalysis {
         recipe.analysisLevel = level;
     }
 
+    public static scoring(actual: number, expected: number): number {
+        const halfExpected = expected / 2;
+        const diff = Math.abs(expected - actual);
+        if (diff > halfExpected) {
+            return 0;
+        }
+        return 1 - diff / halfExpected;
+    }
+
     private static playerHasIngredient(recipe: Recipe, player: IPlayer) {
         recipe.getCookingSteps().forEach((s) => {
             if (s.getStepParameters().length != 0) {
@@ -61,14 +70,5 @@ export class RecipeAnalysis {
                 param.score = null;
             });
         });
-    }
-
-    public static scoring(actual: number, expected: number): number {
-        const halfExpected = expected / 2;
-        const diff = Math.abs(expected - actual);
-        if (diff > halfExpected) {
-            return 0;
-        }
-        return 1 - diff / halfExpected;
     }
 }

@@ -103,10 +103,6 @@ export class Player implements IPlayer {
         this.removeZeroResource();
     }
 
-    private removeZeroResource() {
-        this.storage = this.storage.filter((q) => q.getQuantity() != 0);
-    }
-
     public getResourceInStorage(resourceName: string): Quantity | null {
         const res = this.storage.filter((res: Quantity) => res.getResource().getName() == resourceName);
         if (res.length) {
@@ -124,5 +120,9 @@ export class Player implements IPlayer {
             }
         });
         return hasRes;
+    }
+
+    private removeZeroResource() {
+        this.storage = this.storage.filter((q) => q.getQuantity() != 0);
     }
 }

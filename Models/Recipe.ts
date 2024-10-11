@@ -35,6 +35,24 @@ export class Recipe extends RecipeReference {
         return newObj;
     }
 
+    public static createRecipe(recipeRef: RecipeReference): Recipe {
+        const recipe = Recipe.load(JSON.parse(JSON.stringify(recipeRef)));
+        recipe.name = 'ma ' + recipeRef.name;
+        recipe.recipeRef = recipeRef;
+        recipe.steps.forEach((s) =>
+            s.getStepParameters().forEach((p) => {
+                if (p.resource?.getName() != WATER.getName()) p.value = 0;
+            }),
+        );
+        return recipe;
+    }
+
+    public static duplicate(recipeRef: RecipeReference): Recipe {
+        const recipe = Recipe.load(JSON.parse(JSON.stringify(recipeRef)));
+        recipe.name = recipeRef.name + '#';
+        return recipe;
+    }
+
     getCookingSteps(): Array<ICookingStep> {
         return this.steps;
     }
@@ -68,23 +86,5 @@ export class Recipe extends RecipeReference {
                     .reduce((a, b) => a || b, false),
             )
             .reduce((a, b) => a || b, false);
-    }
-
-    public static createRecipe(recipeRef: RecipeReference): Recipe {
-        const recipe = Recipe.load(JSON.parse(JSON.stringify(recipeRef)));
-        recipe.name = 'ma ' + recipeRef.name;
-        recipe.recipeRef = recipeRef;
-        recipe.steps.forEach((s) =>
-            s.getStepParameters().forEach((p) => {
-                if (p.resource?.getName() != WATER.getName()) p.value = 0;
-            }),
-        );
-        return recipe;
-    }
-
-    public static duplicate(recipeRef: RecipeReference): Recipe {
-        const recipe = Recipe.load(JSON.parse(JSON.stringify(recipeRef)));
-        recipe.name = recipeRef.name + '#';
-        return recipe;
     }
 }

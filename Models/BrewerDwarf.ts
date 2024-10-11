@@ -14,13 +14,10 @@ export class BrewerDwarf {
     public $type: string = 'BrewerDwarf';
     tickInterval: number = 100;
     fastMode: number = 0;
-    private saveCallback: (engine: BrewerDwarf) => void = function () {};
-
     status: BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
     player: IPlayer = new Player('');
     recipes: Array<RecipeReference> = new Array<RecipeReference>();
     public shopStorage: Array<Article> = new Array<Article>();
-
     private intervalId: number = 0;
 
     public static load(data: unknown): BrewerDwarf {
@@ -132,6 +129,8 @@ export class BrewerDwarf {
     stop() {
         window.clearInterval(this.intervalId);
     }
+
+    private saveCallback: (engine: BrewerDwarf) => void = function () {};
 
     private doBrew(recipe: Recipe) {
         recipe.getCookingSteps().forEach((s) => {
