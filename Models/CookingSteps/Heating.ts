@@ -21,6 +21,7 @@ export class Heating extends CookingStep {
     getName(): string {
         return 'Chauffer';
     }
+
     getImage(): string {
         return 'camp-cooking-pot.svg';
     }
@@ -28,6 +29,7 @@ export class Heating extends CookingStep {
     getStepParameters(): Array<StepParameter> {
         return this.stepParameters;
     }
+
     getStepParameter(index: number): StepParameter {
         if (index != 0 && index != 1) {
             throw 'Heat has 2 StepParameters.';

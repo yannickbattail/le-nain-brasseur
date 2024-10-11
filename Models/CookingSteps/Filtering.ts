@@ -20,6 +20,7 @@ export class Filtering extends CookingStep {
     getStepParameters(): Array<StepParameter> {
         return this.stepParameters;
     }
+
     getStepParameter(index: number): StepParameter {
         throw `Filter has no StepParameter. ${index}`;
     }
@@ -33,6 +34,7 @@ export class Filtering extends CookingStep {
     getName(): string {
         return 'Filtrer';
     }
+
     getImage(): string {
         return 'strainer.svg';
     }

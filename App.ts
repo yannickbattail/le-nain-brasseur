@@ -17,6 +17,7 @@ export function loadEngine(): BrewerDwarf | null {
     console.log('no engine');
     return null;
 }
+
 export function saveEngine(engine: BrewerDwarf) {
     window.localStorage.setItem('BrewerDwarf', JSON.stringify(engine));
     window.localStorage.setItem('BrewerDwarfVersion', VERSION);

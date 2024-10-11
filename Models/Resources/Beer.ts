@@ -15,6 +15,7 @@ export class Beer extends CategorizedMaterial implements ICategorized {
     ) {
         super(name, unit, image, category, description);
     }
+
     public static load(obj: unknown): Beer {
         const data = obj as Beer;
         const recipe = Recipe.load(data.recipe);

@@ -7,13 +7,19 @@ import { RecipeAnalysis } from '../../Services/RecipeAnalysis.js';
 export abstract class CookingStep implements ICookingStep {
     abstract $type: string;
     public score: number | null = null;
+
     protected constructor(public stepParameters: Array<StepParameter> = []) {}
 
     abstract getName(): string;
+
     abstract getImage(): string;
+
     abstract getStepParameters(): Array<StepParameter>;
+
     abstract getStepParameter(index: number): StepParameter;
+
     abstract validate(): void;
+
     abstract analyse(action: ICookingStep, level: AnalysisLevel): void;
 
     public getQuantity(): IQuantity | null {

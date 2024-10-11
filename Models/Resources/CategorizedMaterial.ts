@@ -3,6 +3,7 @@ import { ICategorized } from '../ICategorized.js';
 
 export class CategorizedMaterial extends Resource implements ICategorized {
     public $type: string = 'CategorizedMaterial';
+
     constructor(
         public name: string,
         public unit: string,
@@ -12,10 +13,12 @@ export class CategorizedMaterial extends Resource implements ICategorized {
     ) {
         super(name);
     }
+
     public static load(data: unknown): CategorizedMaterial {
         const obj: CategorizedMaterial = data as CategorizedMaterial;
         return new CategorizedMaterial(obj.name, obj.unit, obj.image, obj.category, obj.description);
     }
+
     public show(quantity: number): string {
         let u = this.unit;
         let q = quantity;

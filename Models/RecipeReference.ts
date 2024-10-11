@@ -3,6 +3,7 @@ import { ClassLoader } from '../Services/ClassLoader.js';
 
 export class RecipeReference {
     $type: string = 'RecipeReference';
+
     constructor(
         public name: string = '',
         public steps: Array<ICookingStep> = [],
@@ -21,9 +22,11 @@ export class RecipeReference {
     getCookingSteps(): Array<ICookingStep> {
         return this.steps;
     }
+
     getName(): string {
         return this.name;
     }
+
     getLevel(): number {
         return this.level;
     }

@@ -12,6 +12,7 @@ export class Recipe extends RecipeReference {
     public score: number | null = null;
     public problem: string = '';
     public analysisLevel: AnalysisLevel = AnalysisLevel.NONE;
+
     constructor(
         public name: string = '',
         public steps: Array<ICookingStep> = [],
@@ -37,6 +38,7 @@ export class Recipe extends RecipeReference {
     getCookingSteps(): Array<ICookingStep> {
         return this.steps;
     }
+
     getName(): string {
         return this.name;
     }

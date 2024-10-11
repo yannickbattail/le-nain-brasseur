@@ -3,6 +3,7 @@ import { StepParameter } from './StepParameter.js';
 import { ICookingStep } from './ICookingStep.js';
 import { AnalysisLevel } from '../AnalysisLevel.js';
 import { ClassLoader } from '../../Services/ClassLoader.js';
+
 export class Cooling extends CookingStep {
     $type: string = 'Cooling';
 
@@ -20,6 +21,7 @@ export class Cooling extends CookingStep {
     getName(): string {
         return 'Refroidir';
     }
+
     getImage(): string {
         return 'cool.svg';
     }
@@ -27,6 +29,7 @@ export class Cooling extends CookingStep {
     getStepParameters(): Array<StepParameter> {
         return this.stepParameters;
     }
+
     getStepParameter(index: number): StepParameter {
         if (index != 0) {
             throw 'Cool has only one StepParameter.';

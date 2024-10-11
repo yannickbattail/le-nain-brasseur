@@ -25,6 +25,7 @@ export class AddingIngredient extends CookingStep {
     getImage(): string {
         return 'AddIngredient.svg';
     }
+
     getResource(): Resource {
         return this.stepParameters[0].resource ? this.stepParameters[0].resource : new Resource('nothing');
     }
@@ -32,6 +33,7 @@ export class AddingIngredient extends CookingStep {
     getStepParameters(): Array<StepParameter> {
         return this.stepParameters;
     }
+
     getStepParameter(index: number): StepParameter {
         if (index != 0) {
             throw 'AddIngredient has only one StepParameter.';

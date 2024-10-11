@@ -5,6 +5,7 @@ import { ClassLoader } from '../../Services/ClassLoader.js';
 
 export class StepParameter {
     $type: string = 'StepParameter';
+
     constructor(
         public name: string,
         public value: number,
@@ -27,6 +28,7 @@ export class StepParameter {
     getName(): string {
         return this.name;
     }
+
     getValue(): number {
         return this.value;
     }

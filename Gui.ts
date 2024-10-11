@@ -13,9 +13,9 @@ import { IQuantity } from './Models/Resources/IQuantity.js';
 import { ICookingStep } from './Models/CookingSteps/ICookingStep.js';
 import { AnalysisLevel } from './Models/AnalysisLevel.js';
 import { IPlayer } from './Models/IPlayer.js';
-import { IResource } from './Models/Resources/IResource';
-import { CategorizedItem } from './Models/Resources/CategorizedItem';
-import { NamedStepResource } from './Models/Resources/NamedStepResource';
+import { IResource } from './Models/Resources/IResource.js';
+import { CategorizedItem } from './Models/Resources/CategorizedItem.js';
+import { NamedStepResource } from './Models/Resources/NamedStepResource.js';
 
 export class Gui {
     intervalId: number = 0;

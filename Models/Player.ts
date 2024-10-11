@@ -12,7 +12,9 @@ export class Player implements IPlayer {
     protected storage: Array<Quantity> = new Array<Quantity>();
     protected recipes: Array<Recipe> = new Array<Recipe>();
     protected brewingRecipe: Recipe | null = null;
+
     constructor(protected name: string) {}
+
     public static load(data: unknown): Player {
         const obj: Player = data as Player;
         const player: Player = new Player(obj.name);
@@ -22,12 +24,15 @@ export class Player implements IPlayer {
         player.brewingRecipe = ClassLoader.load(obj.brewingRecipe) as Recipe;
         return player;
     }
+
     public getName(): string {
         return this.name;
     }
+
     public getStorage(): Array<IQuantity> {
         return this.storage;
     }
+
     public getStorageByCategory(category: string): Array<IQuantity> {
         return this.storage.filter((resQ) => {
             const resource = resQ.getResource();
@@ -38,6 +43,7 @@ export class Player implements IPlayer {
     public getRecipes(): Array<Recipe> {
         return this.recipes;
     }
+
     public setRecipes(recipes: Array<Recipe>): IPlayer {
         this.recipes = recipes;
         return this;
@@ -46,6 +52,7 @@ export class Player implements IPlayer {
     public getBrewingRecipe(): Recipe | null {
         return this.brewingRecipe;
     }
+
     public setBrewingRecipe(brewingRecipe: Recipe | null): IPlayer {
         this.brewingRecipe = brewingRecipe;
         return this;
@@ -107,6 +114,7 @@ export class Player implements IPlayer {
         }
         return null;
     }
+
     public hasResources(resourcesQuantity: Quantity[]): boolean {
         let hasRes = true;
         resourcesQuantity.forEach((resQ) => {
