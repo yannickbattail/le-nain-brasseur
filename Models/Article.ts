@@ -13,7 +13,6 @@ export class Article {
         const data: Article = obj as Article;
         const res: IQuantity = Quantity.load(data.item);
         const cost: IQuantity = Quantity.load(data.cost);
-        const rq: Article = new Article(res, cost);
-        return rq;
+        return new Article(res, cost);
     }
 }

@@ -22,7 +22,7 @@ export class Level extends NamedStepResource {
 
     public getStepName(quantity: number): string {
         if (quantity < 0 || quantity >= this.stepNames.length) {
-            return 'UNKOWN';
+            return 'UNKNOWN';
         }
         return this.stepNames[quantity];
     }

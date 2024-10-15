@@ -540,27 +540,27 @@ export class Gui {
         );
     }
 
-    private displayTime(miliSeconds: number | null): string {
-        if (miliSeconds == null) {
+    private displayTime(milliSeconds: number | null): string {
+        if (milliSeconds == null) {
             return '';
         }
         let time = '';
-        if (miliSeconds >= 24 * 3600000) {
-            time += Math.round(miliSeconds / (24 * 3600000)) + 'j';
-            miliSeconds = miliSeconds % (24 * 3600000);
+        if (milliSeconds >= 24 * 3600000) {
+            time += Math.round(milliSeconds / (24 * 3600000)) + 'j';
+            milliSeconds = milliSeconds % (24 * 3600000);
         }
-        if (miliSeconds >= 3600000) {
-            time += Math.round(miliSeconds / 3600000) + 'h';
-            miliSeconds = miliSeconds % 3600000;
+        if (milliSeconds >= 3600000) {
+            time += Math.round(milliSeconds / 3600000) + 'h';
+            milliSeconds = milliSeconds % 3600000;
         }
-        if (miliSeconds >= 60000) {
-            time += Math.round(miliSeconds / 60000) + 'min';
-            miliSeconds = miliSeconds % 60000;
+        if (milliSeconds >= 60000) {
+            time += Math.round(milliSeconds / 60000) + 'min';
+            milliSeconds = milliSeconds % 60000;
         }
-        if (miliSeconds < 500 && time != '') {
+        if (milliSeconds < 500 && time != '') {
             return time;
         }
-        time += Math.round(miliSeconds / 1000) + 's';
+        time += Math.round(milliSeconds / 1000) + 's';
         return time;
     }
 
@@ -590,10 +590,7 @@ export class Gui {
 
     private getSimple(): boolean {
         const checkbox = document.getElementById('simple');
-        if (checkbox != null && 'checked' in checkbox && checkbox['checked']) {
-            return true;
-        }
-        return false;
+        return !!(checkbox != null && 'checked' in checkbox && checkbox['checked']);
     }
 
     private updateGui() {

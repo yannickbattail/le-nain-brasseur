@@ -2,9 +2,7 @@ export class NodeUpdate {
     public static hasChanged(node1: Node, node2: Node) {
         if (node1.nodeType !== node2.nodeType) return true;
         if (node1.nodeName !== node2.nodeName) return true;
-        if (node1.nodeType == Node.TEXT_NODE && node1.textContent !== node2.textContent) return true;
-
-        return false;
+        return node1.nodeType == Node.TEXT_NODE && node1.textContent !== node2.textContent;
     }
 
     public static updateAttributes(oldNode: Element, newNode: Element) {
@@ -53,9 +51,9 @@ export class NodeUpdate {
     public static updateDiv(id: string, html: string) {
         const oldDiv = document.getElementById(id);
         if (oldDiv != null) {
-            const newdiv = document.createElement('div');
-            newdiv.innerHTML = html;
-            NodeUpdate.updateChildren(oldDiv, newdiv);
+            const newDiv = document.createElement('div');
+            newDiv.innerHTML = html;
+            NodeUpdate.updateChildren(oldDiv, newDiv);
         }
     }
 }

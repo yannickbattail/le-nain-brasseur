@@ -18,7 +18,7 @@ export class NamedStepResource extends Resource {
 
     public show(quantity: number): string {
         if (quantity < 0 || quantity >= this.stepNames.length) {
-            return '' + quantity + ': UNKOWN';
+            return '' + quantity + ': UNKNOWN';
         }
         return '' + quantity + ': ' + this.stepNames[quantity];
     }
