@@ -1,7 +1,6 @@
 import { Resource } from '../Resources/Resource.js';
 import { IQuantity } from '../Resources/IQuantity.js';
 import { Q } from '../../Scenario.js';
-import { ClassLoader } from '../../Services/ClassLoader.js';
 
 export class StepParameter {
     $type: string = 'StepParameter';
@@ -9,16 +8,16 @@ export class StepParameter {
     constructor(
         public name: string,
         public value: number,
-        public resource: Resource | null = null,
+        public resource?: Resource,
         public problem: string = '',
         public advice: string = '',
-        public score: number | null = null,
+        public score?: number,
     ) {}
 
     public static load(data: unknown): StepParameter {
         const jsonObj: StepParameter = data as StepParameter;
         const newObj: StepParameter = new StepParameter(jsonObj.name, jsonObj.value);
-        newObj.resource = jsonObj.resource != null ? (ClassLoader.load(jsonObj.resource) as Resource) : null;
+        newObj.resource = jsonObj.resource;
         newObj.problem = jsonObj.problem;
         newObj.advice = jsonObj.advice;
         newObj.score = jsonObj.score;

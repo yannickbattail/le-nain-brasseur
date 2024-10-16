@@ -1,9 +1,9 @@
-import { Recipe } from '../Models/Recipe.js';
+import { IRecipe } from '../Models/IRecipe';
 import { IPlayer } from '../Models/IPlayer.js';
 import { AnalysisLevel } from '../Models/AnalysisLevel.js';
 
 export class RecipeAnalysis {
-    public static analyse(recipe: Recipe, player: IPlayer, level: AnalysisLevel) {
+    public static analyse(recipe: IRecipe, player: IPlayer, level: AnalysisLevel) {
         if (!recipe.recipeRef) {
             throw 'no recipeRef';
         }
@@ -46,7 +46,7 @@ export class RecipeAnalysis {
         return 1 - diff / halfExpected;
     }
 
-    private static playerHasIngredient(recipe: Recipe, player: IPlayer) {
+    private static playerHasIngredient(recipe: IRecipe, player: IPlayer) {
         recipe.getCookingSteps().forEach((s) => {
             if (s.getStepParameters().length != 0) {
                 const param = s.getStepParameter(0);
@@ -60,7 +60,7 @@ export class RecipeAnalysis {
         });
     }
 
-    private static resetScore(recipe: Recipe) {
+    private static resetScore(recipe: IRecipe) {
         recipe.problem = '';
         recipe.score = null;
         recipe.getCookingSteps().forEach((step) => {

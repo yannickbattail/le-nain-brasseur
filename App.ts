@@ -1,16 +1,16 @@
-import { BrewerDwarf } from './Models/BrewerDwarf.js';
+import { IBrewerDwarf } from './Models/IBrewerDwarf';
 import { Scenario } from './Scenario.js';
 import { Gui } from './Gui.js';
 
 export const VERSION = '0.4';
 
-export function loadEngine(): BrewerDwarf | null {
+export function loadEngine(): IBrewerDwarf | null {
     const json = window.localStorage.getItem('BrewerDwarf');
     if (json != null) {
         if (window.localStorage.getItem('BrewerDwarfVersion') != null || window.localStorage.getItem('BrewerDwarfVersion') == VERSION) {
-            const obj: BrewerDwarf = JSON.parse(json);
+            const obj: IBrewerDwarf = JSON.parse(json);
             console.log('load engine');
-            return BrewerDwarf.load(obj);
+            return IBrewerDwarf.load(obj);
         }
         console.log('wrong version');
     }
@@ -18,12 +18,12 @@ export function loadEngine(): BrewerDwarf | null {
     return null;
 }
 
-export function saveEngine(engine: BrewerDwarf) {
+export function saveEngine(engine: IBrewerDwarf) {
     window.localStorage.setItem('BrewerDwarf', JSON.stringify(engine));
     window.localStorage.setItem('BrewerDwarfVersion', VERSION);
 }
 
-export const engine: BrewerDwarf = loadEngine() || Scenario.initEngine();
+export const engine: IBrewerDwarf = loadEngine() || Scenario.initEngine();
 
 const gui = new Gui(engine);
 gui.start(500);

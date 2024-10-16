@@ -2,15 +2,15 @@ import { Quantity } from './Models/Resources/Quantity.js';
 import { Level } from './Models/Resources/Level.js';
 import { CategorizedMaterial } from './Models/Resources/CategorizedMaterial.js';
 import { CategorizedItem } from './Models/Resources/CategorizedItem.js';
-import { BrewerDwarf } from './Models/BrewerDwarf.js';
-import { Recipe } from './Models/Recipe.js';
+import { IBrewerDwarf } from './Models/IBrewerDwarf';
+import { IRecipe } from './Models/IRecipe';
 import { AddingIngredient } from './Models/CookingSteps/AddingIngredient.js';
 import { StepParameter } from './Models/CookingSteps/StepParameter.js';
 import { Heating } from './Models/CookingSteps/Heating.js';
 import { Filtering } from './Models/CookingSteps/Filtering.js';
 import { Cooling } from './Models/CookingSteps/Cooling.js';
-import { Brewing } from './Models/Brewing.js';
-import { Article } from './Models/Article.js';
+import { Brewing } from './Models/CookingSteps/Brewing';
+import { IArticle } from './Models/IArticle';
 import { Player } from './Models/Player.js';
 import { IResource } from './Models/Resources/IResource.js';
 
@@ -31,10 +31,10 @@ export const resourceList: Array<CategorizedItem | CategorizedMaterial> = [WATER
 export const ADVISE_COST = Q(50, GOLD);
 
 export class Scenario {
-    public static initEngine(): BrewerDwarf {
-        const engine = new BrewerDwarf();
+    public static initEngine(): IBrewerDwarf {
+        const engine = new IBrewerDwarf();
         engine.recipes = [
-            new Recipe(
+            new IRecipe(
                 'La Einegloïn',
                 [
                     new AddingIngredient([new StepParameter('quantité', 1000, WATER)]),
@@ -50,7 +50,7 @@ export class Scenario {
                 engine.recipes[0],
                 1,
             ),
-            new Recipe(
+            new IRecipe(
                 'La kronadil',
                 [
                     new AddingIngredient([new StepParameter('quantité', 1000, WATER)]),
@@ -69,11 +69,11 @@ export class Scenario {
             ),
         ];
         engine.shopStorage = [
-            new Article(Q(100000, WATER), Q(-10, GOLD)),
-            new Article(Q(1000, MALT), Q(-5, GOLD)),
-            new Article(Q(200, HOUBLON), Q(-10, GOLD)),
-            new Article(Q(100, LEVURE), Q(-1, GOLD)),
-            new Article(Q(1, GOLD), Q(-1000, DRECHE)),
+            new IArticle(Q(100000, WATER), Q(-10, GOLD)),
+            new IArticle(Q(1000, MALT), Q(-5, GOLD)),
+            new IArticle(Q(200, HOUBLON), Q(-10, GOLD)),
+            new IArticle(Q(100, LEVURE), Q(-1, GOLD)),
+            new IArticle(Q(1, GOLD), Q(-1000, DRECHE)),
         ];
         engine.player = new Player('Gurdil');
         engine.player.setPreventNegativeStorage(true);

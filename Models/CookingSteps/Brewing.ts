@@ -1,8 +1,8 @@
-import { CookingStep } from './CookingSteps/CookingStep.js';
-import { StepParameter } from './CookingSteps/StepParameter.js';
-import { ICookingStep } from './CookingSteps/ICookingStep.js';
-import { AnalysisLevel } from './AnalysisLevel.js';
-import { ClassLoader } from '../Services/ClassLoader.js';
+import { CookingStep } from './CookingStep';
+import { StepParameter } from './StepParameter';
+import { ICookingStep } from './ICookingStep';
+import { AnalysisLevel } from '../AnalysisLevel';
+import { ClassLoader } from '../../Services/ClassLoader';
 
 export class Brewing extends CookingStep {
     $type: string = 'Brewing';

@@ -1,27 +1,29 @@
-import { BrewerDwarf } from './Models/BrewerDwarf.js';
 import { Level } from './Models/Resources/Level.js';
 import { CategorizedMaterial } from './Models/Resources/CategorizedMaterial.js';
 import { Beer } from './Models/Resources/Beer.js';
-import { RecipeReference } from './Models/RecipeReference.js';
-import { Recipe } from './Models/Recipe.js';
+import { IRecipeReference } from './Models/IRecipeReference';
+import { IRecipe } from './Models/IRecipe';
 import { ADVISE_COST, GOLD, Q, resourceList } from './Scenario.js';
 import { StepParameter } from './Models/CookingSteps/StepParameter.js';
-import { Article } from './Models/Article.js';
+import { IArticle } from './Models/IArticle';
 import { NodeUpdate } from './Services/NodeUpdate.js';
 import { BrewerDwarfStatus } from './Models/BrewerDwarfStatus.js';
 import { IQuantity } from './Models/Resources/IQuantity.js';
 import { ICookingStep } from './Models/CookingSteps/ICookingStep.js';
 import { AnalysisLevel } from './Models/AnalysisLevel.js';
-import { IPlayer } from './Models/IPlayer.js';
 import { IResource } from './Models/Resources/IResource.js';
 import { CategorizedItem } from './Models/Resources/CategorizedItem.js';
 import { NamedStepResource } from './Models/Resources/NamedStepResource.js';
+import { StorageManager } from './Services/StorageManager.js';
+import { BrewerDwarfEngine } from './Services/BrewerDwarfEngine';
 
 export class Gui {
     intervalId: number = 0;
     private engineStatus: BrewerDwarfStatus = BrewerDwarfStatus.NOT_YET_STARTED;
 
-    constructor(private engine: BrewerDwarf) {
+    private storageManager: StorageManager;
+
+    constructor(private engine: BrewerDwarfEngine) {
         this.engine = engine;
     }
 
@@ -51,13 +53,13 @@ export class Gui {
     }
 
     loose() {
-        if (this.engine.status == BrewerDwarfStatus.LOOSE && this.engineStatus != BrewerDwarfStatus.LOOSE) {
+        if (this.engine.brewerDwarf.status == BrewerDwarfStatus.LOOSE && this.engineStatus != BrewerDwarfStatus.LOOSE) {
             this.endGame(false, "Tu as trop vomis c'est pas bien!! Tu aura plus de chance le(a) prochain(e) foie(s).");
-            this.engineStatus = this.engine.status;
+            this.engineStatus = this.engine.brewerDwarf.status;
         }
-        if (this.engine.status == BrewerDwarfStatus.WIN && this.engineStatus != BrewerDwarfStatus.WIN) {
+        if (this.engine.brewerDwarf.status == BrewerDwarfStatus.WIN && this.engineStatus != BrewerDwarfStatus.WIN) {
             this.endGame(true, "C'est bien, tu as gagné ! Mais guette les prochaines évolutions du jeu.");
-            this.engineStatus = this.engine.status;
+            this.engineStatus = this.engine.brewerDwarf.status;
         }
     }
 
@@ -102,7 +104,7 @@ export class Gui {
     }
 
     fastMode() {
-        this.engine.fastMode = 1000;
+        this.engine.brewerDwarf.fastMode = 1000;
     }
 
     start(refreshInterval: number) {
@@ -110,7 +112,7 @@ export class Gui {
     }
 
     private displayLevel(): string {
-        const level = this.engine.player.getResourceInStorage('level');
+        const level = this.storageManager.getResourceInStorage('level');
         let h = '<strong>Level</strong>: ';
         if (level != null) {
             const q = level.getQuantity();
@@ -131,7 +133,7 @@ export class Gui {
     }
 
     private displayBrews(): string {
-        const content = this.engine.player
+        const content = this.storageManager
             .getStorage()
             .filter((resQ: IQuantity) => {
                 const resource = resQ.getResource();
@@ -173,31 +175,28 @@ export class Gui {
     }
 
     private listRecipeReferences(): string {
-        return this.engine.recipes.map((res) => this.listRecipeReference(res)).join('');
+        return this.engine.brewerDwarf.recipes.map((res) => this.listRecipeReference(res)).join('');
     }
 
-    private listRecipeReference(recipe: RecipeReference): string {
+    private listRecipeReference(recipe: IRecipeReference): string {
         let h = '<div>';
-        h += recipe.getName();
-        h += '<button onclick="engine.prepareBrew(\'' + recipe.getName() + '\')">Préparer</button>';
+        h += recipe.name;
+        h += '<button onclick="engine.prepareBrew(\'' + recipe.name + '\')">Préparer</button>';
         h += '</div>';
         return h;
     }
 
     private displayPlayerRecipes(): string {
-        return this.engine.player
-            .getRecipes()
-            .map((res: Recipe) => this.displayPlayerRecipe(res))
-            .join('');
+        return this.engine.brewerDwarf.player.recipes.map((res: IRecipe) => this.displayPlayerRecipe(res)).join('');
     }
 
-    private displayPlayerRecipe(recipe: Recipe): string {
+    private displayPlayerRecipe(recipe: IRecipe): string {
         let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th>' + Gui.htmlEntities(recipe.getName()) + ' (' + this.displayScore(recipe.score) + ')</th>';
-        h += '<th colspan="2">À partir de: ' + recipe.recipeRef?.getName() + '</th></tr>';
+        h += '<tr><th>' + Gui.htmlEntities(recipe.name) + ' (' + this.displayScore(recipe.score) + ')</th>';
+        h += '<th colspan="2">À partir de: ' + recipe.recipeRef?.name + '</th></tr>';
 
-        recipe.getCookingSteps().forEach((res) => (h += this.displayCookingStep(res)));
-        h += '<tr><td colspan="3"><button onclick="engine.reprepareBrew(\'' + recipe.getName() + '\')">Préparer</button></td></tr>';
+        recipe.steps.forEach((res) => (h += this.displayCookingStep(res)));
+        h += '<tr><td colspan="3"><button onclick="engine.prepareAgainBrew(\'' + recipe.name + '\')">Préparer</button></td></tr>';
         h += '</table></div>';
         return h;
     }
@@ -237,33 +236,33 @@ export class Gui {
     }
 
     private editBrewingRecipe(): string {
-        const r = this.engine.player.getBrewingRecipe();
+        const r = this.engine.brewerDwarf.player.brewingRecipe;
         if (r == null) {
             return '';
         }
         return this.editRecipe(r);
     }
 
-    private editRecipe(recipe: Recipe): string {
+    private editRecipe(recipe: IRecipe): string {
         let h = '<div style="display: inline-block;"><table border="1">';
-        h += '<tr><th colspan="3">Brassée partir de: ' + recipe.recipeRef?.getName() + '</th></tr>';
+        h += '<tr><th colspan="3">Brassée partir de: ' + recipe.recipeRef?.name + '</th></tr>';
         h += '<tr>';
         h += '<td>Nom: </td>';
-        h += '<td colspan="2"><input type="text" id="recipeName" value="' + recipe.getName() + '" onchange="engine.checkBrew()" /></td>';
+        h += '<td colspan="2"><input type="text" id="recipeName" value="' + recipe.name + '" onchange="engine.checkBrew()" /></td>';
         h += '<td><b>Note:</b> ' + this.displayScore(recipe.score) + '</td>';
         h += '<td><span class="problem"><b>Problème:</b> ' + (recipe.problem != null ? recipe.problem : '') + '</span>';
         h += '<span class="advice"><b>Conseils:</b></span></td>';
         h += '</tr>';
 
-        recipe.getCookingSteps().forEach((step, i) => (h += this.editCookingStep(i, step)));
+        recipe.steps.forEach((step, i) => (h += this.editCookingStep(i, step)));
         h += '<tr>';
         const disabled =
-            recipe.hasProblem() || recipe.analysisLevel == AnalysisLevel.NONE
+            this.engine.brewingService.hasProblem(recipe) || recipe.analysisLevel == AnalysisLevel.NONE
                 ? 'disabled="disabled" title="On ne brasse pas une bière problématique. Vérifier d\'abord. "'
                 : '';
         h += '<td colspan="3"><button onclick="engine.brew()" ' + disabled + '>Brasser!</button>';
         h += '<td>&nbsp;</td>';
-        const storageRes = this.engine.player.getResourceInStorage(ADVISE_COST.getResource().getName());
+        const storageRes = this.storageManager.getResourceInStorage(ADVISE_COST.getResource().getName());
         let cssClass = 'notAvailableResource';
         if (storageRes != null && storageRes.getQuantity() >= ADVISE_COST.getQuantity()) {
             cssClass = 'availableResource';
@@ -323,7 +322,7 @@ export class Gui {
         return h;
     }
 
-    private displayScore(score: number | null): string {
+    private displayScore(score?: number): string {
         return (score != null ? Math.round(score * 100) / 10 : '-') + '/10';
     }
 
@@ -408,39 +407,40 @@ export class Gui {
     }
 
     private displayStorageCategoryContent(category: string): string {
-        return this.engine.player
+        return this.storageManager
             .getStorageByCategory(category)
             .map((res: IQuantity) => this.displayQuantity(res))
             .join('');
     }
 
     private displayShop(): string {
-        let h = this.engine.shopStorage.map((res) => this.displayArticle(res, this.engine.player)).join('');
-        h += this.engine.player.getStorageByCategory('beer').map((b: IQuantity) => {
+        let h = this.engine.brewerDwarf.shopStorage.map((res) => this.displayArticle(res)).join('');
+        h += this.storageManager.getStorageByCategory('beer').map((b: IQuantity) => {
             const res = b.getResource();
             if (res instanceof Beer) {
-                return this.displaySellBrew(res.recipe, this.engine.player);
+                return this.displaySellBrew(res.recipe);
             }
             return '';
         });
         return h;
     }
 
-    private displaySellBrew(recipe: Recipe, player: IPlayer): string {
+    private displaySellBrew(recipe: IRecipe): string {
         let disable = ' disable="disable"';
-        if (player.hasResources([recipe.getArticle().cost.opposite()])) {
+        const article = this.engine.brewingService.getArticle(recipe);
+        if (this.storageManager.hasResources([article.cost.opposite()])) {
             disable = '';
         }
         let sell = 'Acheter';
-        if (recipe.getArticle().item.getResource().getName() == GOLD.getName()) {
+        if (article.item.getResource().getName() == GOLD.getName()) {
             sell = 'Vendre';
         }
         return (
             '<div class="article">' +
-            this.displayQuantity(recipe.getArticle().item) +
-            this.displayBrew(recipe.getArticle().cost) +
+            this.displayQuantity(article.item) +
+            this.displayBrew(article.cost) +
             '<button onclick="engine.sellBrew(\'' +
-            recipe.getArticle().cost.getResource().getName() +
+            article.cost.getResource().getName() +
             '\')" ' +
             disable +
             '>' +
@@ -450,8 +450,8 @@ export class Gui {
         );
     }
 
-    private displayArticle(article: Article, player: IPlayer): string {
-        const hasResource = player.hasResources([article.cost]);
+    private displayArticle(article: IArticle): string {
+        const hasResource = this.storageManager.hasResources([article.cost]);
         const cssClass = hasResource ? 'availableResource' : 'notAvailableResource';
         const disable = hasResource ? '' : ' disabled="disabled"';
         const onclick = hasResource ? "engine.buy('" + article.item.getResource().getName() + "')" : '';

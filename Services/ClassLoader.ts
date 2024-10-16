@@ -10,12 +10,12 @@ import { Quantity } from '../Models/Resources/Quantity.js';
 import { Beer } from '../Models/Resources/Beer.js';
 import { NamedStepResource } from '../Models/Resources/NamedStepResource.js';
 import { StepParameter } from '../Models/CookingSteps/StepParameter.js';
-import { RecipeReference } from '../Models/RecipeReference.js';
-import { Recipe } from '../Models/Recipe.js';
-import { BrewerDwarf } from '../Models/BrewerDwarf.js';
+import { IRecipeReference } from '../Models/IRecipeReference';
+import { IRecipe } from '../Models/IRecipe';
+import { IBrewerDwarf } from '../Models/IBrewerDwarf';
 import { Player } from '../Models/Player.js';
-import { Article } from '../Models/Article.js';
-import { Brewing } from '../Models/Brewing.js';
+import { IArticle } from '../Models/IArticle';
+import { Brewing } from '../Models/CookingSteps/Brewing';
 
 export class ClassLoader {
     public static load(data: unknown) {
@@ -43,12 +43,12 @@ export class ClassLoader {
         if (data.$type === 'Beer') return Beer.load(data);
         if (data.$type === 'Level') return Level.load(data);
         // models
-        if (data.$type === 'BrewerDwarf') return BrewerDwarf.load(data);
+        if (data.$type === 'BrewerDwarf') return IBrewerDwarf.load(data);
         if (data.$type === 'Player') return Player.load(data);
-        if (data.$type === 'Article') return Article.load(data);
+        if (data.$type === 'Article') return IArticle.load(data);
         if (data.$type === 'Brewing') return Brewing.load(data);
-        if (data.$type === 'RecipeReference') return RecipeReference.load(data);
-        if (data.$type === 'Recipe') return Recipe.load(data);
+        if (data.$type === 'RecipeReference') return IRecipeReference.load(data);
+        if (data.$type === 'Recipe') return IRecipe.load(data);
 
         throw new Error(`Unknown resource type: ${data.$type}`);
     }
