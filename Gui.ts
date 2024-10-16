@@ -1,6 +1,6 @@
 import { Level } from './Models/Resources/Level.js';
-import { CategorizedMaterial } from './Models/Resources/CategorizedMaterial.js';
-import { Beer } from './Models/Resources/Beer.js';
+import { ICategorizedMaterial } from './Models/Resources/ICategorizedMaterial';
+import { IBeer } from './Models/Resources/IBeer';
 import { IRecipeReference } from './Models/IRecipeReference';
 import { IRecipe } from './Models/IRecipe';
 import { ADVISE_COST, GOLD, Q, resourceList } from './Scenario.js';
@@ -12,8 +12,8 @@ import { IQuantity } from './Models/Resources/IQuantity.js';
 import { ICookingStep } from './Models/CookingSteps/ICookingStep.js';
 import { AnalysisLevel } from './Models/AnalysisLevel.js';
 import { IResource } from './Models/Resources/IResource.js';
-import { CategorizedItem } from './Models/Resources/CategorizedItem.js';
-import { NamedStepResource } from './Models/Resources/NamedStepResource.js';
+import { ICategorizedItem } from './Models/Resources/ICategorizedItem';
+import { INamedStepResource } from './Models/Resources/INamedStepResource';
 import { StorageManager } from './Services/StorageManager.js';
 import { BrewerDwarfEngine } from './Services/BrewerDwarfEngine';
 
@@ -137,7 +137,7 @@ export class Gui {
             .getStorage()
             .filter((resQ: IQuantity) => {
                 const resource = resQ.getResource();
-                return resource instanceof CategorizedMaterial && resource.category == 'beer';
+                return resource instanceof ICategorizedMaterial && resource.category == 'beer';
             })
             .map((res: IQuantity) => this.displayBrew(res))
             .join('');
@@ -149,7 +149,7 @@ export class Gui {
 
     private displayBrew(quantity: IQuantity): string {
         const res = quantity.getResource();
-        if (res instanceof Beer) {
+        if (res instanceof IBeer) {
             return (
                 '<div class="resource ' +
                 res.$type +
@@ -417,7 +417,7 @@ export class Gui {
         let h = this.engine.brewerDwarf.shopStorage.map((res) => this.displayArticle(res)).join('');
         h += this.storageManager.getStorageByCategory('beer').map((b: IQuantity) => {
             const res = b.getResource();
-            if (res instanceof Beer) {
+            if (res instanceof IBeer) {
                 return this.displaySellBrew(res.recipe);
             }
             return '';
@@ -468,7 +468,7 @@ export class Gui {
     private displayQuantity(quantity: IQuantity, optionalCss: string = '', storageRes: IQuantity | null = null): string {
         const res: IResource = quantity.getResource();
         let image: string = '';
-        if (res instanceof CategorizedItem || res instanceof CategorizedMaterial || res instanceof NamedStepResource) {
+        if (res instanceof ICategorizedItem || res instanceof ICategorizedMaterial || res instanceof INamedStepResource) {
             image = res.image;
         }
         return (
@@ -503,11 +503,11 @@ export class Gui {
     ): string {
         const res: IResource = quantity.getResource();
         let image: string = '';
-        if (res instanceof CategorizedItem || res instanceof CategorizedMaterial || res instanceof NamedStepResource) {
+        if (res instanceof ICategorizedItem || res instanceof ICategorizedMaterial || res instanceof INamedStepResource) {
             image = res.image;
         }
         let unit = '';
-        if (res instanceof CategorizedMaterial) {
+        if (res instanceof ICategorizedMaterial) {
             unit = res.unit;
         }
         return (

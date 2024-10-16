@@ -1,7 +1,7 @@
 import { IQuantity } from '../Models/Resources/IQuantity';
 import { Quantity } from '../Models/Resources/Quantity';
-import { CategorizedItem } from '../Models/Resources/CategorizedItem';
-import { CategorizedMaterial } from '../Models/Resources/CategorizedMaterial';
+import { ICategorizedItem } from '../Models/Resources/ICategorizedItem';
+import { ICategorizedMaterial } from '../Models/Resources/ICategorizedMaterial';
 
 export class StorageManager {
     constructor(
@@ -16,7 +16,7 @@ export class StorageManager {
     public getStorageByCategory(category: string): Array<IQuantity> {
         return this.storage.filter((resQ) => {
             const resource = resQ.getResource();
-            return (resource instanceof CategorizedItem || resource instanceof CategorizedMaterial) && resource.category == category;
+            return (resource instanceof ICategorizedItem || resource instanceof ICategorizedMaterial) && resource.category == category;
         });
     }
 

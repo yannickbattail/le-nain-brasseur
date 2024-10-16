@@ -1,7 +1,7 @@
 import { Quantity } from './Models/Resources/Quantity.js';
 import { Level } from './Models/Resources/Level.js';
-import { CategorizedMaterial } from './Models/Resources/CategorizedMaterial.js';
-import { CategorizedItem } from './Models/Resources/CategorizedItem.js';
+import { ICategorizedMaterial } from './Models/Resources/ICategorizedMaterial';
+import { ICategorizedItem } from './Models/Resources/ICategorizedItem';
 import { IBrewerDwarf } from './Models/IBrewerDwarf';
 import { IRecipe } from './Models/IRecipe';
 import { AddingIngredient } from './Models/CookingSteps/AddingIngredient.js';
@@ -18,15 +18,15 @@ export const Q = (quantity: number, res: IResource) => new Quantity(quantity, re
 
 export const LEVEL = new Level('level', 'level.svg', ['rien', 'Brassouilleur ', 'Brasseur amateur', 'Brasseur', 'Maistre brasseur']);
 //    VARIABLE  TYPE (Material a une unité en plus)               unité         image                         catégorie                 description
-export const WATER = new CategorizedMaterial('Eau', 'cl', 'water.svg', 'Ingredient', 'eau');
-export const MALT = new CategorizedMaterial('Malt', 'g', 'grain.svg', 'Ingredient', "Malt d'orge");
-export const HOUBLON = new CategorizedMaterial('Houblon', 'g', 'hops.svg', 'Ingredient', 'Houblon');
-export const LEVURE = new CategorizedMaterial('Levure', 'g', 'eyedropper.svg', 'Ingredient', 'Levure de bière');
-export const DRECHE = new CategorizedMaterial('drêche', 'g', 'dreche.svg', 'Ingredient', 'reste de grain après brassage');
-export const BIERE = new CategorizedMaterial('Bière', 'cl', 'beer.svg', 'Ingredient', 'Bière');
-export const GOLD = new CategorizedItem('Or', 'cash.svg', 'Item', "Pièces d'or");
+export const WATER = new ICategorizedMaterial('Eau', 'cl', 'water.svg', 'Ingredient', 'eau');
+export const MALT = new ICategorizedMaterial('Malt', 'g', 'grain.svg', 'Ingredient', "Malt d'orge");
+export const HOUBLON = new ICategorizedMaterial('Houblon', 'g', 'hops.svg', 'Ingredient', 'Houblon');
+export const LEVURE = new ICategorizedMaterial('Levure', 'g', 'eyedropper.svg', 'Ingredient', 'Levure de bière');
+export const DRECHE = new ICategorizedMaterial('drêche', 'g', 'dreche.svg', 'Ingredient', 'reste de grain après brassage');
+export const BIERE = new ICategorizedMaterial('Bière', 'cl', 'beer.svg', 'Ingredient', 'Bière');
+export const GOLD = new ICategorizedItem('Or', 'cash.svg', 'Item', "Pièces d'or");
 
-export const resourceList: Array<CategorizedItem | CategorizedMaterial> = [WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD];
+export const resourceList: Array<ICategorizedItem | ICategorizedMaterial> = [WATER, MALT, HOUBLON, LEVURE, BIERE, DRECHE, GOLD];
 
 export const ADVISE_COST = Q(50, GOLD);
 

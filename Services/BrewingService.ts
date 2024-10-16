@@ -1,7 +1,7 @@
 import { IRecipe } from '../Models/IRecipe';
 import { IRecipeReference } from '../Models/IRecipeReference';
 import { IQuantity } from '../Models/Resources/IQuantity.js';
-import { Beer } from '../Models/Resources/Beer.js';
+import { IBeer } from '../Models/Resources/IBeer';
 import { GOLD, Q, WATER } from '../Scenario.js';
 import { IArticle } from '../Models/IArticle';
 
@@ -14,7 +14,7 @@ export class BrewingService {
 
     getBeer(recipe: IRecipe): IQuantity {
         const liters = recipe.steps[0].getStepParameter(0).value;
-        const beer = new Beer(recipe.name, 'l', 'beer.svg', 'beer', 'Beer à partir de ' + recipe.recipeRef?.name, recipe);
+        const beer = new IBeer(recipe.name, 'l', 'beer.svg', 'beer', 'Beer à partir de ' + recipe.recipeRef?.name, recipe);
         return Q(liters, beer);
     }
 

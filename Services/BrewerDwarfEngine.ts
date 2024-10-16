@@ -4,7 +4,7 @@ import { AnalysisLevel } from '../Models/AnalysisLevel.js';
 import { ADVISE_COST, DRECHE, MALT, Q } from '../Scenario.js';
 import { IRecipe } from '../Models/IRecipe';
 import { IRecipeReference } from '../Models/IRecipeReference';
-import { Beer } from '../Models/Resources/Beer.js';
+import { IBeer } from '../Models/Resources/IBeer';
 import { IArticle } from '../Models/IArticle';
 import { BrewerDwarfStatus } from '../Models/BrewerDwarfStatus.js';
 import { IQuantity } from '../Models/Resources/IQuantity.js';
@@ -82,7 +82,7 @@ export class BrewerDwarfEngine {
 
         if (quantity != null) {
             const res = quantity.getResource();
-            if (res instanceof Beer) {
+            if (res instanceof IBeer) {
                 const article = this.brewingService.getArticle(res.recipe);
                 this.storageManager.increaseStorage(article.item);
                 this.storageManager.increaseStorage(article.cost);

@@ -5,18 +5,10 @@ import { IQuantity } from '../Resources/IQuantity.js';
 import { RecipeAnalysis } from '../../Services/RecipeAnalysis.js';
 
 export abstract class CookingStep implements ICookingStep {
-    abstract $type: string;
-    public score: number | null = null;
+    name: string;
+    image: string;
 
     protected constructor(public stepParameters: Array<StepParameter> = []) {}
-
-    abstract getName(): string;
-
-    abstract getImage(): string;
-
-    abstract getStepParameters(): Array<StepParameter>;
-
-    abstract getStepParameter(index: number): StepParameter;
 
     abstract validate(): void;
 

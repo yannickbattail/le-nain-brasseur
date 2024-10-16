@@ -4,11 +4,11 @@ import { Cooling } from '../Models/CookingSteps/Cooling.js';
 import { Filtering } from '../Models/CookingSteps/Filtering.js';
 import { Heating } from '../Models/CookingSteps/Heating.js';
 import { Level } from '../Models/Resources/Level.js';
-import { CategorizedItem } from '../Models/Resources/CategorizedItem.js';
-import { CategorizedMaterial } from '../Models/Resources/CategorizedMaterial.js';
+import { ICategorizedItem } from '../Models/Resources/ICategorizedItem';
+import { ICategorizedMaterial } from '../Models/Resources/ICategorizedMaterial';
 import { Quantity } from '../Models/Resources/Quantity.js';
-import { Beer } from '../Models/Resources/Beer.js';
-import { NamedStepResource } from '../Models/Resources/NamedStepResource.js';
+import { IBeer } from '../Models/Resources/IBeer';
+import { INamedStepResource } from '../Models/Resources/INamedStepResource';
 import { StepParameter } from '../Models/CookingSteps/StepParameter.js';
 import { IRecipeReference } from '../Models/IRecipeReference';
 import { IRecipe } from '../Models/IRecipe';
@@ -36,11 +36,11 @@ export class ClassLoader {
         if (data.$type === 'StepParameter') return StepParameter.load(data);
         // Resources
         if (data.$type === 'Resource') return Resource.load(data);
-        if (data.$type === 'CategorizedItem') return CategorizedItem.load(data);
-        if (data.$type === 'CategorizedMaterial') return CategorizedMaterial.load(data);
-        if (data.$type === 'NamedStepResource') return NamedStepResource.load(data);
+        if (data.$type === 'CategorizedItem') return ICategorizedItem.load(data);
+        if (data.$type === 'CategorizedMaterial') return ICategorizedMaterial.load(data);
+        if (data.$type === 'NamedStepResource') return INamedStepResource.load(data);
         if (data.$type === 'Quantity') return Quantity.load(data);
-        if (data.$type === 'Beer') return Beer.load(data);
+        if (data.$type === 'Beer') return IBeer.load(data);
         if (data.$type === 'Level') return Level.load(data);
         // models
         if (data.$type === 'BrewerDwarf') return IBrewerDwarf.load(data);
